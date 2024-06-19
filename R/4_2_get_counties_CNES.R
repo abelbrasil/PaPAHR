@@ -42,7 +42,7 @@ get_counties <- function(){
   output_dir <- here::here("data-raw", "CNES", "CADGER")
   dir.create(output_dir)
 
-  caminho_pasta <- system.file("extdata", package = "Projeto.Faturamento.Pacote")
+  caminho_pasta <- system.file("extdata", package = "DATASUS.SIA.SIH")
   caminho_completo <- file.path(caminho_pasta, "CADGER.zip")
   dir_destino <- "./data-raw/CNES/CADGER"
 
