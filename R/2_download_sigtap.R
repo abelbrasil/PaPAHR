@@ -18,7 +18,9 @@ download_sigtap_files <- function(year_start, month_start, year_end, month_end, 
   `%>%` <- dplyr::`%>%`
 
   output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep="\\")
-  dir.create(output_dir)
+  if (!dir.exists(output_dir)){
+    dir.create(output_dir)
+  }
 
   base_url <- "ftp://ftp2.datasus.gov.br/pub/sistemas/tup/downloads/"
   connection <- curl::curl(base_url)
@@ -33,7 +35,6 @@ download_sigtap_files <- function(year_start, month_start, year_end, month_end, 
            publication_date = lubridate::ym(file_version_id))
 
   close(connection)
-
 
   #Se a condição "if" for verdadeira, o código irá selecionar o arquivo mais recente localizado dentro de "dir_files".
   if (newer == TRUE &

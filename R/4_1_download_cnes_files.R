@@ -20,10 +20,15 @@ download_cnes_files <-
 
     base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/ST/"
 
+
     output_dir <- here::here("data-raw")
-    dir.create(output_dir)
+    if (!dir.exists(output_dir)){
+      dir.create(output_dir)
+    }
     output_dir <- here::here("data-raw", "CNES")
-    dir.create(output_dir)
+    if (!dir.exists(output_dir)){
+      dir.create(output_dir)
+    }
     output_dir <- here::here("data-raw", "CNES", "ST")
     dir.create(output_dir)
 

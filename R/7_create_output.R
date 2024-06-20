@@ -25,8 +25,8 @@ create_output <- function(year_start, month_start,
                           year_end, month_end, state_abbr,
                           county_id="all",
                           health_establishment_id="all") {
-
-  get_counties()
+  tempo_inicio <- system.time({
+    get_counties()
 
   outputSIA <- get_datasus(
     year_start,
@@ -69,7 +69,10 @@ create_output <- function(year_start, month_start,
   write.csv2(outputSIH_AIH, "./data-raw/outputSIH_AIH.csv", na="", row.names=FALSE)
   write.csv2(outputSIH_SP, "./data-raw/outputSIH_SP.csv", na="", row.names=FALSE)
 
+  })
+  cat("Tempo de execução:", tempo_inicio[3]/60, "minutos\n")
   return(list(outputSIA, outputSIH_AIH, outputSIH_SP))
+
 }
 
 #' Create SUS-SIA/SIH database from local DBC files

@@ -11,10 +11,33 @@
 get_procedure_details <- function() {
   `%>%` <- dplyr::`%>%`
 
-  # TO-DO ---------------------------------------------------------------------#
+  # Verificar se os arquivos SIGTAP existem
+  output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep="\\")
+  if (dir.exists(output_dir)) {
 
-  # 1. Verificar se os arquivos SIGTAP existem
+    subdirs <- list.dirs(path = output_dir, recursive = FALSE)
+    if (length(subdirs) > 0) {
+      arquivos = c("tb_procedimento.txt", "tb_procedimento_layout.txt","tb_grupo.txt","tb_grupo_layout.txt",
+                "tb_sub_grupo.txt", "tb_sub_grupo_layout.txt","tb_forma_organizacao.txt",
+                "tb_forma_organizacao_layout.txt","tb_financiamento.txt", "tb_financiamento_layout.txt",
+                "tb_rubrica.txt", "tb_rubrica_layout.txt","tb_ocupacao.txt", "tb_ocupacao_layout.txt",
+                "tb_cid.txt", "tb_cid_layout.txt")
 
+      for (subdir in subdirs) {
+        # Verifica a existencia de cada arquivo no subdiretorio
+        for (arquivo in arquivos) {
+          caminho_arquivo <- file.path(subdir, arquivo)
+          if (!file.exists(caminho_arquivo)) {
+            stop("O arquivo ", arquivo, " não foi encontrado em ", subdir,'\n')
+          }
+        }
+      }
+    } else{
+      stop("Os arquivos SIGTAP nao foram encontrados em ", output_dir,'\n')
+    }
+  } else {
+    stop("Nao foi encontrada a pasta ", output_dir,'\n')
+  }
 
   procedure_main_details <- get_detail("Procedimento")
   procedure_group <- get_detail("Grupo")
