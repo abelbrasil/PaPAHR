@@ -12,7 +12,7 @@
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
 #' @examples
-#' \dontrun{dados = create_output(year_start=2021,
+#' \dontrun{ dados = create_output(year_start=2021,
 #'                   month_start=1,
 #'                   year_end=2021,
 #'                   month_end=3,

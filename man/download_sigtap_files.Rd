@@ -27,6 +27,6 @@ download_sigtap_files(
 A funcao \code{download_sigtap_files} baixar e descompactar arquivos sigtap do site datasus. Esses arquivos são salvos temporariamente na maquina local. Para cada mes vai ser baixado um arquivo compactado.
 }
 \examples{
-\dontrun{download_sigtap_files(2024, 1, 2024, 3, newer=FALSE)}
+\dontrun{ download_sigtap_files(2024, 1, 2024, 3, newer=FALSE)}
 
 }

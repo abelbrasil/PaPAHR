@@ -33,7 +33,7 @@ create_output(
 \link{create_output} Processar arquivos dos sistemas de informação SIA e SIH (DATASUS) e combiná-los com informações do CNES e SIGTAP.
 }
 \examples{
-\dontrun{dados = create_output(year_start=2021,
+\dontrun{ dados = create_output(year_start=2021,
                   month_start=1,
                   year_end=2021,
                   month_end=3,

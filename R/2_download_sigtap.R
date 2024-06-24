@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{download_sigtap_files(2024, 1, 2024, 3, newer=FALSE)}
+#' \dontrun{ download_sigtap_files(2024, 1, 2024, 3, newer=FALSE)}
 #'
 download_sigtap_files <- function(year_start, month_start, year_end, month_end, newer=TRUE){
   `%>%` <- dplyr::`%>%`
@@ -20,6 +20,9 @@ download_sigtap_files <- function(year_start, month_start, year_end, month_end, 
   output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep="\\")
   if (!dir.exists(output_dir)){
     dir.create(output_dir)
+  } else{
+    arquivos <- list.files(output_dir, full.names = TRUE)
+    unlink(arquivos,recursive = TRUE)
   }
 
   base_url <- "ftp://ftp2.datasus.gov.br/pub/sistemas/tup/downloads/"
@@ -71,5 +74,3 @@ download_sigtap_files <- function(year_start, month_start, year_end, month_end, 
 #Para ver o diretorio temporario onde foi salvo os arquivos
 #output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep="\\")
 #list.files(output_dir)
-
-
