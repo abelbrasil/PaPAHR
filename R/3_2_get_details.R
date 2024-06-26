@@ -26,8 +26,6 @@ get_detail <- function(detail_name) {
   raw_detail_file_name <- files_name[1]
   detail_layout_file_name <- files_name[2]
 
-  tryCatch({
-
   raw_detail <- list.files(dir_files,full.name=TRUE, recursive=TRUE) %>%
     stringr::str_subset(raw_detail_file_name) %>%
     purrr::map(get_sigtap_file, type="raw") %>%
@@ -47,9 +45,6 @@ get_detail <- function(detail_name) {
     tidyr::pivot_wider(names_from=column_name, values_from=detail) %>%
     tidyr::unnest(-file_version_id)
 
-  }, error = function(e) {
-    message("Erro ao ler o arquivo:", e$message)
-  })
   return(details)
 }
 
