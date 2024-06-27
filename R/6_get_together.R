@@ -83,7 +83,7 @@ get_datasus <-
       tibble::as_tibble_col(column_name = "file_name") %>%
       dplyr::mutate(
         state = stringr::str_sub(file_name, 3, 4),
-        publication_date = lubridate::ym(stringr::str_sub(file_name, 5, 8)),
+        publication_date = lubridate::ym(stringr::str_sub(file_name, 5, 8),quiet = TRUE),
         file_type = stringr::str_sub(file_name, 1, 2)) %>%
       dplyr::filter(file_type %in% data_type,
         state == state_abbr,
@@ -91,6 +91,10 @@ get_datasus <-
         publication_date <= publication_date_end)
 
     close(connection)
+
+    if (any(is.na(dir_files$publication_date))) {
+      warning("Some dates could not be parsed correctly. In argument: publication_date = lubridate::ym(stringr::str_sub(file_name, 5, 8)).")
+    }
 
     files_name <- dplyr::pull(dir_files, file_name)
     n_files <- files_name %>% length()
