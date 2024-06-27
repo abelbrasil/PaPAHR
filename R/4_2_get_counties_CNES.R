@@ -3,10 +3,13 @@
 #'
 #' @description A funcao `get_counties` cria dois DataFrames. O primeiro, `counties`, contem informacoes detalhadas sobre os municipios do Brasil. O segundo, `health_establishment`, e a uniao de todos os arquivos baixados pela funcao `download_cnes_files`.
 #'
+#' @param state_abbr Sigla da Unidade Federativa
+#' @param county_id Codigo(s) do Municipio de Atendimento
+#'
 #' @return A funcao nao retorna valores diretamente, mas salva no ambiente global do R os DataFrames `counties` e `health_establishment`.
 #'
 #' @export
-get_counties <- function(){
+get_counties <- function(state_abbr, county_id){
   `%>%` <- dplyr::`%>%`
 
   request_url <- "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
@@ -23,10 +26,15 @@ get_counties <- function(){
           nome_microrregiao = c("microrregiao", "nome"),
           nome_mesorregiao = c("microrregiao", "mesorregiao", "nome"),
           id_estado = c("microrregiao", "mesorregiao", "UF", "id"),
-          nome_estado = c("microrregiao", "mesorregiao", "UF", "nome")) %>%
+          nome_estado = c("microrregiao", "mesorregiao", "UF", "nome"),
+          sigla_estado = c("microrregiao", "mesorregiao", "UF", "sigla")) %>%
     dplyr::mutate(id_municipio = stringr::str_sub(id_municipio, 1, 6)) %>%
     dplyr::select(-municipios)
 
+  if (!any(counties$id_municipio == county_id & counties$sigla_estado == state_abbr)){
+    stop('O ID do município informado não pertence ao estado informado.')
+  }
+  counties = counties %>% dplyr::select(-'sigla_estado')
 
 
   caminho = here::here("data-raw/CNES/ST")

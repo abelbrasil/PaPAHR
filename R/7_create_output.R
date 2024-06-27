@@ -26,7 +26,8 @@ create_output <- function(year_start, month_start,
                           county_id="all",
                           health_establishment_id="all") {
   tempo_inicio <- system.time({
-    get_counties()
+    state_abbr = toupper(trimws(state_abbr))
+    get_counties(state_abbr, county_id)
 
   outputSIA <- get_datasus(
     year_start,

@@ -4,7 +4,12 @@
 \alias{get_counties}
 \title{get_counties: Obtem informacoes de todos os estados do Brasil}
 \usage{
-get_counties()
+get_counties(state_abbr, county_id)
+}
+\arguments{
+\item{state_abbr}{Sigla da Unidade Federativa}
+
+\item{county_id}{Codigo(s) do Municipio de Atendimento}
 }
 \value{
 A funcao nao retorna valores diretamente, mas salva no ambiente global do R os DataFrames \code{counties} e \code{health_establishment}.
