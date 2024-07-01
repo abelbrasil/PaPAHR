@@ -68,8 +68,12 @@ get_datasus <-
                        "SIH-SP" = "SP")
 
     information_system_dir <- stringr::str_glue("{tmp_dir}\\{information_system}")
-
-    dir.create(information_system_dir)
+    if (!dir.exists(information_system_dir)){
+      dir.create(information_system_dir)
+    } else{
+      arquivos <- list.files(information_system_dir, full.names = TRUE)
+      unlink(arquivos,recursive = TRUE)
+    }
 
     base_url <- stringr::str_glue("ftp://ftp.datasus.gov.br/dissemin/publicos/{data_source}SUS/200801_/Dados/")
 
