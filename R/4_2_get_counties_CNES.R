@@ -101,6 +101,7 @@ get_counties <- function(state_abbr, county_id){
   health_establishment <- health_establishment %>%
     dplyr::left_join(health_establishment_details, by="CNES") %>%
     dplyr::select(CNES, FANTASIA, COMPETEN) %>%
+    dplyr::distinct(CNES, .keep_all = TRUE) %>%
     dplyr::mutate(NO_ESTABELECIMENTO = stringr::str_c(CNES, FANTASIA, sep="-")) %>%
     tibble::as_tibble()
 
