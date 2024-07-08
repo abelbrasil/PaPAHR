@@ -1,5 +1,4 @@
 
-
 #' get_datasus: Chamar e executar todas as outras funções definidas no pacote.
 #'
 #' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
@@ -125,11 +124,18 @@ get_datasus <-
       if (information_system == "SIA") {
 
         raw_SIA <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is=TRUE)
+        specific_dates <- unique(raw_SIA$PA_CMP)
 
-        #$ Fase 4: Fazer o carregamento do SIA
+        download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
+        procedure_details <- get_procedure_details()
+        cbo <- get_detail("CBO")
+        cid <- get_detail("CID") %>%
+          dplyr::mutate(
+            #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
+            dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
+            NO_CID = stringr::str_c(CO_CID, NO_CID, sep="-")
+          )
 
-        #$ Arquivo get_coutines_CNES
-        #$ Arquivo preprocess_dataset
 
         output <-
           preprocess_SIA(

@@ -9,7 +9,8 @@ download_sigtap_files(
   month_start,
   year_end,
   month_end,
-  newer = TRUE
+  newer = TRUE,
+  specific_dates = NULL
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ download_sigtap_files(
 \item{month_end}{Um numero de 2 digitos, indicando o mes de termino para o download dos dados.}
 
 \item{newer}{Logico. O padrao e TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.}
+
+\item{specific_dates}{Um vetor de strings contendo as datas específicas que se deseja baixar.}
 }
 \description{
 A funcao \code{download_sigtap_files} baixar e descompactar arquivos sigtap do site datasus. Esses arquivos são salvos temporariamente na maquina local. Para cada mes vai ser baixado um arquivo compactado.
