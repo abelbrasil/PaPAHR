@@ -24,8 +24,6 @@ preprocess_SIH_SP <- function(cbo,
     tibble::as_tibble() %>%
     dplyr::rename(CNES = SP_CNES) %>%
     check_filter(var_value=health_establishment_id, var_name="CNES") %>%
-    check_filter(var_value=county_id, var_name="SP_M_HOSP") %>%
-    dplyr::filter(SP_AA >= lubridate::year(publication_date_start)) %>%
     dplyr::mutate(ANOMES_MVM = stringr::str_c(SP_AA, SP_MM),
                   MESANO_MVM = stringr::str_c(SP_MM, SP_AA, sep="-"),
                   DT_MVM = lubridate::ym(stringr::str_c(SP_AA, SP_MM, sep="-")),

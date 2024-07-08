@@ -35,8 +35,6 @@ preprocess_SIH <- function(cbo,
                   UF_GESTOR = stringr::str_sub(UF_ZI, 1, 2)
     ) %>%
     check_filter(var_value=health_establishment_id, var_name="CNES") %>%
-    check_filter(var_value=county_id, var_name="UF_ZI") %>%
-    dplyr::filter(DT_CMPT >= publication_date_start) %>%
     dplyr::left_join(counties, by=c("MUNIC_RES" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,
                      c("PROC_REA" = "CO_PROCEDIMENTO", "ANOMES_CMPT" = "file_version_id")) %>%

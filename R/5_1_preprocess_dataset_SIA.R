@@ -24,8 +24,6 @@ preprocess_SIA <- function(cbo,
     tibble::as_tibble() %>%
     dplyr::rename(CNES = PA_CODUNI) %>%
     check_filter(var_value=health_establishment_id, var_name="CNES") %>%
-    check_filter(var_value=county_id, var_name="PA_UFMUN") %>%
-    dplyr::filter(lubridate::ym(PA_CMP) >= publication_date_start) %>%
     dplyr::left_join(counties, by=c("PA_MUNPCN" = "id_municipio")) %>%
     dplyr::left_join(procedure_details, c("PA_PROC_ID" = "CO_PROCEDIMENTO","PA_CMP" = "file_version_id")) %>%
     dplyr::left_join(cbo, by=c("PA_CBOCOD" = "CO_OCUPACAO","PA_CMP" = "file_version_id")) %>%
@@ -64,25 +62,25 @@ preprocess_SIA <- function(cbo,
                   `Ano de Processamento` = ANO_MVM,
                   `Mes de Processamento (Numero)` = MES_MVM,
                   `Mes de Processamento` = NM_MES_MVM,
-                  `Nome da Morbidade (CID)` = NO_CID,
-                  `Procedimentos realizados` = NO_PROCEDIMENTO,
-                  `Grupo de Procedimentos` = NO_GRUPO,
-                  `SubGrupo de Procedimentos` = NO_SUB_GRUPO,
-                  `Forma de organizacao` = NO_FORMA_ORGANIZACAO,
-                  `Tipo de Financiamento` = NO_FINANCIAMENTO,
-                  `TipoFin/Subtipo Financiamento` = NO_SUB_FINANCIAMENTO,
-                  `Profissional-CBO` = NO_OCUPACAO,
+                  `Nome da Morbidade (CID)` = NO_CID, #cid
+                  `Procedimentos realizados` = NO_PROCEDIMENTO, #procedure_details
+                  `Grupo de Procedimentos` = NO_GRUPO,#procedure_details
+                  `SubGrupo de Procedimentos` = NO_SUB_GRUPO,#procedure_details
+                  `Forma de organizacao` = NO_FORMA_ORGANIZACAO,#procedure_details
+                  `Tipo de Financiamento` = NO_FINANCIAMENTO, #procedure_details
+                  `TipoFin/Subtipo Financiamento` = NO_SUB_FINANCIAMENTO, #procedure_details
+                  `Profissional-CBO` = NO_OCUPACAO,#cbo
                   `Instrumento de registro` = TIPO_REGISTRO,
-                  `Complexidade Procedimento` = COMPLEXIDADE,
+                  `Complexidade Procedimento` = COMPLEXIDADE,#procedure_details
                   `Frequencia` = PA_QTDAPR,
                   `Quantidade Apresentada` = PA_QTDPRO,
                   `Valor Aprovado` = PA_VALAPR,
                   `Valor Apresentado` = PA_VALPRO,
                   `Estabelecimento CNES` = NO_ESTABELECIMENTO,
-                  `Municipio Residencia` = nome_municipio,
-                  `Micro IBGE Residencia` = nome_microrregiao,
-                  `Meso IBGE Residencia` = nome_mesorregiao,
-                  `Estado Residencia` = nome_estado)
+                  `Municipio Residencia` = nome_municipio, #counties
+                  `Micro IBGE Residencia` = nome_microrregiao, #counties
+                  `Meso IBGE Residencia` = nome_mesorregiao, #counties
+                  `Estado Residencia` = nome_estado)  #counties
 
   return(outputSIA)
 }
