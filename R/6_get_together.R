@@ -26,17 +26,8 @@ get_datasus <-
     `%>%` <- dplyr::`%>%`
     publication_date_start <- lubridate::ym(stringr::str_glue("{year_start}-{month_start}"))
     publication_date_end <- lubridate::ym(stringr::str_glue("{year_end}-{month_end}"))
-
-    #$ Fase 1: baixar Arquivos SIGTAP para o computador
-
-    #$ Arquivo download_sigtap
-
-    download_sigtap_files(
-      year_start,
-      month_start,
-      year_end,
-      month_end,
-      newer = FALSE)
+    cat(publication_date_start,'\n')
+    cat(publication_date_end,'\n')
 
     #$ Fase 2: Ler os arquivos SIGTAP
 
@@ -96,7 +87,7 @@ get_datasus <-
     close(connection)
 
     if (any(is.na(dir_files$publication_date))) {
-      warning("Some dates could not be parsed correctly. In argument: publication_date = lubridate::ym(stringr::str_sub(file_name, 5, 8)).")
+      warning("Algumas datas não puderam ser analisadas corretamente. No argumento: publication_date = lubridate::ym(stringr::str_sub(file_name, 5, 8)).")
     }
 
     files_name <- dplyr::pull(dir_files, file_name)
@@ -126,16 +117,25 @@ get_datasus <-
         raw_SIA <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is=TRUE)
         specific_dates <- unique(raw_SIA$PA_CMP)
 
-        download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
-        procedure_details <- get_procedure_details()
-        cbo <- get_detail("CBO")
-        cid <- get_detail("CID") %>%
-          dplyr::mutate(
-            #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
-            dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
-            NO_CID = stringr::str_c(CO_CID, NO_CID, sep="-")
-          )
+        # Definir diretorio de saida e obter arquivos existentes
+        output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep = "\\")
+        existing_files <- list.files(output_dir, full.names = TRUE)
+        existing_versions <- basename(existing_files)
 
+        # Determinar quais arquivos baixar
+        files_to_download <- specific_dates[!specific_dates %in% existing_versions]
+
+        if (length(files_to_download) > 0){
+          download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
+          procedure_details <- get_procedure_details()
+          cbo <- get_detail("CBO")
+          cid <- get_detail("CID") %>%
+            dplyr::mutate(
+              #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
+              dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
+              NO_CID = stringr::str_c(CO_CID, NO_CID, sep="-")
+            )
+        }
 
         output <-
           preprocess_SIA(

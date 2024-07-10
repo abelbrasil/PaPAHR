@@ -71,12 +71,17 @@ get_procedure_details <- function() {
            NO_FINANCIAMENTO = stringr::str_c(CO_FINANCIAMENTO, NO_FINANCIAMENTO, sep="-"),
            NO_FORMA_ORGANIZACAO = stringr::str_c(CO_FORMA_ORGANIZACAO, NO_FORMA_ORGANIZACAO, sep="-"),
            NO_SUB_FINANCIAMENTO = stringr::str_c(CO_RUBRICA, NO_RUBRICA, sep="-"),
-           COMPLEXIDADE = dplyr::case_when(TP_COMPLEXIDADE == 0 ~ "Nao se Aplica",
-                                    TP_COMPLEXIDADE == 1 ~ "Atencao Basica",
-                                    TP_COMPLEXIDADE == 2 ~ "Media Complexidade",
+           NO_SUB_FINANCIAMENTO = dplyr::case_when(
+             is.na(NO_SUB_FINANCIAMENTO) & CO_FINANCIAMENTO == '01' ~ 'Atenção Básica (PAB)',
+             is.na(NO_SUB_FINANCIAMENTO) & CO_FINANCIAMENTO == '06' ~ 'Média e Alta Complexidade (MAC)',
+             is.na(NO_SUB_FINANCIAMENTO) & CO_FINANCIAMENTO == '07' ~ 'Vigilância em Saúde',
+             TRUE ~ NO_SUB_FINANCIAMENTO
+           ),
+           COMPLEXIDADE = dplyr::case_when(TP_COMPLEXIDADE == 0 ~ "Não se Aplica",
+                                    TP_COMPLEXIDADE == 1 ~ "Atenção Básica",
+                                    TP_COMPLEXIDADE == 2 ~ "Média Complexidade",
                                     TP_COMPLEXIDADE == 3 ~ "Alta Complexidade"),
            COMPLEXIDADE = stringr::str_c(TP_COMPLEXIDADE, COMPLEXIDADE, sep="-"))
 
   return(procedure_details)
 }
-

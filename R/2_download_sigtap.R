@@ -27,13 +27,9 @@ download_sigtap_files <-
     output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep = "\\")
     if (!dir.exists(output_dir)) {
       dir.create(output_dir)
-    } else{
-      arquivos <- list.files(output_dir, full.names = TRUE)
-      unlink(arquivos, recursive = TRUE)
     }
 
-    base_url <-
-      "ftp://ftp2.datasus.gov.br/pub/sistemas/tup/downloads/"
+    base_url <- "ftp://ftp2.datasus.gov.br/pub/sistemas/tup/downloads/"
     connection <- curl::curl(base_url)
 
     dir_files <-
@@ -62,7 +58,7 @@ download_sigtap_files <-
       dir_files <- dir_files %>%
         dplyr::filter(file_version_id %in% specific_dates)
 
-    }else{
+    } else{
       publication_date_start <-
         lubridate::ym(stringr::str_glue("{year_start}-{month_start}"))
       publication_date_end <-
@@ -75,22 +71,58 @@ download_sigtap_files <-
         )
     }
 
-    file_version_id <- dplyr::pull(dir_files, file_version_id)
+    # Verificar se os arquivos já existem antes de baixar
+    existing_files <- list.files(output_dir, full.names = TRUE)
+    existing_versions <- basename(existing_files)
 
-    purrr::walk(stringr::str_glue("{output_dir}/{file_version_id}"),
-                dir.create)
+    files_to_download <- dir_files %>%
+      dplyr::filter(!file_version_id %in% existing_versions)
 
-    files_name <- dplyr::pull(dir_files, file_name)
+    if (nrow(files_to_download) == 0) {
+      message(
+        "Os arquivos do SIGTAP não serão baixados novamente, pois já foram baixados em execuções anteriores"
+      )
+    } else {
+      file_version_id <- dplyr::pull(files_to_download, file_version_id)
 
-    download_files_url <- stringr::str_glue("{base_url}{files_name}")
-    output_files_path <- stringr::str_glue("{output_dir}/{file_version_id}/{files_name}")
-    output_zip_files_path <- stringr::str_glue("{output_dir}/{file_version_id}")
+      purrr::walk(
+        stringr::str_glue("{output_dir}/{file_version_id}"),
+        dir.create,
+        showWarnings = FALSE
+      )
 
-    purrr::walk2(download_files_url, output_files_path, curl::curl_download)
+      files_name <- dplyr::pull(files_to_download, file_name)
 
-    purrr::walk2(output_files_path,
-                 output_zip_files_path,
-                 ~ utils::unzip(.x, exdir = .y))
+      download_files_url <-
+        stringr::str_glue("{base_url}{files_name}")
+      output_files_path <-
+        stringr::str_glue("{output_dir}/{file_version_id}/{files_name}")
+      output_zip_files_path <-
+        stringr::str_glue("{output_dir}/{file_version_id}")
+
+      purrr::walk2(download_files_url,
+                   output_files_path,
+                   curl::curl_download)
+
+      purrr::walk2(output_files_path,
+                   output_zip_files_path,
+                   ~ utils::unzip(.x, exdir = .y))
+    }
+    # Remover arquivos que foram baixados anteriormente, mas que nao estao no intervalo de datas especificado atualmente
+    if (newer == FALSE & is.null(specific_dates)) {
+      files_to_keep <- dir_files %>%
+        dplyr::filter(
+          publication_date >= publication_date_start &
+            publication_date <= publication_date_end
+        ) %>%
+        dplyr::pull(file_version_id)
+
+      files_to_remove <- setdiff(existing_versions, files_to_keep)
+
+      if (length(files_to_remove) > 0) {
+        purrr::walk(files_to_remove, ~ unlink(file.path(output_dir, .x), recursive = TRUE))
+      }
+    }
 
   }
 

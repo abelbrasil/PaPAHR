@@ -13,9 +13,9 @@
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
 #' @examples
-#' \dontrun{ dados = create_output(year_start=2021,
+#' \dontrun{ dados = create_output(year_start=2023,
 #'                   month_start=1,
-#'                   year_end=2021,
+#'                   year_end=2023,
 #'                   month_end=3,
 #'                   state_abbr="CE",
 #'                   county_id="230440",
@@ -29,6 +29,13 @@ create_output <- function(year_start, month_start,
   tempo_inicio <- system.time({
     state_abbr = toupper(trimws(state_abbr))
     get_counties(state_abbr, county_id)
+
+    download_sigtap_files(
+      year_start,
+      month_start,
+      year_end,
+      month_end,
+      newer = FALSE)
 
   outputSIA <- get_datasus(
     year_start,
