@@ -26,8 +26,6 @@ get_datasus <-
     `%>%` <- dplyr::`%>%`
     publication_date_start <- lubridate::ym(stringr::str_glue("{year_start}-{month_start}"))
     publication_date_end <- lubridate::ym(stringr::str_glue("{year_end}-{month_end}"))
-    cat(publication_date_start,'\n')
-    cat(publication_date_end,'\n')
 
     #$ Fase 2: Ler os arquivos SIGTAP
 
