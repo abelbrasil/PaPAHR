@@ -6,7 +6,6 @@
 #' @param raw_SIA Dados do DataSUS de Producao Ambulatorial (SIA)
 #' @param county_id Código(s) do Município de Atendimento
 #' @param procedure_details Sao os dados retornados pelo funcao `get_procedure_details`
-#' @param publication_date_start E a data de inicio para o download dos dados, formatada no padrao AAAA-MM-DD
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
 #' @return Um dataset outputSIA
@@ -17,7 +16,6 @@ preprocess_SIA <- function(cbo,
                            raw_SIA,
                            county_id,
                            procedure_details,
-                           publication_date_start,
                            health_establishment_id) {
   `%>%` <- dplyr::`%>%`
   outputSIA <- raw_SIA %>%

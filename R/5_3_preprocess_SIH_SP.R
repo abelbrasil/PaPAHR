@@ -6,7 +6,6 @@
 #' @param raw_SIH_SP Dados do DataSUS de Producao Hospitalar (SIH)
 #' @param county_id Código(s) do Município de Atendimento
 #' @param procedure_details Sao os dados retornados pelo funcao `get_procedure_details`
-#' @param publication_date_start E a data de inicio para o download dos dados, formatada no padrao AAAA-MM-DD
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
 #' @return Um dataset outputSIH_SP
@@ -17,7 +16,6 @@ preprocess_SIH_SP <- function(cbo,
                               raw_SIH_SP,
                               county_id,
                               procedure_details,
-                              publication_date_start,
                               health_establishment_id) {
   `%>%` <- dplyr::`%>%`
   outputSIH_SP <- raw_SIH_SP %>%

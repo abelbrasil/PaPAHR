@@ -10,7 +10,6 @@ preprocess_SIA(
   raw_SIA,
   county_id,
   procedure_details,
-  publication_date_start,
   health_establishment_id
 )
 }
@@ -24,8 +23,6 @@ preprocess_SIA(
 \item{county_id}{Código(s) do Município de Atendimento}
 
 \item{procedure_details}{Sao os dados retornados pelo funcao \code{get_procedure_details}}
-
-\item{publication_date_start}{E a data de inicio para o download dos dados, formatada no padrao AAAA-MM-DD}
 
 \item{health_establishment_id}{Código(s) do estabelecimento de saúde}
 }

@@ -3,7 +3,7 @@
 #'
 #' @description Funcao auxiliar para filtrar uma lista ou todos; Funcao para filtrar pelo CNES ou pelo municipio
 #'
-#' @param df um data frame que sera filtrado.
+#' @param df um DataFrame que sera filtrado.
 #' @param var_value String, Codigo(s) do estabelecimento de saude
 #' @param var_name String, nome da coluna no data frame que sera usada para a filtragem.
 #'

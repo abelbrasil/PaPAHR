@@ -7,7 +7,7 @@
 check_filter(df, var_value, var_name)
 }
 \arguments{
-\item{df}{um data frame que sera filtrado.}
+\item{df}{um DataFrame que sera filtrado.}
 
 \item{var_value}{String, Codigo(s) do estabelecimento de saude}
 

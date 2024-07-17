@@ -7,7 +7,7 @@
 #' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
 #' @param year_end Um numero de 4 digitos, indicando o ano de termino para o download dos dados.
 #' @param month_end Um numero de 2 digitos, indicando o mes de termino para o download dos dados.
-#' @param newer Logico. O padrao e TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.
+#' @param newer Logico. O padrao é TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.
 #' @param specific_dates Um vetor de strings contendo as datas específicas que se deseja baixar.
 #'
 #' @export

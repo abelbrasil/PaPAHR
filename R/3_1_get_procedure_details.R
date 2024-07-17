@@ -23,21 +23,24 @@ get_procedure_details <- function() {
                 "tb_rubrica.txt", "tb_rubrica_layout.txt","tb_ocupacao.txt", "tb_ocupacao_layout.txt",
                 "tb_cid.txt", "tb_cid_layout.txt")
 
-      for (subdir in subdirs) {
-        # Verifica a existencia de cada arquivo no subdiretorio
-        for (arquivo in arquivos) {
+      check_files <- function(subdir) {
+        purrr::walk(arquivos, function(arquivo) {
           caminho_arquivo <- file.path(subdir, arquivo)
           if (!file.exists(caminho_arquivo)) {
-            stop("O arquivo ", arquivo, " não foi encontrado em ", subdir,'\n')
+            stop("O arquivo ", arquivo, " não foi encontrado em ", subdir, '\n')
           }
-        }
+        })
       }
+
+      purrr::walk(subdirs, check_files)
+
     } else{
       stop("Os arquivos SIGTAP nao foram encontrados em ", output_dir,'\n')
     }
   } else {
     stop("Nao foi encontrada a pasta ", output_dir,'\n')
   }
+
 
   procedure_main_details <- get_detail("Procedimento")
   procedure_group <- get_detail("Grupo")
@@ -47,8 +50,7 @@ get_procedure_details <- function() {
   procedure_rubric <- get_detail("Rubrica")
 
   procedure_details <- procedure_main_details %>%
-    #A coluna CO_PROCEDIMENTO contem strings de 10 caracteres cada, como por exemplo: "0101010028".
-    #A string da coluna CO_PROCEDIMENTO e dividida em 3 partes menores, e cada parte se transforma em uma nova coluna.
+    #A coluna CO_PROCEDIMENTO é dividida em 3 novas colunas com partes da string original de 10 caracteres
     dplyr::mutate(CO_GRUPO = stringr::str_sub(CO_PROCEDIMENTO, 1, 2),
            CO_SUB_GRUPO = stringr::str_sub(CO_PROCEDIMENTO, 3, 4),
            CO_FORMA_ORGANIZACAO = stringr::str_sub(CO_PROCEDIMENTO, 5, 6)
