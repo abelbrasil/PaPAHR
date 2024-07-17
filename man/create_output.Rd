@@ -15,30 +15,31 @@ create_output(
 )
 }
 \arguments{
-\item{year_start}{Ano de início da realização do procedimento}
+\item{year_start}{Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.}
 
-\item{month_start}{Mês de início da realização do procedimento}
+\item{month_start}{Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.}
 
-\item{year_end}{Ano de término da realização do procedimento}
+\item{year_end}{Um numero de 4 digitos, indicando o ano de termino para o download dos dados.}
 
-\item{month_end}{Mês de término da realização do procedimento}
+\item{month_end}{Um numero de 2 digitos, indicando o mes de termino para o download dos dados.}
 
-\item{state_abbr}{Sigla da Unidade Federativa}
+\item{state_abbr}{String. Sigla da Unidade Federativa}
 
 \item{county_id}{Codigo(s) do Municipio de Atendimento}
 
-\item{health_establishment_id}{Código(s) do estabelecimento de saúde}
+\item{health_establishment_id}{COdigo(s) do estabelecimento de saude}
 }
 \description{
-\link{create_output} Processar arquivos dos sistemas de informação SIA e SIH (DATASUS) e combiná-los com informações do CNES e SIGTAP.
+Processar arquivos dos sistemas de informação SIA e SIH (DATASUS) e combiná-los com informações do CNES e SIGTAP.
 }
 \examples{
-\dontrun{ dados = create_output(year_start=2023,
-                  month_start=1,
-                  year_end=2023,
-                  month_end=3,
-                  state_abbr="CE",
-                  county_id="230440",
-                  health_establishment_id=c("2561492","2481286")
-                  )}
+  dados = create_output(
+    year_start = 2023,
+    month_start = 1,
+    year_end = 2023,
+    month_end = 3,
+    state_abbr = "CE",
+    county_id = "230440",
+    health_establishment_id = c("2561492", "2481286")
+  )
 }
