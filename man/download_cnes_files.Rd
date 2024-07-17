@@ -22,7 +22,7 @@ download_cnes_files(
 
 \item{month_end}{Um numero de 2 digitos, indicando o mes de termino para o download dos dados.}
 
-\item{newer}{Logico. O padrao e TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.}
+\item{newer}{Logico. O padrao é TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.}
 
 \item{state_abbr}{String. O padrao e "all". Sigla da Unidade Federativa}
 }

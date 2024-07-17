@@ -12,8 +12,8 @@ get_counties(state_abbr, county_id)
 \item{county_id}{Codigo(s) do Municipio de Atendimento}
 }
 \value{
-A funcao nao retorna valores diretamente, mas salva no ambiente global do R os DataFrames \code{counties} e \code{health_establishment}.
+Salva o DataFrame \code{counties} no environment global .
 }
 \description{
-A funcao \code{get_counties} cria dois DataFrames. O primeiro, \code{counties}, contem informacoes detalhadas sobre os municipios do Brasil. O segundo, \code{health_establishment}, e a uniao de todos os arquivos baixados pela funcao \code{download_cnes_files}.
+A funcao \code{get_counties} cria o DataFrame \code{counties}, que contem informacoes detalhadas sobre os municipios do Brasil.
 }
