@@ -35,7 +35,7 @@ create_output <-
       state_abbr = toupper(trimws(state_abbr))
 
       get_counties(state_abbr, county_id)
-      health_establishment = get_CNES()
+      get_CNES()
 
 
       download_sigtap_files(year_start,

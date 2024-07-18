@@ -46,7 +46,7 @@ preprocess_SIH_SP <- function(cbo,
                   NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID),
                   dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio),
                                 ~ dplyr::case_when(SP_UF_HOSP == SP_UF_PAC ~ .x,
-                                                   SP_UF_HOSP != SP_UF_PAC ~ "Outros",
+                                                   SP_UF_HOSP != SP_UF_PAC ~ NA,
                                                    SP_UF_HOSP == 99 | SP_UF_PAC == 99 ~ "Nao informado"
                                 ))
     ) %>%

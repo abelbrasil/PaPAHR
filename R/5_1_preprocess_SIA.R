@@ -47,7 +47,7 @@ preprocess_SIA <- function(cbo,
                   NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID),
                   dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio),
                                 ~ dplyr::case_when(PA_UFUNI == PA_UFPCN ~ .x,
-                                                   PA_UFUNI != PA_UFPCN ~ "Outros",
+                                                   PA_UFUNI != PA_UFPCN ~ NA,
                                                    PA_UFUNI == 99 | PA_UFPCN == 99 ~ "Nao informado"))) %>%
 
     dplyr::select(`Mes/Ano de Atendimento` = DT_CMP,

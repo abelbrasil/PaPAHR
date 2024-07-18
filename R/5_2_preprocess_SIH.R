@@ -41,7 +41,7 @@ preprocess_SIH <- function(cbo,
     dplyr::mutate(NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID),
                   dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio),
                                 ~ dplyr::case_when(UF_GESTOR == UF_RES ~ .x,
-                                                   UF_GESTOR != UF_RES ~ "Outros",
+                                                   UF_GESTOR != UF_RES ~ NA,
                                                    UF_GESTOR == 99 | UF_RES == 99 ~ "Nao informado"
                                 ))) %>%
 
