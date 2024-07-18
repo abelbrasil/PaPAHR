@@ -32,12 +32,10 @@ get_counties <- function(state_abbr, county_id){
     dplyr::select(-municipios)
 
   if (!any(counties$id_municipio == county_id & counties$sigla_estado == state_abbr)){
-    stop('O ID do município informado não pertence ao estado informado.')
+    stop('O ID do município fornecido não corresponde ao estado especificado.')
   }
   counties = counties %>% dplyr::select(-'sigla_estado')
 
-  # Atribuir os dataframes ao environment global
-  env <- globalenv()
-  dataframes <- list(counties = counties)
-  list2env(dataframes, envir = env)
+  # Atribuir o dataframe ao environment global
+  assign("counties", counties, envir = .GlobalEnv)
 }

@@ -79,9 +79,7 @@ download_sigtap_files <-
       dplyr::filter(!file_version_id %in% existing_versions)
 
     if (nrow(files_to_download) == 0) {
-      message(
-        "Os arquivos do SIGTAP não serão baixados novamente, pois já foram baixados em execuções anteriores"
-      )
+      #message("Os arquivos do SIGTAP não serão baixados novamente, pois já foram baixados em execuções anteriores")
     } else {
       file_version_id <- dplyr::pull(files_to_download, file_version_id)
 

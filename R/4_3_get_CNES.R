@@ -9,17 +9,14 @@
 get_CNES <- function(){
   `%>%` <- dplyr::`%>%`
 
-  caminho = here::here("data-raw/CNES/ST")
-  if (dir.exists(caminho)) {
-    dbc_files <- list.files(caminho, pattern = "\\.dbc$", full.names = TRUE)
+  files_path = here::here("data-raw/CNES/ST")
+  if (dir.exists(files_path)) {
+    dbc_files <- list.files(files_path, pattern = "\\.dbc$", full.names = TRUE)
     if (length(dbc_files) == 27){
-      cat("Os arquivos ST(Servicos Temporarios) do CNES nao serao baixados, pois ja estao no diretorio ./data-raw/CNES/ST.\n")
-    } else if(length(dbc_files)>=1) {
-      stop("A pasta ./data-raw/CNES/ST nao contem todos os 27 arquivos DBC do ST(Servicos Temporarios) do CNES")
+      #cat("Os arquivos ST(Servicos Temporarios) do CNES nao serao baixados, pois ja estao no diretorio ./data-raw/CNES/ST.\n")
     } else {
-      stop("A pasta ./data-raw/CNES/ST nao contem nenhum dos 27 arquivos DBC do ST(Servicos Temporarios) do CNES")
+      stop("A pasta ./data-raw/CNES/ST nao contem todos os 27 arquivos DBC do ST(Servicos Temporarios) do CNES.\n Exclua a pasta ./data-raw e execute o código novamente. ")
     }
-
   } else {
     #Realizando a primeira chamada da função download_cnes_files
     download_cnes_files(newer = TRUE)
@@ -30,16 +27,15 @@ get_CNES <- function(){
     list.files(full.names = TRUE) %>%
     purrr::map_dfr(read.dbc::read.dbc, as.is=TRUE)
 
-
-  caminho2 = here::here("data-raw/CNES/CADGER")
-  if (dir.exists(caminho2)) {
-    unlink(caminho2, recursive = TRUE)
+  files_path = here::here("data-raw/CNES/CADGER")
+  if (dir.exists(files_path)) {
+    unlink(files_path, recursive = TRUE)
   }
+
   output_dir <- here::here("data-raw", "CNES", "CADGER")
   dir.create(output_dir)
 
-  #Movendo o arquivo do CADGER para a pasta "data-raw/CNES/CADGER"
-
+  # Movendo o arquivo do CADGER para a pasta "data-raw/CNES/CADGER"
   caminho_pasta <- system.file("extdata", package = "DATASUS.SIA.SIH")
   caminho_completo <- file.path(caminho_pasta, "CADGER-BR.rds")
   dir_destino <- "./data-raw/CNES/CADGER"
@@ -49,9 +45,9 @@ get_CNES <- function(){
     novo_caminho_completo <- file.path(dir_destino, "CADGER-BR.rds")
     file.copy(caminho_completo, novo_caminho_completo)
   } else {
-    cat("O arquivo 'CADGER-BR.rds' nao foi encontrado no diretório:", caminho_pasta, "\n")}
+    cat("O arquivo 'CADGER-BR.rds' nao foi encontrado no diretório:", caminho_pasta, "\n")
+  }
 
-  #Le o arquivo rds do diretorio "data-raw/CNES/CADGER"
   health_establishment_details <-
     here::here("data-raw", "CNES", "CADGER") %>%
     list.files(full.names = TRUE) %>%
@@ -64,8 +60,6 @@ get_CNES <- function(){
     dplyr::mutate(NO_ESTABELECIMENTO = stringr::str_c(CNES, FANTASIA, sep="-")) %>%
     tibble::as_tibble()
 
-  # Atribuir os dataframes ao environment global
-  env <- globalenv()
-  dataframes <- list(health_establishment = health_establishment)
-  list2env(dataframes, envir = env)
+  # Atribuir o dataframe ao environment global
+  assign("health_establishment", health_establishment, envir = .GlobalEnv)
 }
