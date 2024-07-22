@@ -148,7 +148,7 @@ get_datasus_from_local <-
     output <-
       tempdir() %>%
       list.files(information_system, full.names=TRUE, recursive=TRUE) %>%
-      .[!stringr::str_detect(., "DATASUS\\.SIA\\.SIH_1\\.0\\.1\\.tar\\.gz")] %>%
+      purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
       purrr::map_dfr(readRDS)
 
     return(output)

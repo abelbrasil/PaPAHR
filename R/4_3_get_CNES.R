@@ -51,6 +51,7 @@ get_CNES <- function(){
   health_establishment_details <-
     here::here("data-raw", "CNES", "CADGER") %>%
     list.files(full.names = TRUE) %>%
+    purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
     purrr::map_dfr(readRDS)
 
   health_establishment <- health_establishment %>%
