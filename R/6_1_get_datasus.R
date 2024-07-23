@@ -71,9 +71,11 @@ get_datasus <-
     dir_files <-
       connection %>%
       readLines() %>%
-      stringr::str_sub(start=-12) %>%
+      stringr::str_sub(start=-13) %>%
       tibble::as_tibble_col(column_name = "file_name") %>%
       dplyr::mutate(
+        file_name = stringr::str_trim(file_name, side = "left"),
+        file_name = paste0(toupper(substr(file_name, 1, 4)), substr(file_name, 5, nchar(file_name))),
         state = stringr::str_sub(file_name, 3, 4),
         publication_date = lubridate::ym(stringr::str_sub(file_name, 5, 8),quiet = TRUE),
         file_type = stringr::str_sub(file_name, 1, 2)) %>%
