@@ -8,7 +8,7 @@
 #' @param state_abbr String. Sigla da Unidade Federativa
 #' @param county_id Codigo(s) do Municipio de Atendimento
 #' @param information_system String. Valores aceitos "SIA", "SIH-AIH", "SIH-SP"
-#' @param health_establishment_id COdigo(s) do estabelecimento de saude
+#' @param health_establishment_id Codigo(s) do estabelecimento de saude
 #'
 #' @return output
 #' @export
@@ -90,6 +90,20 @@ get_datasus <-
       warning("Algumas datas não puderam ser analisadas corretamente. No argumento: publication_date = lubridate::ym(stringr::str_sub(file_name, 5, 8)).")
     }
 
+    #Verifica se todos os meses foram baixados
+    # Crie um vetor com todos os meses no intervalo
+    meses <- seq.Date(from = lubridate::floor_date(publication_date_start, "month"),
+                      to = lubridate::ceiling_date(publication_date_end, "month") - lubridate::days(1),
+                      by = "month")
+
+    meses_baixados = unique(dir_files$publication_date)
+    faltando <- setdiff(as.character(meses), as.character(meses_baixados))
+
+    if (length(faltando) > 0) {
+      cat("Não foi possível baixar os dados de", data_type,"do estado de", state_abbr,"para os seguinte(s) mes(es):\n")
+      print(faltando)
+    }
+
     files_name <- dplyr::pull(dir_files, file_name)
     n_files <- files_name %>% length()
     chunk_size <- ceiling(0.2*n_files)
@@ -110,42 +124,49 @@ get_datasus <-
       dir.create(stringr::str_glue("{tmp_dir}\\{information_system}\\chunk_{chunk}"))
       download_files_url <- stringr::str_glue("{base_url}{files_chunks[[chunk]]}")
       output_files_path <- stringr::str_glue("{tmp_dir}\\{information_system}\\{names(files_chunks)[chunk]}\\{files_chunks[[chunk]]}")
+
       purrr::walk2(download_files_url, output_files_path, curl::curl_download)
 
       if (information_system == "SIA") {
-
         raw_SIA <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is=TRUE)
-        specific_dates <- unique(raw_SIA$PA_CMP)
 
-        # Definir diretorio de saida e obter arquivos existentes
-        output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep = "\\")
-        existing_files <- list.files(output_dir, full.names = TRUE)
-        existing_versions <- basename(existing_files)
+        # Verificando se pelo menos um health_establishment_id está presente no arquivo .dbc
+        if(any(raw_SIA$PA_CODUNI %in% health_establishment_id)){
 
-        # Determinar quais arquivos baixar
-        files_to_download <- specific_dates[!specific_dates %in% existing_versions]
+          #Verifica se falta baixar algum mês do SIGTAP para os dados PA.
+          specific_dates <- unique(raw_SIA$PA_CMP)
+          output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep = "\\")
+          existing_files <- list.files(output_dir, full.names = TRUE)
+          existing_versions <- basename(existing_files)
 
-        if (length(files_to_download) > 0){
-          download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
-          procedure_details <- get_procedure_details()
-          cbo <- get_detail("CBO")
-          cid <- get_detail("CID") %>%
-            dplyr::mutate(
-              #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
-              dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
-              NO_CID = stringr::str_c(CO_CID, NO_CID, sep="-")
+          # Determinar quais arquivos baixar
+          files_to_download <- specific_dates[!specific_dates %in% existing_versions]
+
+          if (length(files_to_download) > 0){
+            download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
+            procedure_details <- get_procedure_details()
+            cbo <- get_detail("CBO")
+            cid <- get_detail("CID") %>%
+              dplyr::mutate(
+                #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
+                dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
+                NO_CID = stringr::str_c(CO_CID, NO_CID, sep="-")
+              )
+          }
+
+          output <-
+            preprocess_SIA(
+              cbo,
+              cid,
+              raw_SIA,
+              county_id,
+              procedure_details,
+              health_establishment_id
             )
+        } else {
+          output = NULL
         }
 
-        output <-
-          preprocess_SIA(
-            cbo,
-            cid,
-            raw_SIA,
-            county_id,
-            procedure_details,
-            health_establishment_id
-          )
       }
 
       if (information_system == "SIH-AIH") {
@@ -182,10 +203,11 @@ get_datasus <-
         )
       }
 
-      output_path <- stringr::str_glue("{tmp_dir}\\{information_system}\\{names(files_chunks)[chunk]}\\output{information_system}_chunk_{chunk}.rds")
+      if (!is.null(output)){
+        output_path <- stringr::str_glue("{tmp_dir}\\{information_system}\\{names(files_chunks)[chunk]}\\output{information_system}_chunk_{chunk}.rds")
 
-      saveRDS(output,
-              file = output_path)
+        saveRDS(output, file = output_path)
+      }
     }
 
     output <-

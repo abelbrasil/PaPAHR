@@ -21,7 +21,7 @@ get_datasus_from_local(
 
 \item{information_system}{String. Valores aceitos "SIA", "SIH-AIH", "SIH-SP"}
 
-\item{health_establishment_id}{COdigo(s) do estabelecimento de saude}
+\item{health_establishment_id}{Codigo(s) do estabelecimento de saude}
 }
 \value{
 output
