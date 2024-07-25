@@ -13,10 +13,8 @@
 get_counties <- function(state_abbr, county_id, download = FALSE){
   `%>%` <- dplyr::`%>%`
 
-  #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
-  if (nchar(county_id) == 7) {
-    county_id <- substr(county_id, 1, nchar(county_id) - 1)
-  }
+
+
 
   if(download==TRUE){
     request_url <- "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
@@ -49,10 +47,6 @@ get_counties <- function(state_abbr, county_id, download = FALSE){
     } else {
       cat("O arquivo 'counties.rds' nao foi encontrado no diretório:", caminho_pasta, "\n")
     }
-  }
-
-  if (!any(counties$id_municipio == county_id & counties$sigla_estado == state_abbr)){
-    stop('O ID do município fornecido não corresponde ao estado especificado.')
   }
   counties = counties %>% dplyr::select(-'sigla_estado')
 

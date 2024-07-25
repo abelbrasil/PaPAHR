@@ -10,8 +10,8 @@ create_output(
   year_end,
   month_end,
   state_abbr,
-  county_id = "all",
-  health_establishment_id = "all"
+  county_id = NULL,
+  health_establishment_id = NULL
 )
 }
 \arguments{

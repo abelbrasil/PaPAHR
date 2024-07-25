@@ -28,13 +28,20 @@ create_output <-
            year_end,
            month_end,
            state_abbr,
-           county_id = "all",
-           health_establishment_id = "all") {
+           county_id = NULL,
+           health_establishment_id = NULL) {
 
     tempo_inicio <- system.time({
 
+      #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
+      if(!is.null(county_id)){
+        if (nchar(county_id) == 7) {
+          county_id <- substr(county_id, 1, nchar(county_id) - 1)
+        }
+      }
+
       state_abbr = toupper(trimws(state_abbr))
-      get_counties(state_abbr, county_id)
+      get_counties()
       get_CNES()
 
       download_sigtap_files(year_start,

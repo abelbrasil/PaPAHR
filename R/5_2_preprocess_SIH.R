@@ -32,6 +32,7 @@ preprocess_SIH <- function(cbo,
                   UF_RES = stringr::str_sub(MUNIC_RES, 1, 2),
                   UF_GESTOR = stringr::str_sub(UF_ZI, 1, 2)
     ) %>%
+    check_filter(var_value = county_id, var_name = "PA_UFMUN") %>%
     check_filter(var_value=health_establishment_id, var_name="CNES") %>%
     dplyr::left_join(counties, by=c("MUNIC_RES" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,

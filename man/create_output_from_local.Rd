@@ -7,8 +7,8 @@
 create_output_from_local(
   state_abbr,
   dbc_dir_path,
-  county_id = "all",
-  health_establishment_id = "all"
+  county_id = NULL,
+  health_establishment_id = NULL
 )
 }
 \arguments{
@@ -16,7 +16,7 @@ create_output_from_local(
 
 \item{dbc_dir_path}{Diretório que contêm os arquivos DBC}
 
-\item{county_id}{Codigo(s) do Municipio de Atendimento. O padrao é 'all'.}
+\item{county_id}{Codigo(s) do Municipio de Atendimento. O padrao é NULL.}
 
 \item{health_establishment_id}{Código(s) do estabelecimento de saúde}
 }

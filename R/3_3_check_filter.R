@@ -11,19 +11,18 @@
 #' @export
 check_filter <- function(df, var_value, var_name) {
 
-  if (length(var_value) == 1) {
-    if (var_value == "all") {
-
-      return(df)
-    } else {
+  if(!is.null(var_value)){
+    if (length(var_value) == 1) {
       filtered_df <- dplyr::filter(df, .data[[var_name]] == var_value)
 
       return(filtered_df)
-    }
-  } else {
-    filtered_df <- dplyr::filter(df, .data[[var_name]] %in% var_value)
+    } else {
+      filtered_df <- dplyr::filter(df, .data[[var_name]] %in% var_value)
 
-    return(filtered_df)
+      return(filtered_df)
+    }
+  }else{
+    return(df)
   }
 }
 

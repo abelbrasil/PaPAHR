@@ -5,7 +5,7 @@
 #'
 #' @param state_abbr String. Sigla da Unidade Federativa
 #' @param dbc_dir_path Diretório que contêm os arquivos DBC
-#' @param county_id Codigo(s) do Municipio de Atendimento. O padrao é 'all'.
+#' @param county_id Codigo(s) do Municipio de Atendimento. O padrao é NULL.
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
 #' @examples
@@ -22,13 +22,20 @@
 create_output_from_local <-
   function(state_abbr,
            dbc_dir_path,
-           county_id = "all",
-           health_establishment_id = "all") {
+           county_id = NULL,
+           health_establishment_id = NULL) {
 
     tempo_inicio <- system.time({
 
+      #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
+      if(!is.null(county_id)){
+        if (nchar(county_id) == 7) {
+          county_id <- substr(county_id, 1, nchar(county_id) - 1)
+        }
+      }
+
       state_abbr = toupper(trimws(state_abbr))
-      get_counties(state_abbr, county_id)
+      get_counties()
       get_CNES()
 
       download_sigtap_files() #obtem os dodos do SIGTAP do mes mais recente disponivel.
