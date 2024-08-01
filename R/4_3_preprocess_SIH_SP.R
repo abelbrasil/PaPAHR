@@ -21,7 +21,7 @@ preprocess_SIH_SP <- function(cbo,
   outputSIH_SP <- raw_SIH_SP %>%
     tibble::as_tibble() %>%
     dplyr::rename(CNES = SP_CNES) %>%
-    check_filter(var_value = county_id, var_name = "PA_UFMUN") %>%
+    check_filter(var_value = county_id, var_name = "SP_M_HOSP") %>%
     check_filter(var_value=health_establishment_id, var_name="CNES") %>%
     dplyr::mutate(ANOMES_MVM = stringr::str_c(SP_AA, SP_MM),
                   MESANO_MVM = stringr::str_c(SP_MM, SP_AA, sep="-"),

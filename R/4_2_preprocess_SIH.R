@@ -22,6 +22,8 @@ preprocess_SIH <- function(cbo,
   `%>%` <- dplyr::`%>%`
   outputSIH <- raw_SIH %>%
     tibble::as_tibble() %>%
+    check_filter(var_value = county_id, var_name = "MUNIC_MOV") %>%
+    check_filter(var_value=health_establishment_id, var_name="CNES") %>%
     dplyr::left_join(file_type, by="file_id") %>%
     dplyr::mutate(TIPO = ifelse(file_type == "RD", "Aprovada", "Rejeitada"),
                   DT_CMPT = lubridate::ym(stringr::str_c(ANO_CMPT, MES_CMPT, sep="-")),
@@ -32,8 +34,6 @@ preprocess_SIH <- function(cbo,
                   UF_RES = stringr::str_sub(MUNIC_RES, 1, 2),
                   UF_GESTOR = stringr::str_sub(UF_ZI, 1, 2)
     ) %>%
-    check_filter(var_value = county_id, var_name = "PA_UFMUN") %>%
-    check_filter(var_value=health_establishment_id, var_name="CNES") %>%
     dplyr::left_join(counties, by=c("MUNIC_RES" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,
                      c("PROC_REA" = "CO_PROCEDIMENTO", "ANOMES_CMPT" = "file_version_id")) %>%
