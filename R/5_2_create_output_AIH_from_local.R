@@ -135,7 +135,7 @@ create_output_AIH_from_local <-
 
       # Salva o data frame em arquivo CSV no diretorio atual
       write.csv2(outputSIH_AIH,
-                 "./data-raw/outputSIH_AIH",
+                 "./data-raw/outputSIH_AIH.csv",
                  na = "",
                  row.names = FALSE)
 

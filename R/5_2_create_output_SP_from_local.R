@@ -89,14 +89,27 @@ create_output_SP_from_local <-
         #Carrega os dados SP
         raw_SIH_SP <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is = TRUE)
 
-        #Filtra, Estrutura, une e cria novas colunas nos dados SP.
-        output <- preprocess_SIH_SP(cbo,
-                                    cid,
-                                    raw_SIH_SP,
-                                    county_id,
-                                    procedure_details,
-                                    health_establishment_id)
+        resultado <- !is.null(county_id) && (county_id %in% raw_SIH_SP$SP_M_HOSP)
 
+        #Filtra, Estrutura, une e cria novas colunas nos dados SP.
+        if(resultado){
+          output <- preprocess_SIH_SP(cbo,
+                                      cid,
+                                      raw_SIH_SP,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
+
+        }  else if (!is.null(health_establishment_id)){
+          output <- preprocess_SIH_SP(cbo,
+                                      cid,
+                                      raw_SIH_SP,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
+        } else {
+          output = NULL
+        }
 
         #O output de cada chunk é salvo em um arquivo .rds em uma pasta temporária do sistema.
         if (!is.null(output)) {
@@ -123,7 +136,7 @@ create_output_SP_from_local <-
 
       # Salva o data frame em arquivo CSV no diretorio atual
       write.csv2(outputSIH_SP,
-                 "./data-raw/outputSIH_SP",
+                 "./data-raw/outputSIH_SP.csv",
                  na = "",
                  row.names = FALSE)
 

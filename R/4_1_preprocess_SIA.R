@@ -21,7 +21,7 @@ preprocess_SIA <- function(cbo,
   outputSIA <- raw_SIA %>%
     tibble::as_tibble() %>%
     dplyr::rename(CNES = PA_CODUNI) %>%
-    #check_filter(var_value = county_id, var_name = "PA_UFMUN") %>%
+    check_filter(var_value = county_id, var_name = "PA_UFMUN") %>%
     check_filter(var_value = health_establishment_id, var_name = "CNES")%>%
     dplyr::left_join(counties, by=c("PA_MUNPCN" = "id_municipio")) %>%
     dplyr::left_join(procedure_details, c("PA_PROC_ID" = "CO_PROCEDIMENTO","PA_CMP" = "file_version_id")) %>%
