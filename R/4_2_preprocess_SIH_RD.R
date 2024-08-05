@@ -1,31 +1,28 @@
 
-#' preprocess_SIH: Estrutura os dados de Producao Hospitalar (SIH)
+#' preprocess_SIH_RD: Estrutura os dados de Producao Hospitalar (SIH)
 #'
 #' @param cbo E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CBO"
 #' @param cid E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CID".
-#' @param raw_SIH Dados do DataSUS de Producao Hospitalar (SIH)
-#' @param file_type tibble, nomes de arquivos .dbc, e algumas descricoes desses arquivos
+#' @param raw_SIH_RD Dados do DataSUS de Producao Hospitalar (SIH)
 #' @param county_id Codigo(s) do Municipio de Atendimento
 #' @param procedure_details Sao os dados retornados pelo funcao `get_procedure_details`
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
-#' @return Um dataset outputSIH
+#' @return Um dataset outputSIH_RD
 #' @export
 #'
-preprocess_SIH <- function(cbo,
+preprocess_SIH_RD <- function(cbo,
                            cid,
-                           raw_SIH,
-                           file_type,
+                           raw_SIH_RD,
                            county_id,
                            procedure_details,
                            health_establishment_id) {
   `%>%` <- dplyr::`%>%`
-  outputSIH <- raw_SIH %>%
+  outputSIH_RD <- raw_SIH_RD %>%
     tibble::as_tibble() %>%
     check_filter(var_value = county_id, var_name = "MUNIC_MOV") %>%
     check_filter(var_value=health_establishment_id, var_name="CNES") %>%
-    dplyr::left_join(file_type, by="file_id") %>%
-    dplyr::mutate(TIPO = ifelse(file_type == "RD", "Aprovada", "Rejeitada"),
+    dplyr::mutate(TIPO = "Aprovada",
                   DT_CMPT = lubridate::ym(stringr::str_c(ANO_CMPT, MES_CMPT, sep="-")),
                   NM_MES_CMPT = stringr::str_to_title(lubridate::month(DT_CMPT, label=TRUE, abbr=FALSE)),
                   NM_MES_CMPT = stringr::str_glue("{sprintf('%02d', lubridate::month(DT_CMPT))} - {NM_MES_CMPT}"),
@@ -69,5 +66,5 @@ preprocess_SIH <- function(cbo,
                   `Microrregiao IBGE de Resid.` = nome_microrregiao,
                   `Estado de Residencia` = nome_estado)
 
-  return(outputSIH)
+  return(outputSIH_RD)
 }

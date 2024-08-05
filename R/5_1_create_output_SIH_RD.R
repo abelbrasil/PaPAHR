@@ -1,5 +1,5 @@
 
-#' create a SUS-SIA-PA (Professional Services) database
+#' create a SUS-SIH-RD database
 #'
 #' @description Processar arquivos do sistema de informação SIA (DATASUS) e combina com informações do CNES e SIGTAP.
 #'
@@ -11,10 +11,10 @@
 #' @param county_id Código(s) do Município de Atendimento: o padrão é nulo. Se o parâmetro health_establishment_id for informado, o parâmetro county_id não é obrigatório.
 #' @param health_establishment_id Codigo(s) do estabelecimento de saude
 #'
-#' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH(RD e RJ), filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
+#' @return Um DataFrame estruturado contendo dados do SUS-SIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
 #' @examples
-#'   dados = create_output_AIH(
+#'   dados = create_output_SIH_RD(
 #'     year_start = 2023,
 #'     month_start = 1,
 #'     year_end = 2023,
@@ -25,7 +25,7 @@
 #'   )
 #' @export
 #'
-create_output_AIH <-
+create_output_SIH_RD <-
   function(year_start,
            month_start,
            year_end,
@@ -35,12 +35,10 @@ create_output_AIH <-
            health_establishment_id = NULL) {
     tempo_inicio <- system.time({
 
-      # AIH =
       # RD = Reduzixa
-      # RJ = AIH Rejeitada
 
       `%>%` <- dplyr::`%>%`
-      information_system = 'SIH-AIH'
+      information_system = 'SIH-RD'
 
       #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
       if (!is.null(county_id)) {
@@ -80,7 +78,7 @@ create_output_AIH <-
       tmp_dir <- tempdir()
       information_system_dir <- stringr::str_glue("{tmp_dir}\\{information_system}")
 
-      #Verificar se a pasta 'tempdir()/SIH' já existe, se sim, apaga os arquivos que estão dentro dela
+      #Verificar se a pasta 'tempdir()/SIH-RD' já existe, se sim, apaga os arquivos que estão dentro dela
       if (!dir.exists(information_system_dir)) {
         dir.create(information_system_dir)
       } else{
@@ -88,20 +86,20 @@ create_output_AIH <-
         unlink(arquivos, recursive = TRUE)
       }
 
-      #Lista os nomes dos arquivos RD e RJ que serão baixados de cada mês
-      dir_files = list_SIA_SIH_files(information_system, data_type = c("RD", "RJ"),
+      #Lista os nomes dos arquivos RD que serão baixados de cada mês
+      dir_files = list_SIA_SIH_files(information_system, data_type = "RD",
                                      state_abbr,
                                      publication_date_start,
                                      publication_date_end)
 
-      #Verifica se dir_files contém o nome de pelo menos um arquivo RD e RJ para cada mês.
+      #Verifica se dir_files contém o nome de pelo menos um arquivo RD para cada mês.
       check_file_list(dir_files,
-                      c("RD", "RJ"),
+                      "RD",
                       state_abbr,
                       publication_date_start,
                       publication_date_end)
 
-      #Separa os arquivos RD e RJ em grupos, caso haja vários arquivos para serem baixados.
+      #Separa os arquivos RD em grupos, caso haja vários arquivos para serem baixados.
       files_chunks = chunk(dir_files$file_name)
       n_chunks = length(files_chunks)
 
@@ -114,29 +112,42 @@ create_output_AIH <-
         download_files_url <- stringr::str_glue("{base_url}{files_chunks[[n]]}")
         output_files_path <- stringr::str_glue("{tmp_dir}\\{information_system}\\{names(files_chunks)[n]}\\{files_chunks[[n]]}")
 
-        #Download dos dados RD e RJ
+        #Download dos dados RD
         purrr::walk2(download_files_url, output_files_path, curl::curl_download)
 
-        #Um DF com o nome e tipo dos arquivos RD e RJ
-        file_type <- output_files_path %>%
-          stringr::str_sub(start=-12) %>%
-          tibble::as_tibble_col(column_name = "file_name") %>%
-          dplyr::mutate(file_type = stringr::str_sub(file_name, 1, 2),
-                        file_id = as.character(dplyr::row_number()))
-        dplyr::select(file_type, file_id)
+        #Carrega os dados RD
+        raw_SIH_RD <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is=TRUE, .id="file_id")
 
-        #Carrega os dados RD e RJ
-        raw_SIH <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is=TRUE, .id="file_id")
+        #Retorna TRUE se o DF raw_SIH_RD contiver valores correspondente ao
+        # município especificado (county_id)
+        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIH_RD$MUNIC_MOV)
 
-        #Filtra, Estrutura, une e cria novas colunas nos dados RD e RJ.
-        output <- preprocess_SIH(cbo,
-                                 cid,
-                                 raw_SIH,
-                                 file_type,
-                                 county_id,
-                                 procedure_details,
-                                 health_establishment_id)
+        #Retorna TRUE se o DF raw_SIH_RD contiver valores correspondente ao
+        # estabelecimento especificado (health_establishment_id)
+        establishment_TRUE <- !is.null(health_establishment_id) &&
+          (health_establishment_id %in% raw_SIH_RD$CNES)
 
+        #Filtra, Estrutura, une e cria novas colunas nos dados SP.
+        if(county_TRUE){
+          #Filtra todos os estabelecimentos do municipio county_id
+          output <- preprocess_SIH_RD(cbo,
+                                      cid,
+                                      raw_SIH_RD,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
+
+        }  else if (establishment_TRUE){
+          #Filtra só os estabelecimentos health_establishment_id
+          output <- preprocess_SIH_RD(cbo,
+                                      cid,
+                                      raw_SIH_RD,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
+        } else {
+          output = NULL
+        }
 
         #O output de cada chunk é salvo em um arquivo .rds em uma pasta temporária do sistema.
         if (!is.null(output)) {
@@ -149,7 +160,7 @@ create_output_AIH <-
       }
 
       #Une os arquivos output.rds de cada chunk em um único arquivo.
-      outputSIH_AIH <-
+      outputSIH_RD <-
         tempdir() %>%
         list.files(information_system,
                    full.names = TRUE,
@@ -162,13 +173,16 @@ create_output_AIH <-
       rm("health_establishment", envir = .GlobalEnv)
 
       # Salva o data frame em arquivo CSV no diretorio atual
-      write.csv2(outputSIH_AIH,
-                 "./data-raw/outputSIH_AIH.csv",
-                 na = "",
-                 row.names = FALSE)
+      if (nrow(outputSIH_RD) == 0 | ncol(outputSIH_RD) == 0){
+        cat("As bases de dados SIH/RD não contêm valores para o município ou estabelecimentos informados.\n")
+      } else {
+        write.csv2(outputSIH_RD,
+                   "./data-raw/outputSIH_RD.csv",
+                   na = "",
+                   row.names = FALSE)
+      }
 
     })
     cat("Tempo de execução:", tempo_inicio[3] / 60, "minutos\n")
-    return(outputSIH_AIH)
-
+    return(outputSIH_RD)
   }

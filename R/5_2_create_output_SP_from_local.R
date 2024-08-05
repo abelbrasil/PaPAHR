@@ -12,7 +12,7 @@
 #'
 #' @examples
 #'   \dontrun{
-#'     create_output_SP_from_local(
+#'     dados = create_output_SP_from_local(
 #'       state_abbr = "CE",
 #'       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
 #'       county_id = "230440",
@@ -89,10 +89,18 @@ create_output_SP_from_local <-
         #Carrega os dados SP
         raw_SIH_SP <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is = TRUE)
 
-        resultado <- !is.null(county_id) && (county_id %in% raw_SIH_SP$SP_M_HOSP)
+        #Retorna TRUE se o DF raw_SIH_SP contiver valores correspondente ao
+        # município especificado (county_id)
+        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIH_SP$SP_M_HOSP)
+
+        #Retorna TRUE se o DF raw_SIH_SP contiver valores correspondente ao
+        # estabelecimento especificado (health_establishment_id)
+        establishment_TRUE <- !is.null(health_establishment_id) &&
+          (health_establishment_id %in% raw_SIH_SP$SP_CNES)
 
         #Filtra, Estrutura, une e cria novas colunas nos dados SP.
-        if(resultado){
+        if(county_TRUE){
+          #Filtra todos os estabelecimentos do municipio county_id
           output <- preprocess_SIH_SP(cbo,
                                       cid,
                                       raw_SIH_SP,
@@ -100,7 +108,8 @@ create_output_SP_from_local <-
                                       procedure_details,
                                       health_establishment_id)
 
-        }  else if (!is.null(health_establishment_id)){
+        }  else if (establishment_TRUE){
+          #Filtra só os estabelecimentos health_establishment_id
           output <- preprocess_SIH_SP(cbo,
                                       cid,
                                       raw_SIH_SP,
@@ -134,12 +143,15 @@ create_output_SP_from_local <-
       rm("counties", envir = .GlobalEnv)
       rm("health_establishment", envir = .GlobalEnv)
 
-      # Salva o data frame em arquivo CSV no diretorio atual
-      write.csv2(outputSIH_SP,
-                 "./data-raw/outputSIH_SP.csv",
-                 na = "",
-                 row.names = FALSE)
-
+      # Salva o data frame em um arquivo CSV no diretorio atual
+      if (nrow(outputSIH_SP) == 0 | ncol(outputSIH_SP) == 0){
+        cat("As bases de dados SIH/SP não contêm valores para o município ou estabelecimentos informados.\n")
+      } else {
+        write.csv2(outputSIH_SP,
+                   "./data-raw/outputSIH_SP.csv",
+                   na = "",
+                   row.names = FALSE)
+      }
 
     })
     cat("Tempo de execução:", tempo_inicio[3] / 60, "minutos\n")

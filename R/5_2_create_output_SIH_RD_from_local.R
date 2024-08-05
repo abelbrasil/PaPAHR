@@ -1,18 +1,18 @@
 
-#' Create SUS-SIA-PA database from local DBC files
+#' Create SUS-SIH-RD database from local DBC files
 #'
-#' @description Processar arquivos do sistema de informação SIA (DATASUS) que já estão baixados localmente e combiná-los com informações do CNES e SIGTAP.
+#' @description Processar arquivos do sistema de informação SIH (DATASUS) que já estão baixados localmente e combiná-los com informações do CNES e SIGTAP.
 #'
 #' @param state_abbr String. Sigla da Unidade Federativa
 #' @param dbc_dir_path Diretório que contêm os arquivos DBC
 #' @param county_id Codigo(s) do Municipio de Atendimento. O padrao é NULL.
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
-#' @return Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
+#' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
 #' @examples
 #'   \dontrun{
-#'     dados = create_output_PA_from_local(
+#'     dados = create_output_SIH_RD_from_local(
 #'       state_abbr = "CE",
 #'       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
 #'       county_id = "230440",
@@ -21,17 +21,18 @@
 #'   }
 #'
 #' @export
-create_output_PA_from_local <-
+create_output_SIH_RD_from_local <-
   function(state_abbr,
            dbc_dir_path,
            county_id = NULL,
            health_establishment_id = NULL) {
 
     tempo_inicio <- system.time({
-      # PA = Produção Ambulatorial
+      # AIH =
+      # RD = Reduzixa
 
       `%>%` <- dplyr::`%>%`
-      information_system = 'SIA'
+      information_system = 'SIH-RD'
 
       #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
       if (!is.null(county_id)) {
@@ -64,7 +65,7 @@ create_output_PA_from_local <-
       tmp_dir <- tempdir()
       information_system_dir <- stringr::str_glue("{tmp_dir}\\{information_system}")
 
-      #Verificar se a pasta 'tempdir()/SIA' já existe, se sim, apaga os arquivos que estão dentro dela
+      #Verificar se a pasta 'tempdir()/SIH-RD' já existe, se sim, apaga os arquivos que estão dentro dela
       if (!dir.exists(information_system_dir)) {
         dir.create(information_system_dir)
       } else{
@@ -75,10 +76,10 @@ create_output_PA_from_local <-
       #Retorna um vetor com os nomes de todos os arquivos .dbc presentes no diretório dbc_dir_path
       dbf_files <- list.files(dbc_dir_path, pattern = "\\.dbc$", full.names = FALSE)
 
-      #Filtra só os arquivos PA
-      files_name <- dbf_files[grep(paste0("PA",state_abbr), dbf_files)]
+      #Filtra só os arquivos RD
+      files_name <- dbf_files[grep(paste0("RD",state_abbr), dbf_files)]
 
-      #Separa os arquivos PA em grupos, caso haja vários arquivos para serem baixados.
+      #Separa os arquivos RD em grupos, caso haja vários arquivos para serem baixados.
       files_chunks = chunk(files_name)
       n_chunks = length(files_chunks)
 
@@ -86,61 +87,39 @@ create_output_PA_from_local <-
         output_files_path <- stringr::str_glue("{dbc_dir_path}\\{files_chunks[[n]]}")
         dir.create(stringr::str_glue("{tmp_dir}\\{information_system}\\chunk_{n}"))
 
-        #Carrega os dados PA
-        raw_SIA <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is = TRUE)
+        #Carrega os dados RD
+        raw_SIH_RD <- purrr::map_dfr(output_files_path, read.dbc::read.dbc, as.is=TRUE, .id="file_id")
 
-        #Verifica se falta baixar algum mês do SIGTAP para os dados PA.
-        specific_dates <- unique(raw_SIA$PA_CMP)
-        output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep = "\\")
-        existing_files <- list.files(output_dir, full.names = TRUE)
-        existing_versions <- basename(existing_files)
-
-        #Determinar quais arquivos baixar
-        files_to_download <- specific_dates[!specific_dates %in% existing_versions]
-        if (length(files_to_download) > 0) {
-          download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
-
-          procedure_details <- get_procedure_details()
-          cbo <- get_detail("CBO")
-          cid <- get_detail("CID") %>%
-            dplyr::mutate(
-              #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
-              dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
-              NO_CID = stringr::str_c(CO_CID, NO_CID, sep = "-")
-            )
-        }
-
-        #Retorna TRUE se o DF raw_SIA contiver valores correspondente ao
+        #Retorna TRUE se o DF raw_SIH_RD contiver valores correspondente ao
         # município especificado (county_id)
-        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIA$PA_UFMUN)
+        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIH_RD$MUNIC_MOV)
 
-        #Retorna TRUE se o DF raw_SIA contiver valores correspondente ao
+        #Retorna TRUE se o DF raw_SIH_RD contiver valores correspondente ao
         # estabelecimento especificado (health_establishment_id)
         establishment_TRUE <- !is.null(health_establishment_id) &&
-          (health_establishment_id %in% raw_SIA$PA_CODUNI)
+          (health_establishment_id %in% raw_SIH_RD$CNES)
 
         #Filtra, Estrutura, une e cria novas colunas nos dados SP.
         if(county_TRUE){
           #Filtra todos os estabelecimentos do municipio county_id
-          output <- preprocess_SIA(cbo,
-                                   cid,
-                                   raw_SIA,
-                                   county_id,
-                                   procedure_details,
-                                   health_establishment_id)
+          output <- preprocess_SIH_RD(cbo,
+                                      cid,
+                                      raw_SIH_RD,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
-          output <- preprocess_SIA(cbo,
-                                   cid,
-                                   raw_SIA,
-                                   county_id,
-                                   procedure_details,
-                                   health_establishment_id)
+          output <- preprocess_SIH_RD(cbo,
+                                      cid,
+                                      raw_SIH_RD,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
         } else {
           output = NULL
         }
-
 
         #O output de cada chunk é salvo em um arquivo .rds em uma pasta temporária do sistema.
         if (!is.null(output)) {
@@ -153,7 +132,7 @@ create_output_PA_from_local <-
       }
 
       #Une os arquivos output.rds de cada chunk em um único arquivo.
-      outputSIA <-
+      outputSIH_RD <-
         tempdir() %>%
         list.files(information_system,
                    full.names = TRUE,
@@ -165,16 +144,16 @@ create_output_PA_from_local <-
       rm("counties", envir = .GlobalEnv)
       rm("health_establishment", envir = .GlobalEnv)
 
-      # Salva o data frame em um arquivo CSV no diretorio atual
-      if (nrow(outputSIA) == 0 | ncol(outputSIA) == 0){
-        cat("As bases de dados SIH/SP não contêm valores para o município ou estabelecimentos informados.\n")
+      # Salva o data frame em arquivo CSV no diretorio atual
+      if (nrow(outputSIH_RD) == 0 | ncol(outputSIH_RD) == 0){
+        cat("As bases de dados SIH/RD não contêm valores para o município ou estabelecimentos informados.\n")
       } else {
-        write.csv2(outputSIA,
-                   "./data-raw/outputSIA.csv",
+        write.csv2(outputSIH_RD,
+                   "./data-raw/outputSIH_RD.csv",
                    na = "",
                    row.names = FALSE)
       }
     })
     cat("Tempo de execução:", tempo_inicio[3] / 60, "minutos\n")
-    return(outputSIA)
+    return(outputSIH_RD)
   }

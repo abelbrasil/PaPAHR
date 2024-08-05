@@ -158,7 +158,37 @@ create_output_PA <-
                                    procedure_details,
                                    health_establishment_id)
         }
-        #Filtra, Estrutura, une e cria novas colunas nos dados PA.
+
+        #Retorna TRUE se o DF raw_SIA contiver valores correspondente ao
+        # município especificado (county_id)
+        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIA$PA_UFMUN)
+
+        #Retorna TRUE se o DF raw_SIA contiver valores correspondente ao
+        # estabelecimento especificado (health_establishment_id)
+        establishment_TRUE <- !is.null(health_establishment_id) &&
+          (health_establishment_id %in% raw_SIA$PA_CODUNI)
+
+        #Filtra, Estrutura, une e cria novas colunas nos dados SP.
+        if(county_TRUE){
+          #Filtra todos os estabelecimentos do municipio county_id
+          output <- preprocess_SIA(cbo,
+                                   cid,
+                                   raw_SIA,
+                                   county_id,
+                                   procedure_details,
+                                   health_establishment_id)
+
+        }  else if (establishment_TRUE){
+          #Filtra só os estabelecimentos health_establishment_id
+          output <- preprocess_SIA(cbo,
+                                   cid,
+                                   raw_SIA,
+                                   county_id,
+                                   procedure_details,
+                                   health_establishment_id)
+        } else {
+          output = NULL
+        }
 
 
         #O output de cada chunk é salvo em um arquivo .rds em uma pasta temporária do sistema.
@@ -184,12 +214,16 @@ create_output_PA <-
       rm("counties", envir = .GlobalEnv)
       rm("health_establishment", envir = .GlobalEnv)
 
-      # Salva o data frame em arquivo CSV no diretorio atual
-      write.csv2(outputSIA,
-                 "./data-raw/outputSIA.csv",
-                 na = "",
-                 row.names = FALSE)
 
+      # Salva o data frame em um arquivo CSV no diretorio atual
+      if (nrow(outputSIA) == 0 | ncol(outputSIA) == 0){
+        cat("As bases de dados SIH/SP não contêm valores para o município ou estabelecimentos informados.\n")
+      } else {
+        write.csv2(outputSIA,
+                   "./data-raw/outputSIA.csv",
+                   na = "",
+                   row.names = FALSE)
+      }
     })
     cat("Tempo de execução:", tempo_inicio[3] / 60, "minutos\n")
     return(outputSIA)
