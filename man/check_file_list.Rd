@@ -15,7 +15,7 @@ check_file_list(
 \arguments{
 \item{dir_files}{Um DataFrame contendo os nomes dos arquivos e a data correspondente a cada arquivo}
 
-\item{data_type}{String. Valores aceitos "PA", "RD", "RJ", "SP", ou um vetor \code{c("RD", "RJ")}}
+\item{data_type}{String. Valores aceitos "PA", "RD", "RJ", "SP"}
 
 \item{state_abbr}{String. Sigla da Unidade Federativa}
 

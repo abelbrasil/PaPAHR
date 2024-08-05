@@ -15,7 +15,7 @@ list_SIA_SIH_files(
 \arguments{
 \item{data_source}{String. Valores aceitos "SIA", "SIH"}
 
-\item{data_type}{String. Valores aceitos "PA", "RD", "RJ", "SP", ou um vetor \code{c("RD", "RJ")}}
+\item{data_type}{String. Valores aceitos "PA", "RD", "RJ", "SP"}
 
 \item{state_abbr}{String. Sigla da Unidade Federativa}
 

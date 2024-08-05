@@ -28,7 +28,7 @@ Processar arquivos do sistema de informação SIA (DATASUS) que já estão baixa
 }
 \examples{
   \dontrun{
-    create_output_PA_from_local(
+    dados = create_output_PA_from_local(
       state_abbr = "CE",
       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
       county_id = "230440",
