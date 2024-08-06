@@ -2,7 +2,7 @@
 % Please edit documentation in R/5_1_create_output_PA.R
 \name{create_output_PA}
 \alias{create_output_PA}
-\title{create a SUS-SIA-PA (Outpatient Production) database}
+\title{Create a database for the Ambulatory Information System (SIA/SUS)}
 \usage{
 create_output_PA(
   year_start,
@@ -33,7 +33,7 @@ create_output_PA(
 Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 }
 \description{
-Processar arquivos do sistema de informação SIA (DATASUS) e combina com informações do CNES e SIGTAP.
+Processar arquivos do Sistema de Informação Ambulatorial (SIA -  Produção Ambulatorial) do DATASUS e integrá-los com dados do CNES e SIGTAP.
 }
 \examples{
   dados = create_output_PA(

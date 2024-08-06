@@ -1,7 +1,7 @@
 
-#' Create SUS-SIA-PA database from local DBC files
+#' Create a database for the Ambulatory Information System (SIA/SUS), local data.
 #'
-#' @description Processar arquivos do sistema de informação SIA (DATASUS) que já estão baixados localmente e combiná-los com informações do CNES e SIGTAP.
+#' @description Processar arquivos do Sistema de Informação Ambulatorial (SIA -  Produção Ambulatorial) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 #'
 #' @param state_abbr String. Sigla da Unidade Federativa
 #' @param dbc_dir_path Diretório que contêm os arquivos DBC

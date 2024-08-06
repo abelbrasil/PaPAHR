@@ -2,7 +2,7 @@
 % Please edit documentation in R/5_2_create_output_PA_from_local.R
 \name{create_output_PA_from_local}
 \alias{create_output_PA_from_local}
-\title{Create SUS-SIA-PA database from local DBC files}
+\title{Create a database for the Ambulatory Information System (SIA/SUS), local data.}
 \usage{
 create_output_PA_from_local(
   state_abbr,
@@ -24,7 +24,7 @@ create_output_PA_from_local(
 Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 }
 \description{
-Processar arquivos do sistema de informação SIA (DATASUS) que já estão baixados localmente e combiná-los com informações do CNES e SIGTAP.
+Processar arquivos do Sistema de Informação Ambulatorial (SIA -  Produção Ambulatorial) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 }
 \examples{
   \dontrun{

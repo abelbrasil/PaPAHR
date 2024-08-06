@@ -79,6 +79,8 @@ preprocess_SIA <- function(cbo,
                   `Municipio Residencia` = nome_municipio, #counties
                   `Micro IBGE Residencia` = nome_microrregiao, #counties
                   `Meso IBGE Residencia` = nome_mesorregiao, #counties
+                  `Cod do Municipio do Estabelecimento` = PA_MUNPCN,
+                  `Municipio do Estabelecimento` = nome_municipio,
                   `Estado Residencia` = nome_estado)  #counties
 
   return(outputSIA)

@@ -1,7 +1,7 @@
 
-#' create a SUS-SIA-PA (Outpatient Production) database
+#' Create a database for the Ambulatory Information System (SIA/SUS)
 #'
-#' @description Processar arquivos do sistema de informação SIA (DATASUS) e combina com informações do CNES e SIGTAP.
+#' @description Processar arquivos do Sistema de Informação Ambulatorial (SIA -  Produção Ambulatorial) do DATASUS e integrá-los com dados do CNES e SIGTAP.
 #'
 #' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
 #' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.

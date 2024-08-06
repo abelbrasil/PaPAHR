@@ -64,6 +64,8 @@ preprocess_SIH_RD <- function(cbo,
                   `Municipio de Residencia` = nome_municipio,
                   `Mesorregiao IBGE de Resid.` = nome_mesorregiao,
                   `Microrregiao IBGE de Resid.` = nome_microrregiao,
+                  `Cod do Municipio do Estabelecimento` = MUNIC_RES,
+                  `Municipio do Estabelecimento` = nome_municipio,
                   `Estado de Residencia` = nome_estado)
 
   return(outputSIH_RD)

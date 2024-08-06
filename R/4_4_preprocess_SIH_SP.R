@@ -77,9 +77,11 @@ preprocess_SIH_SP <- function(cbo,
                   `Ocupacao` = NO_OCUPACAO,
                   `Nome da Mobirdade (CID)` = NO_CID,
                   Estabelecimento = NO_ESTABELECIMENTO,
+                  `Cod do Municipio do Estabelecimento` = SP_M_PAC,
                   `Municipio` = nome_municipio,
                   `Microrregiao` = nome_microrregiao,
                   `Mesorregiao` = nome_mesorregiao,
+
                   Estado = nome_estado)
 
   return(outputSIH_SP)
