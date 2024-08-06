@@ -2,7 +2,7 @@
 % Please edit documentation in R/5_1_create_output_PA.R
 \name{create_output_PA}
 \alias{create_output_PA}
-\title{Create a database for the Ambulatory Information System (SIA/SUS)}
+\title{Create a database for the Ambulatory Information System (SIA/SUS) - PA}
 \usage{
 create_output_PA(
   year_start,
@@ -25,24 +25,27 @@ create_output_PA(
 
 \item{state_abbr}{String. Sigla da Unidade Federativa}
 
-\item{county_id}{Código(s) do Município de Atendimento: o padrão é nulo. Se o parâmetro health_establishment_id for informado, o parâmetro county_id não é obrigatório.}
+\item{county_id}{Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.}
 
-\item{health_establishment_id}{Codigo(s) do estabelecimento de saude}
+\item{health_establishment_id}{Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
 }
 \value{
 Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 }
 \description{
-Processar arquivos do Sistema de Informação Ambulatorial (SIA -  Produção Ambulatorial) do DATASUS e integrá-los com dados do CNES e SIGTAP.
+Processar arquivos do Sistema de Informação Ambulatorial (SIA) da  Produção Ambulatorial (PA) do DATASUS e integrá-los com dados do CNES e SIGTAP.
 }
 \examples{
-  dados = create_output_PA(
-    year_start = 2023,
-    month_start = 1,
-    year_end = 2023,
-    month_end = 3,
-    state_abbr = "CE",
-    county_id = "230440",
-    health_establishment_id = c("2561492", "2481286")
-  )
+  \dontrun{
+    dados = create_output_PA(
+      year_start = 2023,
+      month_start = 1,
+      year_end = 2023,
+      month_end = 3,
+      state_abbr = "CE",
+      county_id = "230440",
+      health_establishment_id = c("2561492", "2481286")
+    )
+  }
+
 }

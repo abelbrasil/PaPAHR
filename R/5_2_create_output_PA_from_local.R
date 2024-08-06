@@ -1,12 +1,12 @@
 
-#' Create a database for the Ambulatory Information System (SIA/SUS), local data.
+#' Create a database for the Ambulatory Information System (SIA/SUS) - PA, local data.
 #'
-#' @description Processar arquivos do Sistema de Informação Ambulatorial (SIA -  Produção Ambulatorial) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
+#' @description Processar arquivos do Sistema de Informação Ambulatorial (SIA) da  Produção Ambulatorial (PA) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 #'
 #' @param state_abbr String. Sigla da Unidade Federativa
 #' @param dbc_dir_path Diretório que contêm os arquivos DBC
-#' @param county_id Codigo(s) do Municipio de Atendimento. O padrao é NULL.
-#' @param health_establishment_id Código(s) do estabelecimento de saúde
+#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
@@ -15,7 +15,7 @@
 #'     dados = create_output_PA_from_local(
 #'       state_abbr = "CE",
 #'       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
-#'       county_id = "230440",
+#'       #county_id = "230440",
 #'       health_establishment_id = c("2561492", "2481286")
 #'     )
 #'   }
@@ -127,14 +127,14 @@ create_output_PA_from_local <-
                                    raw_SIA,
                                    county_id,
                                    procedure_details,
-                                   health_establishment_id)
+                                   health_establishment_id = NULL)
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
           output <- preprocess_SIA(cbo,
                                    cid,
                                    raw_SIA,
-                                   county_id,
+                                   county_id = NULL,
                                    procedure_details,
                                    health_establishment_id)
         } else {
@@ -167,7 +167,7 @@ create_output_PA_from_local <-
 
       # Salva o data frame em um arquivo CSV no diretorio atual
       if (nrow(outputSIA) == 0 | ncol(outputSIA) == 0){
-        cat("As bases de dados SIH/SP não contêm valores para o município ou estabelecimentos informados.\n")
+        cat("As bases de dados SIA/PA não contêm valores para o município ou estabelecimentos informados.\n")
       } else {
         write.csv2(outputSIA,
                    "./data-raw/outputSIA.csv",

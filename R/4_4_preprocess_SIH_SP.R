@@ -18,6 +18,10 @@ preprocess_SIH_SP <- function(cbo,
                               procedure_details,
                               health_establishment_id) {
   `%>%` <- dplyr::`%>%`
+  municipios = counties %>%
+    dplyr::select(id_municipio, nome_municipio) %>%
+    dplyr::rename(municipio_estabelecimento = nome_municipio)
+
   outputSIH_SP <- raw_SIH_SP %>%
     tibble::as_tibble() %>%
     dplyr::rename(CNES = SP_CNES) %>%
@@ -34,6 +38,7 @@ preprocess_SIH_SP <- function(cbo,
                   ANOMES_INT = stringr::str_c(ANO_INT, MES_INT),
                   MESANO_INT = stringr::str_c(MES_INT, ANO_INT, sep="-")) %>%
     dplyr::left_join(counties, by=c("SP_M_PAC" = "id_municipio")) %>%
+    dplyr::left_join(municipios, by = c("SP_M_HOSP" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,
                      c("SP_PROCREA" = "CO_PROCEDIMENTO", "ANOMES_MVM" = "file_version_id")) %>%
     dplyr::left_join(cbo, by=c("SP_PF_CBO" = "CO_OCUPACAO", "ANOMES_MVM" = "file_version_id")) %>%
@@ -76,12 +81,11 @@ preprocess_SIH_SP <- function(cbo,
                   `Tipo de Valor` = IN_TP_VAL,
                   `Ocupacao` = NO_OCUPACAO,
                   `Nome da Mobirdade (CID)` = NO_CID,
-                  Estabelecimento = NO_ESTABELECIMENTO,
-                  `Cod do Municipio do Estabelecimento` = SP_M_PAC,
-                  `Municipio` = nome_municipio,
                   `Microrregiao` = nome_microrregiao,
                   `Mesorregiao` = nome_mesorregiao,
-
+                  Estabelecimento = NO_ESTABELECIMENTO,
+                  `Cod do Municipio do Estabelecimento` = SP_M_HOSP,
+                  `Municipio do Estabelecimento` = municipio_estabelecimento,
                   Estado = nome_estado)
 
   return(outputSIH_SP)

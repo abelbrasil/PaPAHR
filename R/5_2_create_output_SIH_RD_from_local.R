@@ -1,12 +1,13 @@
 
-#' Create SUS-SIH-RD database from local DBC files
+#' Create a database for the Hospital Information System (SIH/SUS) - AIH-RD, local data.
 #'
-#' @description Processar arquivos do sistema de informação SIH (DATASUS) que já estão baixados localmente e combiná-los com informações do CNES e SIGTAP.
+#' @description Processar arquivos de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
+#'
 #'
 #' @param state_abbr String. Sigla da Unidade Federativa
 #' @param dbc_dir_path Diretório que contêm os arquivos DBC
-#' @param county_id Codigo(s) do Municipio de Atendimento. O padrao é NULL.
-#' @param health_establishment_id Código(s) do estabelecimento de saúde
+#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
@@ -28,8 +29,8 @@ create_output_SIH_RD_from_local <-
            health_establishment_id = NULL) {
 
     tempo_inicio <- system.time({
-      # AIH =
-      # RD = Reduzixa
+      # AIH = Autorização de Internação Hospitalar
+      # RD = Reduzixa(Aprovada)
 
       `%>%` <- dplyr::`%>%`
       information_system = 'SIH-RD'
@@ -107,14 +108,14 @@ create_output_SIH_RD_from_local <-
                                       raw_SIH_RD,
                                       county_id,
                                       procedure_details,
-                                      health_establishment_id)
+                                      health_establishment_id = NULL)
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
           output <- preprocess_SIH_RD(cbo,
                                       cid,
                                       raw_SIH_RD,
-                                      county_id,
+                                      county_id = NULL,
                                       procedure_details,
                                       health_establishment_id)
         } else {

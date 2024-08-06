@@ -1,24 +1,22 @@
 
-#' Create SUS-SIH-SP database from local DBC files
+#' Create a database for the Hospital Information System (SIH/SUS) - SP, local data.
 #'
-#' @description Processar arquivos do sistema de informação SIH (DATASUS) que já estão baixados localmente e combiná-los com informações do CNES e SIGTAP.
+#' @description Processar arquivos do Sistema de Informação Hospitalar (SIH) dos Serviço Profissionais (SP) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 #'
 #' @param state_abbr String. Sigla da Unidade Federativa
 #' @param dbc_dir_path Diretório que contêm os arquivos DBC
-#' @param county_id Codigo(s) do Municipio de Atendimento. O padrao é NULL.
-#' @param health_establishment_id Código(s) do estabelecimento de saúde
+#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIH-SP, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
 #' @examples
-#'   \dontrun{
 #'     dados = create_output_SP_from_local(
 #'       state_abbr = "CE",
 #'       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
 #'       county_id = "230440",
 #'       health_establishment_id = c("2561492", "2481286")
 #'     )
-#'   }
 #'
 #' @export
 create_output_SP_from_local <-
@@ -106,14 +104,14 @@ create_output_SP_from_local <-
                                       raw_SIH_SP,
                                       county_id,
                                       procedure_details,
-                                      health_establishment_id)
+                                      health_establishment_id = NULL)
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
           output <- preprocess_SIH_SP(cbo,
                                       cid,
                                       raw_SIH_SP,
-                                      county_id,
+                                      county_id = NULL,
                                       procedure_details,
                                       health_establishment_id)
         } else {

@@ -1,30 +1,32 @@
 
-#' Create a database for the Ambulatory Information System (SIA/SUS)
+#' Create a database for the Ambulatory Information System (SIA/SUS) - PA
 #'
-#' @description Processar arquivos do Sistema de Informação Ambulatorial (SIA -  Produção Ambulatorial) do DATASUS e integrá-los com dados do CNES e SIGTAP.
+#' @description Processar arquivos do Sistema de Informação Ambulatorial (SIA) da  Produção Ambulatorial (PA) do DATASUS e integrá-los com dados do CNES e SIGTAP.
 #'
 #' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
 #' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
 #' @param year_end Um numero de 4 digitos, indicando o ano de termino para o download dos dados.
 #' @param month_end Um numero de 2 digitos, indicando o mes de termino para o download dos dados.
 #' @param state_abbr String. Sigla da Unidade Federativa
-#' @param county_id Código(s) do Município de Atendimento: o padrão é nulo. Se o parâmetro health_establishment_id for informado, o parâmetro county_id não é obrigatório.
-#' @param health_establishment_id Codigo(s) do estabelecimento de saude
+#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
 #' @examples
-#'   dados = create_output_PA(
-#'     year_start = 2023,
-#'     month_start = 1,
-#'     year_end = 2023,
-#'     month_end = 3,
-#'     state_abbr = "CE",
-#'     county_id = "230440",
-#'     health_establishment_id = c("2561492", "2481286")
-#'   )
-#' @export
+#'   \dontrun{
+#'     dados = create_output_PA(
+#'       year_start = 2023,
+#'       month_start = 1,
+#'       year_end = 2023,
+#'       month_end = 3,
+#'       state_abbr = "CE",
+#'       county_id = "230440",
+#'       health_establishment_id = c("2561492", "2481286")
+#'     )
+#'   }
 #'
+#' @export
 create_output_PA <-
   function(year_start,
            month_start,
@@ -138,27 +140,6 @@ create_output_PA <-
             )
         }
 
-        #Verifica se pelo menos um arquivo do chunk contém o health_establishment_id. Se não contiver, pula para o próximo chunk.
-        if(!is.null(health_establishment_id)){
-          if(any(raw_SIA$PA_CODUNI %in% health_establishment_id)){
-            output <- preprocess_SIA(cbo,
-                                     cid,
-                                     raw_SIA,
-                                     county_id,
-                                     procedure_details,
-                                     health_establishment_id)
-          } else {
-            output = NULL
-          }
-        } else {
-          output <- preprocess_SIA(cbo,
-                                   cid,
-                                   raw_SIA,
-                                   county_id,
-                                   procedure_details,
-                                   health_establishment_id)
-        }
-
         #Retorna TRUE se o DF raw_SIA contiver valores correspondente ao
         # município especificado (county_id)
         county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIA$PA_UFMUN)
@@ -176,14 +157,14 @@ create_output_PA <-
                                    raw_SIA,
                                    county_id,
                                    procedure_details,
-                                   health_establishment_id)
+                                   health_establishment_id = NULL)
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
           output <- preprocess_SIA(cbo,
                                    cid,
                                    raw_SIA,
-                                   county_id,
+                                   county_id = NULL,
                                    procedure_details,
                                    health_establishment_id)
         } else {

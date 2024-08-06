@@ -18,6 +18,10 @@ preprocess_SIH_RD <- function(cbo,
                            procedure_details,
                            health_establishment_id) {
   `%>%` <- dplyr::`%>%`
+  municipios = counties %>%
+    dplyr::select(id_municipio, nome_municipio) %>%
+    dplyr::rename(municipio_estabelecimento = nome_municipio)
+
   outputSIH_RD <- raw_SIH_RD %>%
     tibble::as_tibble() %>%
     check_filter(var_value = county_id, var_name = "MUNIC_MOV") %>%
@@ -32,6 +36,7 @@ preprocess_SIH_RD <- function(cbo,
                   UF_GESTOR = stringr::str_sub(UF_ZI, 1, 2)
     ) %>%
     dplyr::left_join(counties, by=c("MUNIC_RES" = "id_municipio")) %>%
+    dplyr::left_join(municipios, by = c("MUNIC_MOV" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,
                      c("PROC_REA" = "CO_PROCEDIMENTO", "ANOMES_CMPT" = "file_version_id")) %>%
     dplyr::left_join(cid, by=c("DIAG_PRINC" = "CO_CID","ANOMES_CMPT" = "file_version_id")) %>%
@@ -49,7 +54,6 @@ preprocess_SIH_RD <- function(cbo,
                   `Mes processamento` = NM_MES_CMPT,
                   `Mes/Ano processamento` = DT_CMPT,
                   `Ano/Mes processamento` = ANOMES_CMPT,
-                  `Hospital (CNES)` = NO_ESTABELECIMENTO,
                   `Procedimentos realizados` = NO_PROCEDIMENTO,
                   `Grupo de Procedimentos` = NO_GRUPO,
                   `SubGrupo de Procedimentos` = NO_SUB_GRUPO,
@@ -64,8 +68,9 @@ preprocess_SIH_RD <- function(cbo,
                   `Municipio de Residencia` = nome_municipio,
                   `Mesorregiao IBGE de Resid.` = nome_mesorregiao,
                   `Microrregiao IBGE de Resid.` = nome_microrregiao,
-                  `Cod do Municipio do Estabelecimento` = MUNIC_RES,
-                  `Municipio do Estabelecimento` = nome_municipio,
+                  `Hospital (CNES)` = NO_ESTABELECIMENTO,
+                  `Cod do Municipio do Estabelecimento` = MUNIC_MOV,
+                  `Municipio do Estabelecimento` = municipio_estabelecimento,
                   `Estado de Residencia` = nome_estado)
 
   return(outputSIH_RD)

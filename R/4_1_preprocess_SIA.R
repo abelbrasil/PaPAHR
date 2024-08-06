@@ -18,12 +18,17 @@ preprocess_SIA <- function(cbo,
                            procedure_details,
                            health_establishment_id) {
   `%>%` <- dplyr::`%>%`
+  municipios = counties %>%
+    dplyr::select(id_municipio, nome_municipio) %>%
+    dplyr::rename(municipio_estabelecimento = nome_municipio)
+
   outputSIA <- raw_SIA %>%
     tibble::as_tibble() %>%
     dplyr::rename(CNES = PA_CODUNI) %>%
     check_filter(var_value = county_id, var_name = "PA_UFMUN") %>%
     check_filter(var_value = health_establishment_id, var_name = "CNES")%>%
     dplyr::left_join(counties, by=c("PA_MUNPCN" = "id_municipio")) %>%
+    dplyr::left_join(municipios, by = c("PA_UFMUN" = "id_municipio")) %>%
     dplyr::left_join(procedure_details, c("PA_PROC_ID" = "CO_PROCEDIMENTO","PA_CMP" = "file_version_id")) %>%
     dplyr::left_join(cbo, by=c("PA_CBOCOD" = "CO_OCUPACAO","PA_CMP" = "file_version_id")) %>%
     dplyr::left_join(cid, by=c("PA_CIDPRI" = "CO_CID","PA_CMP" = "file_version_id")) %>%
@@ -75,12 +80,12 @@ preprocess_SIA <- function(cbo,
                   `Quantidade Apresentada` = PA_QTDPRO,
                   `Valor Aprovado` = PA_VALAPR,
                   `Valor Apresentado` = PA_VALPRO,
-                  `Estabelecimento CNES` = NO_ESTABELECIMENTO,
                   `Municipio Residencia` = nome_municipio, #counties
                   `Micro IBGE Residencia` = nome_microrregiao, #counties
                   `Meso IBGE Residencia` = nome_mesorregiao, #counties
-                  `Cod do Municipio do Estabelecimento` = PA_MUNPCN,
-                  `Municipio do Estabelecimento` = nome_municipio,
+                  `Estabelecimento CNES` = NO_ESTABELECIMENTO,
+                  `Cod do Municipio do Estabelecimento` = PA_UFMUN,
+                  `Municipio do Estabelecimento` = municipio_estabelecimento,
                   `Estado Residencia` = nome_estado)  #counties
 
   return(outputSIA)

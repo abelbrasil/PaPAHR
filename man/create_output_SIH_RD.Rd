@@ -2,7 +2,7 @@
 % Please edit documentation in R/5_1_create_output_SIH_RD.R
 \name{create_output_SIH_RD}
 \alias{create_output_SIH_RD}
-\title{create a SUS-SIH-RD database}
+\title{Create a database for the Hospital Information System (SIH/SUS) - AIH-RD}
 \usage{
 create_output_SIH_RD(
   year_start,
@@ -25,24 +25,26 @@ create_output_SIH_RD(
 
 \item{state_abbr}{String. Sigla da Unidade Federativa}
 
-\item{county_id}{Código(s) do Município de Atendimento: o padrão é nulo. Se o parâmetro health_establishment_id for informado, o parâmetro county_id não é obrigatório.}
+\item{county_id}{Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.}
 
-\item{health_establishment_id}{Codigo(s) do estabelecimento de saude}
+\item{health_establishment_id}{Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
 }
 \value{
-Um DataFrame estruturado contendo dados do SUS-SIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
+Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 }
 \description{
-Processar arquivos do sistema de informação SIA (DATASUS) e combina com informações do CNES e SIGTAP.
+Processar arquivos de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH) do DATASUS e integrá-los com dados do CNES e SIGTAP.
 }
 \examples{
-  dados = create_output_SIH_RD(
-    year_start = 2023,
-    month_start = 1,
-    year_end = 2023,
-    month_end = 3,
-    state_abbr = "CE",
-    county_id = "230440",
-    health_establishment_id = c("2561492", "2481286")
-  )
+  \dontrun{
+    dados = create_output_SIH_RD(
+      year_start = 2023,
+      month_start = 1,
+      year_end = 2023,
+      month_end = 3,
+      state_abbr = "CE",
+      county_id = "230440",
+      health_establishment_id = c("2561492", "2481286")
+    )
+ }
 }

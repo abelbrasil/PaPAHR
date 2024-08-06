@@ -2,7 +2,7 @@
 % Please edit documentation in R/5_2_create_output_SP_from_local.R
 \name{create_output_SP_from_local}
 \alias{create_output_SP_from_local}
-\title{Create SUS-SIH-SP database from local DBC files}
+\title{Create a database for the Hospital Information System (SIH/SUS) - SP, local data.}
 \usage{
 create_output_SP_from_local(
   state_abbr,
@@ -16,24 +16,22 @@ create_output_SP_from_local(
 
 \item{dbc_dir_path}{Diretório que contêm os arquivos DBC}
 
-\item{county_id}{Codigo(s) do Municipio de Atendimento. O padrao é NULL.}
+\item{county_id}{Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.}
 
-\item{health_establishment_id}{Código(s) do estabelecimento de saúde}
+\item{health_establishment_id}{Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
 }
 \value{
 Um DataFrame estruturado contendo dados do SUS-SIH-SP, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 }
 \description{
-Processar arquivos do sistema de informação SIH (DATASUS) que já estão baixados localmente e combiná-los com informações do CNES e SIGTAP.
+Processar arquivos do Sistema de Informação Hospitalar (SIH) dos Serviço Profissionais (SP) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 }
 \examples{
-  \dontrun{
     dados = create_output_SP_from_local(
       state_abbr = "CE",
       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
       county_id = "230440",
       health_establishment_id = c("2561492", "2481286")
     )
-  }
 
 }

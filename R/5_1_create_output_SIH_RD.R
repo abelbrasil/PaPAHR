@@ -1,28 +1,30 @@
 
-#' create a SUS-SIH-RD database
+#' Create a database for the Hospital Information System (SIH/SUS) - AIH-RD
 #'
-#' @description Processar arquivos do sistema de informação SIA (DATASUS) e combina com informações do CNES e SIGTAP.
+#' @description Processar arquivos de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH) do DATASUS e integrá-los com dados do CNES e SIGTAP.
 #'
 #' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
 #' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
 #' @param year_end Um numero de 4 digitos, indicando o ano de termino para o download dos dados.
 #' @param month_end Um numero de 2 digitos, indicando o mes de termino para o download dos dados.
 #' @param state_abbr String. Sigla da Unidade Federativa
-#' @param county_id Código(s) do Município de Atendimento: o padrão é nulo. Se o parâmetro health_establishment_id for informado, o parâmetro county_id não é obrigatório.
-#' @param health_establishment_id Codigo(s) do estabelecimento de saude
+#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
-#' @return Um DataFrame estruturado contendo dados do SUS-SIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
+#' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
 #' @examples
-#'   dados = create_output_SIH_RD(
-#'     year_start = 2023,
-#'     month_start = 1,
-#'     year_end = 2023,
-#'     month_end = 3,
-#'     state_abbr = "CE",
-#'     county_id = "230440",
-#'     health_establishment_id = c("2561492", "2481286")
-#'   )
+#'   \dontrun{
+#'     dados = create_output_SIH_RD(
+#'       year_start = 2023,
+#'       month_start = 1,
+#'       year_end = 2023,
+#'       month_end = 3,
+#'       state_abbr = "CE",
+#'       county_id = "230440",
+#'       health_establishment_id = c("2561492", "2481286")
+#'     )
+#'  }
 #' @export
 #'
 create_output_SIH_RD <-
@@ -35,7 +37,8 @@ create_output_SIH_RD <-
            health_establishment_id = NULL) {
     tempo_inicio <- system.time({
 
-      # RD = Reduzixa
+      # AIH = Autorização de Internação Hospitalar
+      # RD = Reduzixa(Aprovada)
 
       `%>%` <- dplyr::`%>%`
       information_system = 'SIH-RD'
@@ -135,14 +138,14 @@ create_output_SIH_RD <-
                                       raw_SIH_RD,
                                       county_id,
                                       procedure_details,
-                                      health_establishment_id)
+                                      health_establishment_id = NULL)
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
           output <- preprocess_SIH_RD(cbo,
                                       cid,
                                       raw_SIH_RD,
-                                      county_id,
+                                      county_id = NULL,
                                       procedure_details,
                                       health_establishment_id)
         } else {
