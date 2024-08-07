@@ -1,7 +1,7 @@
 
-#' get_detail: Agrupa e estrutura os dados do SIGTAP
+#'  Returns a table with SIGTAP data filtered and organized.
 #'
-#'@description Esta funcao seleciona todos os valores baixados pela funcao `download_sigtap_files` que correspondem ao valor passado no parametro `detail_name`. Em seguida, transforma esses dados brutos em um formato estruturado e organizado.
+#'@description Esta função filtra os dados baixados pela função `download_sigtap_files` usando o valor especificado no parâmetro `detail_name` e retorna os dados filtrados em um formato estruturado e organizado.
 #'
 #' @param detail_name String. Nome do arquivo desejado. Existem 8 opcoes possiveis: "Procedimento", "Grupo", "Subgrupo", "Forma de organizacao", "Financiamento", "Rubrica", "CBO", "CID".
 #'

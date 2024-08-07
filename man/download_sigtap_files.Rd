@@ -2,7 +2,7 @@
 % Please edit documentation in R/1_download_sigtap_files.R
 \name{download_sigtap_files}
 \alias{download_sigtap_files}
-\title{download_sigtap_files: Baixa dados .dbc do site DataSUS}
+\title{Download SIGTAP Files}
 \usage{
 download_sigtap_files(
   year_start,
@@ -27,9 +27,13 @@ download_sigtap_files(
 \item{specific_dates}{Um vetor de strings contendo as datas específicas que se deseja baixar.}
 }
 \description{
-A funcao \code{download_sigtap_files} baixar e descompactar arquivos sigtap do site datasus. Esses arquivos são salvos temporariamente na maquina local. Para cada mes vai ser baixado um arquivo compactado.
+A função \code{download_sigtap_files} baixa e descompacta arquivos SIGTAP do site DataSUS. Esses arquivos são salvos temporariamente na máquina local. Para cada mês, será baixado um arquivo compactado. Primeiro, a função verifica se o arquivo do mês especificado já existe na pasta temporária. Se o arquivo estiver presente, ela não baixa o arquivo novamente para esse mês.
 }
 \examples{
-\dontrun{ download_sigtap_files(2024, 1, 2024, 3, newer=FALSE)}
+\dontrun{
+   download_sigtap_files(2024, 1, 2024, 3, newer = FALSE)
+ }
+\dontrun{
+   download_sigtap_files(specific_dates = c("202210","202301","202303"))}
 
 }

@@ -2,33 +2,33 @@
 % Please edit documentation in R/4_3_preprocess_SIH_RJ.R
 \name{preprocess_SIH_RJ}
 \alias{preprocess_SIH_RJ}
-\title{preprocess_SIH_RJ: Estrutura os dados de Producao Hospitalar (SIH)}
+\title{Returns SIH-AIH Rejected(RJ) data in a structured and filtered form.}
 \usage{
 preprocess_SIH_RJ(
   cbo,
   cid,
-  raw_SIH,
+  raw_SIH_RJ,
   county_id,
   procedure_details,
   health_establishment_id
 )
 }
 \arguments{
-\item{cbo}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CBO"}
+\item{cbo}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CBO'}}
 
-\item{cid}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CID".}
+\item{cid}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CID'}}
 
-\item{raw_SIH}{Dados do DataSUS de Producao Hospitalar (SIH)}
+\item{raw_SIH_RJ}{Dados de Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) do Sistema de Informação Hospitalar (SIH)}
 
 \item{county_id}{Codigo(s) do Municipio de Atendimento}
 
-\item{procedure_details}{Sao os dados retornados pelo funcao \code{get_procedure_details}}
+\item{procedure_details}{São os dados retornados pelo função \code{get_procedure_details}}
 
 \item{health_establishment_id}{Código(s) do estabelecimento de saúde}
 }
 \value{
-Um dataset outputSIH_RJ
+Retorna a tabela da Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) já filtrada e tratada.
 }
 \description{
-preprocess_SIH_RJ: Estrutura os dados de Producao Hospitalar (SIH)
+Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) e combina as informações do CNES, SIGTAP e da base de dados \code{counties}.
 }

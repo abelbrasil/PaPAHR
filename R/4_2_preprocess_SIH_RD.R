@@ -1,23 +1,27 @@
 
-#' preprocess_SIH_RD: Estrutura os dados de Producao Hospitalar (SIH)
+#' Returns SIH-AIH Approved(RD) data in a structured and filtered form.
 #'
-#' @param cbo E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CBO"
-#' @param cid E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CID".
-#' @param raw_SIH_RD Dados do DataSUS de Producao Hospitalar (SIH)
+#' @description Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) aprovados (RD) e combina as informações do CNES, SIGTAP e da base de dados `counties`.
+#'
+#' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
+#' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
+#' @param raw_SIH_RD Dados de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH)
 #' @param county_id Codigo(s) do Municipio de Atendimento
-#' @param procedure_details Sao os dados retornados pelo funcao `get_procedure_details`
+#' @param procedure_details São os dados retornados pelo funcão `get_procedure_details`
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
-#' @return Um dataset outputSIH_RD
-#' @export
+#' @return Retorna a tabela da Autorização de Internação Hospitalar (AIH) aprovados (RD) já filtrada e tratada.
 #'
-preprocess_SIH_RD <- function(cbo,
-                           cid,
-                           raw_SIH_RD,
-                           county_id,
-                           procedure_details,
-                           health_establishment_id) {
+#' @export
+preprocess_SIH_RD <-
+  function(cbo,
+           cid,
+           raw_SIH_RD,
+           county_id,
+           procedure_details,
+           health_establishment_id){
   `%>%` <- dplyr::`%>%`
+
   municipios = counties %>%
     dplyr::select(id_municipio, nome_municipio) %>%
     dplyr::rename(municipio_estabelecimento = nome_municipio)

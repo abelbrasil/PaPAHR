@@ -1,8 +1,7 @@
 
-#' list_SIA_SIH_files: Retorna os nomes dos arquivos que precisam ser baixados.
+#' Returns the names of the DBC files that need to be downloaded.
 #'
-#' @description
-#' A função list_SIA_SIH_files retorna um DataFrame com os nomes dos arquivos (PA, RD, RJ ou SP) para cada mês que precisam ser baixados.
+#' @description A função retorna um DataFrame com os nomes dos arquivos (PA, RD, RJ ou SP) para cada mês que precisam ser baixados.
 #'
 #' @param data_source String. Valores aceitos "SIA", "SIH"
 #' @param data_type String. Valores aceitos "PA", "RD", "RJ", "SP"

@@ -2,7 +2,7 @@
 % Please edit documentation in R/3_2_get_counties.R
 \name{get_counties}
 \alias{get_counties}
-\title{get_counties: Obtem informacoes de todos os estados do Brasil}
+\title{Create a dataset with information on all municipalities in Brazil.}
 \usage{
 get_counties(state_abbr, county_id, download = FALSE)
 }
@@ -13,9 +13,6 @@ get_counties(state_abbr, county_id, download = FALSE)
 
 \item{download}{Logico. O padrao é FALSE. Se for TRUE, os dados de 'counties' são baixados do site do IBGE. Se for FALSE, os dados são obtidos a partir de uma base de dados incluída no pacote.}
 }
-\value{
-Salva o DataFrame \code{counties} no environment global .
-}
 \description{
-A funcao \code{get_counties} cria o DataFrame \code{counties}, que contem informacoes detalhadas sobre os municipios do Brasil.
+Cria e salva no ambiente global do R o DataFrame \code{counties}, que contém informações detalhadas sobre os municípios do Brasil.
 }

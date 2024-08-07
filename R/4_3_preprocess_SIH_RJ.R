@@ -1,28 +1,32 @@
 
-#' preprocess_SIH_RJ: Estrutura os dados de Producao Hospitalar (SIH)
+#' Returns SIH-AIH Rejected(RJ) data in a structured and filtered form.
 #'
-#' @param cbo E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CBO"
-#' @param cid E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CID".
-#' @param raw_SIH Dados do DataSUS de Producao Hospitalar (SIH)
+#' @description Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) e combina as informações do CNES, SIGTAP e da base de dados `counties`.
+#'
+#' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
+#' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
+#' @param raw_SIH_RJ Dados de Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) do Sistema de Informação Hospitalar (SIH)
 #' @param county_id Codigo(s) do Municipio de Atendimento
-#' @param procedure_details Sao os dados retornados pelo funcao `get_procedure_details`
+#' @param procedure_details São os dados retornados pelo função `get_procedure_details`
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
-#' @return Um dataset outputSIH_RJ
-#' @export
+#' @return Retorna a tabela da Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) já filtrada e tratada.
 #'
-preprocess_SIH_RJ <- function(cbo,
-                           cid,
-                           raw_SIH,
-                           county_id,
-                           procedure_details,
-                           health_establishment_id) {
+#' @export
+preprocess_SIH_RJ <-
+  function(cbo,
+           cid,
+           raw_SIH_RJ,
+           county_id,
+           procedure_details,
+           health_establishment_id){
   `%>%` <- dplyr::`%>%`
+
   municipios = counties %>%
     dplyr::select(id_municipio, nome_municipio) %>%
     dplyr::rename(municipio_estabelecimento = nome_municipio)
 
-  outputSIH_RJ <- raw_SIH %>%
+  outputSIH_RJ <- raw_SIH_RJ %>%
     tibble::as_tibble() %>%
     check_filter(var_value = county_id, var_name = "MUNIC_MOV") %>%
     check_filter(var_value=health_establishment_id, var_name="CNES") %>%

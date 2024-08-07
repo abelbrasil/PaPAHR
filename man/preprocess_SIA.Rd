@@ -2,7 +2,7 @@
 % Please edit documentation in R/4_1_preprocess_SIA.R
 \name{preprocess_SIA}
 \alias{preprocess_SIA}
-\title{preprocess_SIA: Estrutura os dados de Producao Ambulatorial (SIA)}
+\title{Returns data from Outpatient Production (PA-SIA) in a structured and filtered form.}
 \usage{
 preprocess_SIA(
   cbo,
@@ -14,21 +14,21 @@ preprocess_SIA(
 )
 }
 \arguments{
-\item{cbo}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CBO"}
+\item{cbo}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CBO'}}
 
-\item{cid}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CID".}
+\item{cid}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CID'}}
 
 \item{raw_SIA}{Dados do DataSUS de Producao Ambulatorial (SIA)}
 
 \item{county_id}{Código(s) do Município de Atendimento}
 
-\item{procedure_details}{Sao os dados retornados pelo funcao \code{get_procedure_details}}
+\item{procedure_details}{São os dados retornados pelo função \code{get_procedure_details}}
 
 \item{health_establishment_id}{Código(s) do estabelecimento de saúde}
 }
 \value{
-Um dataset outputSIA
+Retorna a tabela da Produção Ambulatorial já filtrada e tratada.
 }
 \description{
-preprocess_SIA: Estrutura os dados de Producao Ambulatorial (SIA)
+Estrutura e filtra os dados da Produção Ambulatorial (PA) e combina as informações do CNES, SIGTAP e da base de dados \code{counties}.
 }

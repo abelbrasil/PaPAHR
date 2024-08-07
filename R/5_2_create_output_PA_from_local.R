@@ -34,11 +34,7 @@ create_output_PA_from_local <-
       information_system = 'SIA'
 
       #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
-      if (!is.null(county_id)) {
-        if (nchar(county_id) == 7) {
-          county_id <- substr(county_id, 1, nchar(county_id) - 1)
-        }
-      }
+      county_id = process_county_id(county_id)
 
       state_abbr = toupper(trimws(state_abbr))
 
@@ -98,7 +94,7 @@ create_output_PA_from_local <-
         #Determinar quais arquivos baixar
         files_to_download <- specific_dates[!specific_dates %in% existing_versions]
         if (length(files_to_download) > 0) {
-          download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
+          download_sigtap_files(newer = FALSE, specific_dates = files_to_download)
 
           procedure_details <- get_procedure_details()
           cbo <- get_detail("CBO")

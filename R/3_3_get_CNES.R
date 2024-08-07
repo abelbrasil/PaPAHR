@@ -1,9 +1,7 @@
 
-#' get_CNES: Carrega os dados dos estabelecimentos de saude.
+#' Loads data from the National Registry of Health Establishments (CNES)
 #'
-#' @description A funcao `get_CNES` cria o DataFrame `health_establishment`, que contem a uniao de todos os arquivos baixados pela funcao `download_cnes_files`.
-#'
-#' @return Salva o DataFrame `health_establishment` no environment global.
+#' @description A função cria e salva no ambiente global do R o DataFrame `health_establishment`, que contém a união de todos os arquivos baixados pela função `download_cnes_files.`
 #'
 #' @export
 get_CNES <- function(){

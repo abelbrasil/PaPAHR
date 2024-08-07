@@ -2,7 +2,7 @@
 % Please edit documentation in R/2_2_get_details.R
 \name{get_detail}
 \alias{get_detail}
-\title{get_detail: Agrupa e estrutura os dados do SIGTAP}
+\title{Returns a table with SIGTAP data filtered and organized.}
 \usage{
 get_detail(detail_name)
 }
@@ -13,5 +13,5 @@ get_detail(detail_name)
 Uma tabela dos dados correpondentes ao parametro \code{detail_name}
 }
 \description{
-Esta funcao seleciona todos os valores baixados pela funcao \code{download_sigtap_files} que correspondem ao valor passado no parametro \code{detail_name}. Em seguida, transforma esses dados brutos em um formato estruturado e organizado.
+Esta função filtra os dados baixados pela função \code{download_sigtap_files} usando o valor especificado no parâmetro \code{detail_name} e retorna os dados filtrados em um formato estruturado e organizado.
 }

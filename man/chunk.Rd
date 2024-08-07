@@ -2,7 +2,7 @@
 % Please edit documentation in R/chunk.R
 \name{chunk}
 \alias{chunk}
-\title{chunk: Organiza os arquivos DBC a serem baixados em grupos.}
+\title{Organizes DBC files to be downloaded into groups}
 \usage{
 chunk(files_name)
 }
@@ -13,7 +13,7 @@ chunk(files_name)
 files_chunks, uma lista de vetores de strings.
 }
 \description{
-Obtém os nomes dos arquivos DBC em files_name e os divide em grupos (chunks). O número de grupos e a quantidade de arquivos em cada grupo dependem do número de meses especificado.
+Obtém os nomes dos arquivos DBC em \code{files_name} e os divide em grupos (chunks). O número de grupos e a quantidade de arquivos em cada grupo dependem do número de meses especificado.
 }
 \examples{
 \dontrun{chunk( files_name = files_name)}

@@ -1,8 +1,7 @@
 
-#' check_file_list: Verifica se uma lista de nomes de arquivos está completa
+#' Checks whether the value returned by the `list_SIA_SIH_files` function is correct.
 #'
-#' @description
-#' A função check_file_list verifica se a função list_SIA_SIH_files retornou um arquivo para cada mês. Se algum mês estiver sem arquivo, a função imprime no console as datas dos meses faltantes.
+#' @description A função verifica se a função `list_SIA_SIH_files` retornou um arquivo para cada mês. Se algum mês estiver sem um arquivo, a função imprime no console as datas dos meses faltantes.
 #'
 #' @param dir_files Um DataFrame contendo os nomes dos arquivos e a data correspondente a cada arquivo
 #' @param data_type String. Valores aceitos "PA", "RD", "RJ", "SP"
@@ -28,7 +27,7 @@ check_file_list <-
            publication_date_start,
            publication_date_end) {
 
-    # Crie um vetor com todos os meses do intervalo
+    # Cria um vetor com todos os meses dentro do intervalo especificado.
     meses <-
       seq.Date(
         from = lubridate::floor_date(publication_date_start, "month"),

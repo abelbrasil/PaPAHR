@@ -1,23 +1,27 @@
 
-#' preprocess_SIA: Estrutura os dados de Producao Ambulatorial (SIA)
+#' Returns data from Outpatient Production (PA-SIA) in a structured and filtered form.
 #'
-#' @param cbo E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CBO"
-#' @param cid E a tabela retornada pela funcao `get_details` com o parametro detail_name igual a "CID".
+#' @description Estrutura e filtra os dados da Produção Ambulatorial (PA) e combina as informações do CNES, SIGTAP e da base de dados `counties`.
+#'
+#' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
+#' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
 #' @param raw_SIA Dados do DataSUS de Producao Ambulatorial (SIA)
 #' @param county_id Código(s) do Município de Atendimento
-#' @param procedure_details Sao os dados retornados pelo funcao `get_procedure_details`
+#' @param procedure_details São os dados retornados pelo função `get_procedure_details`
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
-#' @return Um dataset outputSIA
-#' @export
+#' @return Retorna a tabela da Produção Ambulatorial já filtrada e tratada.
 #'
-preprocess_SIA <- function(cbo,
-                           cid,
-                           raw_SIA,
-                           county_id,
-                           procedure_details,
-                           health_establishment_id) {
+#' @export
+preprocess_SIA <-
+  function(cbo,
+           cid,
+           raw_SIA,
+           county_id,
+           procedure_details,
+           health_establishment_id){
   `%>%` <- dplyr::`%>%`
+
   municipios = counties %>%
     dplyr::select(id_municipio, nome_municipio) %>%
     dplyr::rename(municipio_estabelecimento = nome_municipio)

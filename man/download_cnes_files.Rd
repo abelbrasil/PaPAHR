@@ -2,7 +2,7 @@
 % Please edit documentation in R/3_1_download_cnes_files.R
 \name{download_cnes_files}
 \alias{download_cnes_files}
-\title{download_cnes_files: Faz o download dos dados do CNES}
+\title{Download data from the National Registry of Health Establishments (CNES)}
 \usage{
 download_cnes_files(
   year_start,
@@ -27,8 +27,9 @@ download_cnes_files(
 \item{state_abbr}{String. O padrao e "all". Sigla da Unidade Federativa}
 }
 \description{
-A funcao \code{download_cnes_files} baixa arquivos do CNES (Cadastro Nacional de Estabelecimentos de Saude) e os salva temporariamente na maquina local. Esses arquivos podem ser filtrados pela unidade da federacao.
+A função \code{download_cnes_files} baixa arquivos do CNES (Cadastro Nacional de Estabelecimentos de Saúde) e os armazena temporariamente na máquina local.
 }
 \examples{
 \dontrun{download_cnes_files(newer = TRUE)}
+
 }

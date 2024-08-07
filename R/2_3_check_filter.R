@@ -1,13 +1,13 @@
 
-#' check_filter
+#' Receives a database and returns a filtered version of it.
 #'
-#' @description Funcao auxiliar para filtrar uma lista ou todos; Funcao para filtrar pelo CNES ou pelo municipio
+#' @description Função auxiliar que filtra uma base de dados com base em um valor específico.
 #'
 #' @param df um DataFrame que sera filtrado.
-#' @param var_value String, Codigo(s) do estabelecimento de saude
-#' @param var_name String, nome da coluna no data frame que sera usada para a filtragem.
+#' @param var_value Uma string ou vetor de strings com os valores a serem filtrados. Se o valor for nulo, a função retorna o mesmo dataframe recebido.
+#' @param var_name String. Nome da coluna do DataFrame que será utilizada para a filtragem.
 #'
-#' @return filtered_df
+#' @return Retorna uma tabela filtrada pelo valor de `var_value` na coluna `var_name`.
 #' @export
 check_filter <- function(df, var_value, var_name) {
 

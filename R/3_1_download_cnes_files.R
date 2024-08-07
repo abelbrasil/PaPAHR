@@ -1,7 +1,7 @@
 
-#' download_cnes_files: Faz o download dos dados do CNES
+#' Download data from the National Registry of Health Establishments (CNES)
 #'
-#' @description A funcao `download_cnes_files` baixa arquivos do CNES (Cadastro Nacional de Estabelecimentos de Saude) e os salva temporariamente na maquina local. Esses arquivos podem ser filtrados pela unidade da federacao.
+#' @description A função `download_cnes_files` baixa arquivos do CNES (Cadastro Nacional de Estabelecimentos de Saúde) e os armazena temporariamente na máquina local.
 #'
 #' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
 #' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
@@ -10,12 +10,18 @@
 #' @param newer Logico. O padrao é TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.
 #' @param state_abbr String. O padrao e "all". Sigla da Unidade Federativa
 #'
-#' @export
-#'
-#' @examples
+#'@examples
 #' \dontrun{download_cnes_files(newer = TRUE)}
+#'
+#' @export
 download_cnes_files <-
-  function(year_start, month_start, year_end, month_end, newer, state_abbr="all"){
+  function(year_start,
+           month_start,
+           year_end,
+           month_end,
+           newer,
+           state_abbr = "all"){
+
     `%>%` <- dplyr::`%>%`
 
     base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/ST/"

@@ -2,7 +2,7 @@
 % Please edit documentation in R/4_2_preprocess_SIH_RD.R
 \name{preprocess_SIH_RD}
 \alias{preprocess_SIH_RD}
-\title{preprocess_SIH_RD: Estrutura os dados de Producao Hospitalar (SIH)}
+\title{Returns SIH-AIH Approved(RD) data in a structured and filtered form.}
 \usage{
 preprocess_SIH_RD(
   cbo,
@@ -14,21 +14,21 @@ preprocess_SIH_RD(
 )
 }
 \arguments{
-\item{cbo}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CBO"}
+\item{cbo}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CBO'}}
 
-\item{cid}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CID".}
+\item{cid}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CID'}}
 
-\item{raw_SIH_RD}{Dados do DataSUS de Producao Hospitalar (SIH)}
+\item{raw_SIH_RD}{Dados de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH)}
 
 \item{county_id}{Codigo(s) do Municipio de Atendimento}
 
-\item{procedure_details}{Sao os dados retornados pelo funcao \code{get_procedure_details}}
+\item{procedure_details}{São os dados retornados pelo funcão \code{get_procedure_details}}
 
 \item{health_establishment_id}{Código(s) do estabelecimento de saúde}
 }
 \value{
-Um dataset outputSIH_RD
+Retorna a tabela da Autorização de Internação Hospitalar (AIH) aprovados (RD) já filtrada e tratada.
 }
 \description{
-preprocess_SIH_RD: Estrutura os dados de Producao Hospitalar (SIH)
+Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) aprovados (RD) e combina as informações do CNES, SIGTAP e da base de dados \code{counties}.
 }

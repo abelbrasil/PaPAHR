@@ -2,7 +2,7 @@
 % Please edit documentation in R/list_SIA_SIH_files.R
 \name{list_SIA_SIH_files}
 \alias{list_SIA_SIH_files}
-\title{list_SIA_SIH_files: Retorna os nomes dos arquivos que precisam ser baixados.}
+\title{Returns the names of the DBC files that need to be downloaded.}
 \usage{
 list_SIA_SIH_files(
   data_source,
@@ -27,7 +27,7 @@ list_SIA_SIH_files(
 dir_files. Um DataFrame contendo o nome do arquivo, a data associada ao arquivo, a UF (Unidade Federativa) do arquivo e o tipo do arquivo (PA, RD, RJ ou SP).
 }
 \description{
-A função list_SIA_SIH_files retorna um DataFrame com os nomes dos arquivos (PA, RD, RJ ou SP) para cada mês que precisam ser baixados.
+A função retorna um DataFrame com os nomes dos arquivos (PA, RD, RJ ou SP) para cada mês que precisam ser baixados.
 }
 \examples{
 \dontrun{

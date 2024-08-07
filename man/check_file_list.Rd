@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_file_list.R
 \name{check_file_list}
 \alias{check_file_list}
-\title{check_file_list: Verifica se uma lista de nomes de arquivos está completa}
+\title{Checks whether the value returned by the \code{list_SIA_SIH_files} function is correct.}
 \usage{
 check_file_list(
   dir_files,
@@ -24,7 +24,7 @@ check_file_list(
 \item{publication_date_end}{Uma string no formato "AAAA-MM-01", indicando o mes de termino para o download dos dados.}
 }
 \description{
-A função check_file_list verifica se a função list_SIA_SIH_files retornou um arquivo para cada mês. Se algum mês estiver sem arquivo, a função imprime no console as datas dos meses faltantes.
+A função verifica se a função \code{list_SIA_SIH_files} retornou um arquivo para cada mês. Se algum mês estiver sem um arquivo, a função imprime no console as datas dos meses faltantes.
 }
 \examples{
 \dontrun{

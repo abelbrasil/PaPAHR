@@ -2,7 +2,7 @@
 % Please edit documentation in R/4_4_preprocess_SIH_SP.R
 \name{preprocess_SIH_SP}
 \alias{preprocess_SIH_SP}
-\title{preprocess_SIH_SP: Estrutura os dados de Producao Hospitalar (SIH-SP)}
+\title{Returns data from Professional Services (SP-SIH) in a structured and filtered form.}
 \usage{
 preprocess_SIH_SP(
   cbo,
@@ -14,21 +14,21 @@ preprocess_SIH_SP(
 )
 }
 \arguments{
-\item{cbo}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CBO"}
+\item{cbo}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CBO'}}
 
-\item{cid}{E a tabela retornada pela funcao \code{get_details} com o parametro detail_name igual a "CID".}
+\item{cid}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CID'}}
 
-\item{raw_SIH_SP}{Dados do DataSUS de Producao Hospitalar (SIH)}
+\item{raw_SIH_SP}{Dados dos Serviços Profissionais (SP) do Sistema de Informação Hospitalar (SIH)}
 
 \item{county_id}{Código(s) do Município de Atendimento}
 
-\item{procedure_details}{Sao os dados retornados pelo funcao \code{get_procedure_details}}
+\item{procedure_details}{São os dados retornados pelo função \code{get_procedure_details}}
 
 \item{health_establishment_id}{Código(s) do estabelecimento de saúde}
 }
 \value{
-Um dataset outputSIH_SP
+Retorna a tabela dos Serviços Profissionais (SP)  já filtrada e tratada.
 }
 \description{
-preprocess_SIH_SP: Estrutura os dados de Producao Hospitalar (SIH-SP)
+Estrutura e filtra os dados dos Serviços Profissionais (SP) e combina as informações do CNES, SIGTAP e da base de dados \code{counties}.
 }

@@ -2,16 +2,16 @@
 % Please edit documentation in R/2_1_get_procedure_details.R
 \name{get_procedure_details}
 \alias{get_procedure_details}
-\title{get_procedure_details: Estrutura os dados baixados pelo \code{download_sigtap_files}}
+\title{Structure the procedural data downloaded by the download_sigtap_files function into a table.}
 \usage{
 get_procedure_details()
 }
 \value{
-Uma unica tabela contendo alguns dados baixados do SIGTAP
+Retorna a Tabela de Procedimentos do SIGTAP utilizando os dados baixados do SIGTAP.
 }
 \description{
-Esta funcao agrupa alguns arquivos baixados previamente pela funcao \code{download_sigtap_files}, consolidando todos os dados em uma unica tabela.
+Esta função agrupa os arquivos de Procedimentos, baixados previamente pela função \code{download_sigtap_files}, consolidando todos os dados em uma única tabela.
 }
 \examples{
-\dontrun{get_procedure_details()}
+\dontrun{procedure_details = get_procedure_details()}
 }

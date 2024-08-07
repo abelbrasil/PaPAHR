@@ -1,13 +1,13 @@
 
-#' get_procedure_details: Estrutura os dados baixados pelo `download_sigtap_files`
+#' Structure the procedural data downloaded by the download_sigtap_files function into a table.
 #'
-#' @description Esta funcao agrupa alguns arquivos baixados previamente pela funcao `download_sigtap_files`, consolidando todos os dados em uma unica tabela.
+#' @description Esta função agrupa os arquivos de Procedimentos, baixados previamente pela função `download_sigtap_files`, consolidando todos os dados em uma única tabela.
 #'
-#' @return Uma unica tabela contendo alguns dados baixados do SIGTAP
+#' @return Retorna a Tabela de Procedimentos do SIGTAP utilizando os dados baixados do SIGTAP.
 #' @export
 #'
 #' @examples
-#' \dontrun{get_procedure_details()}
+#' \dontrun{procedure_details = get_procedure_details()}
 get_procedure_details <- function() {
   `%>%` <- dplyr::`%>%`
 

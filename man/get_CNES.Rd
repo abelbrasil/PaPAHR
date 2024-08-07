@@ -2,13 +2,10 @@
 % Please edit documentation in R/3_3_get_CNES.R
 \name{get_CNES}
 \alias{get_CNES}
-\title{get_CNES: Carrega os dados dos estabelecimentos de saude.}
+\title{Loads data from the National Registry of Health Establishments (CNES)}
 \usage{
 get_CNES()
 }
-\value{
-Salva o DataFrame \code{health_establishment} no environment global.
-}
 \description{
-A funcao \code{get_CNES} cria o DataFrame \code{health_establishment}, que contem a uniao de todos os arquivos baixados pela funcao \code{download_cnes_files}.
+A função cria e salva no ambiente global do R o DataFrame \code{health_establishment}, que contém a união de todos os arquivos baixados pela função \code{download_cnes_files.}
 }

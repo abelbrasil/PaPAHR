@@ -1,7 +1,7 @@
 
-#' download_sigtap_files: Baixa dados .dbc do site DataSUS
+#' Download SIGTAP Files
 #'
-#' @description A funcao `download_sigtap_files` baixar e descompactar arquivos sigtap do site datasus. Esses arquivos são salvos temporariamente na maquina local. Para cada mes vai ser baixado um arquivo compactado.
+#' @description A função `download_sigtap_files` baixa e descompacta arquivos SIGTAP do site DataSUS. Esses arquivos são salvos temporariamente na máquina local. Para cada mês, será baixado um arquivo compactado. Primeiro, a função verifica se o arquivo do mês especificado já existe na pasta temporária. Se o arquivo estiver presente, ela não baixa o arquivo novamente para esse mês.
 #'
 #' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
 #' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
@@ -13,7 +13,11 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{ download_sigtap_files(2024, 1, 2024, 3, newer=FALSE)}
+#' \dontrun{
+#'    download_sigtap_files(2024, 1, 2024, 3, newer = FALSE)
+#'  }
+#' \dontrun{
+#'    download_sigtap_files(specific_dates = c("202210","202301","202303"))}
 #'
 download_sigtap_files <-
   function(year_start,
@@ -25,6 +29,7 @@ download_sigtap_files <-
     `%>%` <- dplyr::`%>%`
 
     output_dir <- stringr::str_c(tempdir(), "SIGTAP", sep = "\\")
+
     if (!dir.exists(output_dir)) {
       dir.create(output_dir)
     }
@@ -50,7 +55,8 @@ download_sigtap_files <-
         missing(year_start) &
         missing(month_start) &
         missing(year_end) &
-        missing(month_end)) {
+        missing(month_end)&
+        missing(specific_dates)) {
       dir_files <-
         dir_files %>% dplyr::filter(publication_date == max(publication_date))
 
@@ -59,6 +65,7 @@ download_sigtap_files <-
         dplyr::filter(file_version_id %in% specific_dates)
 
     } else{
+      #Seleciona todos os arquivos dentro do intervalo especificado.
       publication_date_start <-
         lubridate::ym(stringr::str_glue("{year_start}-{month_start}"))
       publication_date_end <-

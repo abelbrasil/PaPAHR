@@ -2,20 +2,20 @@
 % Please edit documentation in R/2_3_check_filter.R
 \name{check_filter}
 \alias{check_filter}
-\title{check_filter}
+\title{Receives a database and returns a filtered version of it.}
 \usage{
 check_filter(df, var_value, var_name)
 }
 \arguments{
 \item{df}{um DataFrame que sera filtrado.}
 
-\item{var_value}{String, Codigo(s) do estabelecimento de saude}
+\item{var_value}{Uma string ou vetor de strings com os valores a serem filtrados. Se o valor for nulo, a função retorna o mesmo dataframe recebido.}
 
-\item{var_name}{String, nome da coluna no data frame que sera usada para a filtragem.}
+\item{var_name}{String. Nome da coluna do DataFrame que será utilizada para a filtragem.}
 }
 \value{
-filtered_df
+Retorna uma tabela filtrada pelo valor de \code{var_value} na coluna \code{var_name}.
 }
 \description{
-Funcao auxiliar para filtrar uma lista ou todos; Funcao para filtrar pelo CNES ou pelo municipio
+Função auxiliar que filtra uma base de dados com base em um valor específico.
 }

@@ -1,20 +1,15 @@
 
-#' get_counties: Obtem informacoes de todos os estados do Brasil
+#' Create a dataset with information on all municipalities in Brazil.
 #'
-#' @description A funcao `get_counties` cria o DataFrame `counties`, que contem informacoes detalhadas sobre os municipios do Brasil.
+#' @description Cria e salva no ambiente global do R o DataFrame `counties`, que contém informações detalhadas sobre os municípios do Brasil.
 #'
 #' @param state_abbr Sigla da Unidade Federativa
 #' @param county_id Codigo(s) do Municipio de Atendimento
 #' @param download Logico. O padrao é FALSE. Se for TRUE, os dados de 'counties' são baixados do site do IBGE. Se for FALSE, os dados são obtidos a partir de uma base de dados incluída no pacote.
 #'
-#' @return Salva o DataFrame `counties` no environment global .
-#'
 #' @export
 get_counties <- function(state_abbr, county_id, download = FALSE){
   `%>%` <- dplyr::`%>%`
-
-
-
 
   if(download==TRUE){
     request_url <- "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"

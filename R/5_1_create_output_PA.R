@@ -43,11 +43,7 @@ create_output_PA <-
       information_system = 'SIA'
 
       #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
-      if (!is.null(county_id)) {
-        if (nchar(county_id) == 7) {
-          county_id <- substr(county_id, 1, nchar(county_id) - 1)
-        }
-      }
+      county_id = process_county_id(county_id)
 
       state_abbr = toupper(trimws(state_abbr))
 

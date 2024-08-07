@@ -1,11 +1,12 @@
 
-#' chunk: Organiza os arquivos DBC a serem baixados em grupos.
+#' Organizes DBC files to be downloaded into groups
 #'
-#' @description
-#' Obtém os nomes dos arquivos DBC em files_name e os divide em grupos (chunks). O número de grupos e a quantidade de arquivos em cada grupo dependem do número de meses especificado.
+#' @description Obtém os nomes dos arquivos DBC em `files_name` e os divide em grupos (chunks). O número de grupos e a quantidade de arquivos em cada grupo dependem do número de meses especificado.
 #'
 #' @param files_name Um vetor contendo os nomes dos arquivos.
+#'
 #' @return files_chunks, uma lista de vetores de strings.
+#'
 #' @examples \dontrun{chunk( files_name = files_name)}
 #'
 #' @export
