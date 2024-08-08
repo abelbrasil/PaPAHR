@@ -1,7 +1,7 @@
 
 #' Create a database for the Hospital Information System (SIH/SUS) - AIH-RD, local data.
 #'
-#' @description Processar arquivos de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
+#' @description Processar arquivos de Autorização de Internação Hospitalar (AIH) Reduzida (RD) do Sistema de Informação Hospitalar (SIH) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 #'
 #'
 #' @param state_abbr String. Sigla da Unidade Federativa
@@ -30,7 +30,7 @@ create_output_SIH_RD_from_local <-
 
     tempo_inicio <- system.time({
       # AIH = Autorização de Internação Hospitalar
-      # RD = Reduzixa(Aprovada)
+      # RD = Reduzida(Aprovada)
 
       `%>%` <- dplyr::`%>%`
       information_system = 'SIH-RD'

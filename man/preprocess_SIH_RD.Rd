@@ -2,7 +2,7 @@
 % Please edit documentation in R/4_2_preprocess_SIH_RD.R
 \name{preprocess_SIH_RD}
 \alias{preprocess_SIH_RD}
-\title{Returns SIH-AIH Approved(RD) data in a structured and filtered form.}
+\title{Returns Reduced Data (RD) by SIH-AIH in a structured and filtered way.}
 \usage{
 preprocess_SIH_RD(
   cbo,
@@ -18,7 +18,7 @@ preprocess_SIH_RD(
 
 \item{cid}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CID'}}
 
-\item{raw_SIH_RD}{Dados de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH)}
+\item{raw_SIH_RD}{Dados de Autorização de Internação Hospitalar (AIH) Reduzida (RD) do Sistema de Informação Hospitalar (SIH)}
 
 \item{county_id}{Codigo(s) do Municipio de Atendimento}
 
@@ -27,8 +27,8 @@ preprocess_SIH_RD(
 \item{health_establishment_id}{Código(s) do estabelecimento de saúde}
 }
 \value{
-Retorna a tabela da Autorização de Internação Hospitalar (AIH) aprovados (RD) já filtrada e tratada.
+Retorna a tabela da Autorização de Internação Hospitalar (AIH) Reduzida (RD) já filtrada e tratada.
 }
 \description{
-Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) aprovados (RD) e combina as informações do CNES, SIGTAP e da base de dados \code{counties}.
+Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) Reduzida (RD) e combina as informações do CNES, SIGTAP e da base de dados \code{counties}.
 }

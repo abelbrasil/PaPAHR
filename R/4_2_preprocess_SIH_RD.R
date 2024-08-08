@@ -1,16 +1,16 @@
 
-#' Returns SIH-AIH Approved(RD) data in a structured and filtered form.
+#' Returns Reduced Data (RD) by SIH-AIH in a structured and filtered way.
 #'
-#' @description Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) aprovados (RD) e combina as informações do CNES, SIGTAP e da base de dados `counties`.
+#' @description Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) Reduzida (RD) e combina as informações do CNES, SIGTAP e da base de dados `counties`.
 #'
 #' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
 #' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
-#' @param raw_SIH_RD Dados de Autorização de Internação Hospitalar (AIH) aprovados (RD) do Sistema de Informação Hospitalar (SIH)
+#' @param raw_SIH_RD Dados de Autorização de Internação Hospitalar (AIH) Reduzida (RD) do Sistema de Informação Hospitalar (SIH)
 #' @param county_id Codigo(s) do Municipio de Atendimento
 #' @param procedure_details São os dados retornados pelo funcão `get_procedure_details`
 #' @param health_establishment_id Código(s) do estabelecimento de saúde
 #'
-#' @return Retorna a tabela da Autorização de Internação Hospitalar (AIH) aprovados (RD) já filtrada e tratada.
+#' @return Retorna a tabela da Autorização de Internação Hospitalar (AIH) Reduzida (RD) já filtrada e tratada.
 #'
 #' @export
 preprocess_SIH_RD <-
