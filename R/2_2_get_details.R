@@ -3,7 +3,7 @@
 #'
 #'@description Esta função filtra os dados baixados pela função `download_sigtap_files` usando o valor especificado no parâmetro `detail_name` e retorna os dados filtrados em um formato estruturado e organizado.
 #'
-#' @param detail_name String. Nome do arquivo desejado. Existem 8 opcoes possiveis: "Procedimento", "Grupo", "Subgrupo", "Forma de organizacao", "Financiamento", "Rubrica", "CBO", "CID".
+#' @param detail_name string. Nome do arquivo desejado. Existem 8 opções possíveis: "Procedimento", "Grupo", "Subgrupo", "Forma de organização", "Financiamento", "Rubrica", "CBO", "CID".
 #'
 #' @return Uma tabela dos dados correpondentes ao parametro `detail_name`
 #' @export

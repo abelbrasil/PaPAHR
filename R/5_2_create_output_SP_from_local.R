@@ -3,10 +3,10 @@
 #'
 #' @description Processar arquivos do Sistema de Informação Hospitalar (SIH) dos Serviço Profissionais (SP) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 #'
-#' @param state_abbr String. Sigla da Unidade Federativa
-#' @param dbc_dir_path Diretório que contêm os arquivos DBC
-#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
-#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
+#' @param state_abbr string or a vector of strings. Sigla da Unidade Federativa
+#' @param dbc_dir_path string. Caminho para o diretório  local que contêm os arquivos DBC
+#' @param county_id string or a vector of strings. Código do Município de Atendimento. O padrão é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id string or a vector of strings. Código do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIH-SP, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
@@ -31,10 +31,10 @@ create_output_SP_from_local <-
       `%>%` <- dplyr::`%>%`
       information_system = 'SIH-SP'
 
+      state_abbr = toupper(trimws(state_abbr))
+
       #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
       county_id = process_county_id(county_id)
-
-      state_abbr = toupper(trimws(state_abbr))
 
       #Cria uma variável global com os dados do município
       get_counties()
@@ -70,7 +70,9 @@ create_output_SP_from_local <-
       dbf_files <- list.files(dbc_dir_path, pattern = "\\.dbc$", full.names = FALSE)
 
       #Filtra só os arquivos SP
-      files_name <- dbf_files[grep(paste0("SP",state_abbr), dbf_files)]
+      files_name <- unlist(lapply(state_abbr, function(y) {
+        dbf_files[grep(paste0("SP", y), dbf_files)]
+      }))
 
       #Separa os arquivos SP em grupos, caso haja vários arquivos para serem baixados.
       files_chunks = chunk(files_name)
@@ -85,12 +87,12 @@ create_output_SP_from_local <-
 
         #Retorna TRUE se o DF raw_SIH_SP contiver valores correspondente ao
         # município especificado (county_id)
-        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIH_SP$SP_M_HOSP)
+        county_TRUE <- !is.null(county_id) && any(county_id %in% raw_SIH_SP$SP_M_HOSP)
 
         #Retorna TRUE se o DF raw_SIH_SP contiver valores correspondente ao
         # estabelecimento especificado (health_establishment_id)
         establishment_TRUE <- !is.null(health_establishment_id) &&
-          (health_establishment_id %in% raw_SIH_SP$SP_CNES)
+          any(health_establishment_id %in% raw_SIH_SP$SP_CNES)
 
         #Filtra, Estrutura, une e cria novas colunas nos dados SP.
         if(county_TRUE){

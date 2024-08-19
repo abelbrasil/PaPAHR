@@ -12,13 +12,13 @@ create_output_SIH_RJ_from_local(
 )
 }
 \arguments{
-\item{state_abbr}{String. Sigla da Unidade Federativa}
+\item{state_abbr}{string or a vector of strings. Sigla da Unidade Federativa}
 
-\item{dbc_dir_path}{Diretório que contêm os arquivos DBC}
+\item{dbc_dir_path}{string. Caminho para o diretório  local que contêm os arquivos DBC}
 
-\item{county_id}{Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.}
+\item{county_id}{string or a vector of strings. Código do Município de Atendimento. O padrão é NULL. É obrigatório se health_establishment_id for NULL.}
 
-\item{health_establishment_id}{Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
+\item{health_establishment_id}{string or a vector of strings. Código do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
 }
 \value{
 Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RJ, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.

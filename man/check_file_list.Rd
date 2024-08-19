@@ -15,13 +15,13 @@ check_file_list(
 \arguments{
 \item{dir_files}{Um DataFrame contendo os nomes dos arquivos e a data correspondente a cada arquivo}
 
-\item{data_type}{String. Valores aceitos "PA", "RD", "RJ", "SP"}
+\item{data_type}{string. Valores aceitos "PA", "RD", "RJ", "SP"}
 
-\item{state_abbr}{String. Sigla da Unidade Federativa}
+\item{state_abbr}{string or a vector of strings. Sigla da Unidade Federativa}
 
-\item{publication_date_start}{Uma string no formato "AAAA-MM-01", indicando o mes de inicio para o download dos dados.}
+\item{publication_date_start}{string. Mês de inicio para o download dos dados. No formato "AAAA-MM-01",}
 
-\item{publication_date_end}{Uma string no formato "AAAA-MM-01", indicando o mes de termino para o download dos dados.}
+\item{publication_date_end}{string. Mês de termino para o download dos dados. No formato "AAAA-MM-01".}
 }
 \description{
 A função verifica se a função \code{list_SIA_SIH_files} retornou um arquivo para cada mês. Se algum mês estiver sem um arquivo, a função imprime no console as datas dos meses faltantes.

@@ -14,17 +14,17 @@ download_sigtap_files(
 )
 }
 \arguments{
-\item{year_start}{Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.}
+\item{year_start}{numeric. Ano inicial para o download dos dados, no formato yyyy.}
 
-\item{month_start}{Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.}
+\item{month_start}{numeric. Mês inicial para o download dos dados, no formato mm.}
 
-\item{year_end}{Um numero de 4 digitos, indicando o ano de termino para o download dos dados.}
+\item{year_end}{numeric. Ano final para o download dos dados, no formato yyyy.}
 
-\item{month_end}{Um numero de 2 digitos, indicando o mes de termino para o download dos dados.}
+\item{month_end}{numeric. Mês final para o download dos dados, no formato mm.}
 
-\item{newer}{Logico. O padrao é TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.}
+\item{newer}{logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no SIGTAP.}
 
-\item{specific_dates}{Um vetor de strings contendo as datas específicas que se deseja baixar.}
+\item{specific_dates}{string or a vector of strings. Contem as datas específicas que se deseja baixar.}
 }
 \description{
 A função \code{download_sigtap_files} baixa e descompacta arquivos SIGTAP do site DataSUS. Esses arquivos são salvos temporariamente na máquina local. Para cada mês, será baixado um arquivo compactado. Primeiro, a função verifica se o arquivo do mês especificado já existe na pasta temporária. Se o arquivo estiver presente, ela não baixa o arquivo novamente para esse mês.

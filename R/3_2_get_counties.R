@@ -4,8 +4,8 @@
 #' @description Cria e salva no ambiente global do R o DataFrame `counties`, que contém informações detalhadas sobre os municípios do Brasil.
 #'
 #' @param state_abbr Sigla da Unidade Federativa
-#' @param county_id Codigo(s) do Municipio de Atendimento
-#' @param download Logico. O padrao é FALSE. Se for TRUE, os dados de 'counties' são baixados do site do IBGE. Se for FALSE, os dados são obtidos a partir de uma base de dados incluída no pacote.
+#' @param county_id string or a vector of strings. Código do Município de Atendimento.
+#' @param download logico. O padrao é FALSE. Se for TRUE, os dados de 'counties' são baixados do site do IBGE. Se for FALSE, os dados são obtidos a partir de uma base de dados incluída no pacote.
 #'
 #' @export
 get_counties <- function(state_abbr, county_id, download = FALSE){
@@ -43,7 +43,7 @@ get_counties <- function(state_abbr, county_id, download = FALSE){
       cat("O arquivo 'counties.rds' nao foi encontrado no diretório:", caminho_pasta, "\n")
     }
   }
-  counties = counties %>% dplyr::select(-'sigla_estado')
+  #counties = counties %>% dplyr::select(-'sigla_estado')
 
   # Atribuir o dataframe ao environment global
   assign("counties", counties, envir = .GlobalEnv)

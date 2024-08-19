@@ -6,9 +6,9 @@
 #' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
 #' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
 #' @param raw_SIH_SP Dados dos Serviços Profissionais (SP) do Sistema de Informação Hospitalar (SIH)
-#' @param county_id Código(s) do Município de Atendimento
+#' @param county_id string or a vector of strings. Código do Município de Atendimento.
 #' @param procedure_details São os dados retornados pelo função `get_procedure_details`
-#' @param health_establishment_id Código(s) do estabelecimento de saúde
+#' @param health_establishment_id string or a vector of strings. Código do estabelecimento de saúde.
 #'
 #' @return Retorna a tabela dos Serviços Profissionais (SP)  já filtrada e tratada.
 #'
@@ -85,12 +85,12 @@ preprocess_SIH_SP <-
                   `Tipo de Valor` = IN_TP_VAL,
                   `Ocupacao` = NO_OCUPACAO,
                   `Nome da Mobirdade (CID)` = NO_CID,
-                  `Microrregiao` = nome_microrregiao,
-                  `Mesorregiao` = nome_mesorregiao,
-                  Estabelecimento = NO_ESTABELECIMENTO,
+                  `Microrregião IBGE de Residência` = nome_microrregiao,
+                  `Mesorregião IBGE de Residência` = nome_mesorregiao,
+                  `Estado Residencia` = nome_estado,
+                  `Estabelecimento CNES` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = SP_M_HOSP,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento,
-                  Estado = nome_estado)
+                  `Municipio do Estabelecimento` = municipio_estabelecimento)
 
   return(outputSIH_SP)
 }

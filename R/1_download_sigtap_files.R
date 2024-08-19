@@ -3,12 +3,12 @@
 #'
 #' @description A função `download_sigtap_files` baixa e descompacta arquivos SIGTAP do site DataSUS. Esses arquivos são salvos temporariamente na máquina local. Para cada mês, será baixado um arquivo compactado. Primeiro, a função verifica se o arquivo do mês especificado já existe na pasta temporária. Se o arquivo estiver presente, ela não baixa o arquivo novamente para esse mês.
 #'
-#' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
-#' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
-#' @param year_end Um numero de 4 digitos, indicando o ano de termino para o download dos dados.
-#' @param month_end Um numero de 2 digitos, indicando o mes de termino para o download dos dados.
-#' @param newer Logico. O padrao é TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.
-#' @param specific_dates Um vetor de strings contendo as datas específicas que se deseja baixar.
+#' @param year_start numeric. Ano inicial para o download dos dados, no formato yyyy.
+#' @param month_start numeric. Mês inicial para o download dos dados, no formato mm.
+#' @param year_end numeric. Ano final para o download dos dados, no formato yyyy.
+#' @param month_end numeric. Mês final para o download dos dados, no formato mm.
+#' @param newer logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no SIGTAP.
+#' @param specific_dates string or a vector of strings. Contem as datas específicas que se deseja baixar.
 #'
 #' @export
 #'

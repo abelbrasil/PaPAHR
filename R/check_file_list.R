@@ -4,10 +4,10 @@
 #' @description A função verifica se a função `list_SIA_SIH_files` retornou um arquivo para cada mês. Se algum mês estiver sem um arquivo, a função imprime no console as datas dos meses faltantes.
 #'
 #' @param dir_files Um DataFrame contendo os nomes dos arquivos e a data correspondente a cada arquivo
-#' @param data_type String. Valores aceitos "PA", "RD", "RJ", "SP"
-#' @param state_abbr String. Sigla da Unidade Federativa
-#' @param publication_date_start Uma string no formato "AAAA-MM-01", indicando o mes de inicio para o download dos dados.
-#' @param publication_date_end Uma string no formato "AAAA-MM-01", indicando o mes de termino para o download dos dados.
+#' @param data_type string. Valores aceitos "PA", "RD", "RJ", "SP"
+#' @param state_abbr string or a vector of strings. Sigla da Unidade Federativa
+#' @param publication_date_start string. Mês de inicio para o download dos dados. No formato "AAAA-MM-01",
+#' @param publication_date_end string. Mês de termino para o download dos dados. No formato "AAAA-MM-01".
 #'
 #' @examples \dontrun{
 #'   check_file_list(
@@ -39,7 +39,7 @@ check_file_list <-
     faltando <- setdiff(as.character(meses), as.character(meses_baixados))
 
     if (length(faltando) > 0) {
-      cat("Não foi possível baixar os dados de", data_type,"do estado de", state_abbr,
+      cat("Não foi possível baixar os dados de", data_type,"do(s) estado(s) ", state_abbr,
         "para os seguinte(s) mes(es):\n")
       print(faltando)
     }

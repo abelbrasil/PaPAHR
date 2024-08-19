@@ -3,11 +3,10 @@
 #'
 #' @description Processar arquivos de Autorização de Internação Hospitalar (AIH) Reduzida (RD) do Sistema de Informação Hospitalar (SIH) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
 #'
-#'
-#' @param state_abbr String. Sigla da Unidade Federativa
-#' @param dbc_dir_path Diretório que contêm os arquivos DBC
-#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
-#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
+#' @param state_abbr string or a vector of strings. Sigla da Unidade Federativa
+#' @param dbc_dir_path string. Caminho para o diretório  local que contêm os arquivos DBC
+#' @param county_id string or a vector of strings. Código do Município de Atendimento. O padrão é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id string or a vector of strings. Código do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
@@ -74,7 +73,9 @@ create_output_SIH_RD_from_local <-
       dbf_files <- list.files(dbc_dir_path, pattern = "\\.dbc$", full.names = FALSE)
 
       #Filtra só os arquivos RD
-      files_name <- dbf_files[grep(paste0("RD",state_abbr), dbf_files)]
+      files_name <- unlist(lapply(state_abbr, function(y) {
+        dbf_files[grep(paste0("RD", y), dbf_files)]
+      }))
 
       #Separa os arquivos RD em grupos, caso haja vários arquivos para serem baixados.
       files_chunks = chunk(files_name)
@@ -89,12 +90,12 @@ create_output_SIH_RD_from_local <-
 
         #Retorna TRUE se o DF raw_SIH_RD contiver valores correspondente ao
         # município especificado (county_id)
-        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIH_RD$MUNIC_MOV)
+        county_TRUE <- !is.null(county_id) && any(county_id %in% raw_SIH_RD$MUNIC_MOV)
 
         #Retorna TRUE se o DF raw_SIH_RD contiver valores correspondente ao
         # estabelecimento especificado (health_establishment_id)
         establishment_TRUE <- !is.null(health_establishment_id) &&
-          (health_establishment_id %in% raw_SIH_RD$CNES)
+          any(health_establishment_id %in% raw_SIH_RD$CNES)
 
         #Filtra, Estrutura, une e cria novas colunas nos dados SP.
         if(county_TRUE){

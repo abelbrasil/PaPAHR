@@ -6,9 +6,9 @@
 #' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
 #' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
 #' @param raw_SIH_RJ Dados de Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) do Sistema de Informação Hospitalar (SIH)
-#' @param county_id Codigo(s) do Municipio de Atendimento
+#' @param county_id string or a vector of strings. Código do Município de Atendimento.
 #' @param procedure_details São os dados retornados pelo função `get_procedure_details`
-#' @param health_establishment_id Código(s) do estabelecimento de saúde
+#' @param health_establishment_id string or a vector of strings. Código do estabelecimento de saúde.
 #'
 #' @return Retorna a tabela da Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) já filtrada e tratada.
 #'
@@ -70,12 +70,12 @@ preprocess_SIH_RJ <-
                   `Frequencia` = QTD_AIH,
                   `Sequencial` = N_AIH,
                   `Municipio de Residencia` = nome_municipio,
+                  `Estado de Residencia` = nome_estado,
                   `Mesorregiao IBGE de Resid.` = nome_mesorregiao,
                   `Microrregiao IBGE de Resid.` = nome_microrregiao,
                   `Hospital (CNES)` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = MUNIC_MOV,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento,
-                  `Estado de Residencia` = nome_estado)
+                  `Municipio do Estabelecimento` = municipio_estabelecimento)
 
   return(outputSIH_RJ)
 }

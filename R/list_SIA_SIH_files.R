@@ -53,7 +53,7 @@ list_SIA_SIH_files <-
       ) %>%
       dplyr::filter(
         file_type %in% data_type,
-        state == state_abbr,
+        state %in% state_abbr,
         publication_date >= publication_date_start,
         publication_date <= publication_date_end
       )

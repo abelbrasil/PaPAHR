@@ -7,7 +7,7 @@
 get_detail(detail_name)
 }
 \arguments{
-\item{detail_name}{String. Nome do arquivo desejado. Existem 8 opcoes possiveis: "Procedimento", "Grupo", "Subgrupo", "Forma de organizacao", "Financiamento", "Rubrica", "CBO", "CID".}
+\item{detail_name}{string. Nome do arquivo desejado. Existem 8 opções possíveis: "Procedimento", "Grupo", "Subgrupo", "Forma de organização", "Financiamento", "Rubrica", "CBO", "CID".}
 }
 \value{
 Uma tabela dos dados correpondentes ao parametro \code{detail_name}

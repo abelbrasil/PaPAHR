@@ -20,11 +20,11 @@ preprocess_SIH_SP(
 
 \item{raw_SIH_SP}{Dados dos Serviços Profissionais (SP) do Sistema de Informação Hospitalar (SIH)}
 
-\item{county_id}{Código(s) do Município de Atendimento}
+\item{county_id}{string or a vector of strings. Código do Município de Atendimento.}
 
 \item{procedure_details}{São os dados retornados pelo função \code{get_procedure_details}}
 
-\item{health_establishment_id}{Código(s) do estabelecimento de saúde}
+\item{health_establishment_id}{string or a vector of strings. Código do estabelecimento de saúde.}
 }
 \value{
 Retorna a tabela dos Serviços Profissionais (SP)  já filtrada e tratada.

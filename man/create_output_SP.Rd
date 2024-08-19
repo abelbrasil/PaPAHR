@@ -15,19 +15,19 @@ create_output_SP(
 )
 }
 \arguments{
-\item{year_start}{Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.}
+\item{year_start}{numeric. Ano inicial para o download dos dados, no formato yyyy.}
 
-\item{month_start}{Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.}
+\item{month_start}{numeric. Mês inicial para o download dos dados, no formato mm.}
 
-\item{year_end}{Um numero de 4 digitos, indicando o ano de termino para o download dos dados.}
+\item{year_end}{numeric. Ano final para o download dos dados, no formato yyyy.}
 
-\item{month_end}{Um numero de 2 digitos, indicando o mes de termino para o download dos dados.}
+\item{month_end}{numeric. Mês final para o download dos dados, no formato mm.}
 
-\item{state_abbr}{String. Sigla da Unidade Federativa}
+\item{state_abbr}{string or a vector of strings. Sigla da Unidade Federativa}
 
-\item{county_id}{Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.}
+\item{county_id}{string or a vector of strings. Código do Município de Atendimento. O padrão é NULL. É obrigatório se health_establishment_id for NULL.}
 
-\item{health_establishment_id}{Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
+\item{health_establishment_id}{string or a vector of strings. Código do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
 }
 \value{
 Um DataFrame estruturado contendo dados do SUS-SIH-SP, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.

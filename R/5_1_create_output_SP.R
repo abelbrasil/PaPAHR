@@ -3,13 +3,13 @@
 #'
 #' @description Processar arquivos do Sistema de Informação Hospitalar (SIH) dos Serviço Profissionais (SP) do DATASUS e integrá-los com dados do CNES e SIGTAP.
 #'
-#' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
-#' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
-#' @param year_end Um numero de 4 digitos, indicando o ano de termino para o download dos dados.
-#' @param month_end Um numero de 2 digitos, indicando o mes de termino para o download dos dados.
-#' @param state_abbr String. Sigla da Unidade Federativa
-#' @param county_id Codigo do Municipio de Atendimento. O padrao é NULL. É obrigatório se health_establishment_id for NULL.
-#' @param health_establishment_id Código(s) do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
+#' @param year_start numeric. Ano inicial para o download dos dados, no formato yyyy.
+#' @param month_start numeric. Mês inicial para o download dos dados, no formato mm.
+#' @param year_end numeric. Ano final para o download dos dados, no formato yyyy.
+#' @param month_end numeric. Mês final para o download dos dados, no formato mm.
+#' @param state_abbr string or a vector of strings. Sigla da Unidade Federativa
+#' @param county_id string or a vector of strings. Código do Município de Atendimento. O padrão é NULL. É obrigatório se health_establishment_id for NULL.
+#' @param health_establishment_id string or a vector of strings. Código do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIH-SP, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
@@ -42,10 +42,10 @@ create_output_SP <-
       `%>%` <- dplyr::`%>%`
       information_system = 'SIH-SP'
 
+      state_abbr = toupper(trimws(state_abbr))
+
       #Se o id do municipio for igual a 7 caracteres, remove o último caracter.
       county_id = process_county_id(county_id)
-
-      state_abbr = toupper(trimws(state_abbr))
 
       #Cria uma variável global com os dados do município
       get_counties()
@@ -118,12 +118,12 @@ create_output_SP <-
 
         #Retorna TRUE se o DF raw_SIH_SP contiver valores correspondente ao
         # município especificado (county_id)
-        county_TRUE <- !is.null(county_id) && (county_id %in% raw_SIH_SP$SP_M_HOSP)
+        county_TRUE <- !is.null(county_id) && any(county_id %in% raw_SIH_SP$SP_M_HOSP)
 
         #Retorna TRUE se o DF raw_SIH_SP contiver valores correspondente ao
         # estabelecimento especificado (health_establishment_id)
         establishment_TRUE <- !is.null(health_establishment_id) &&
-          (health_establishment_id %in% raw_SIH_SP$SP_CNES)
+          any(health_establishment_id %in% raw_SIH_SP$SP_CNES)
 
         #Filtra, Estrutura, une e cria novas colunas nos dados SP.
         if(county_TRUE){

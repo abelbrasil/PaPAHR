@@ -3,12 +3,12 @@
 #'
 #' @description A função `download_cnes_files` baixa arquivos do CNES (Cadastro Nacional de Estabelecimentos de Saúde) e os armazena temporariamente na máquina local.
 #'
-#' @param year_start Um numero de 4 digitos, indicando o ano de inicio para o download dos dados.
-#' @param month_start Um numero de 2 digitos, indicando o mes de inicio para o download dos dados.
-#' @param year_end Um numero de 4 digitos, indicando o ano de termino para o download dos dados.
-#' @param month_end Um numero de 2 digitos, indicando o mes de termino para o download dos dados.
-#' @param newer Logico. O padrao é TRUE. Se for TRUE e os outros parametros forem nulos, obtem o arquivo do mes mais recente disponivel no SIGTAP.
-#' @param state_abbr String. O padrao e "all". Sigla da Unidade Federativa
+#' @param year_start numeric. Ano inicial para o download dos dados, no formato yyyy.
+#' @param month_start numeric. Mês inicial para o download dos dados, no formato mm.
+#' @param year_end numeric. Ano final para o download dos dados, no formato yyyy.
+#' @param month_end numeric. Mês final para o download dos dados, no formato mm.
+#' @param newer logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no CNES.
+#' @param state_abbr string. O padrao e "all". Sigla da Unidade Federativa
 #'
 #'@examples
 #' \dontrun{download_cnes_files(newer = TRUE)}

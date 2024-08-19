@@ -1,7 +1,7 @@
 
 #' Removes the last character from county_id if it is 7 characters long.
 #'
-#' @param county_id Uma string ou um vetor de strings contendo o código do município de atendimento
+#' @param county_id string or a vector of strings. Código do Município de Atendimento.
 #'
 #' @return Retorna o `county_id` com um caractere a menos se ele tiver 7 caracteres.
 #'
