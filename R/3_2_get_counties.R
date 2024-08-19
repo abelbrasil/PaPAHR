@@ -43,7 +43,7 @@ get_counties <- function(state_abbr, county_id, download = FALSE){
       cat("O arquivo 'counties.rds' nao foi encontrado no diretório:", caminho_pasta, "\n")
     }
   }
-  #counties = counties %>% dplyr::select(-'sigla_estado')
+  counties = counties %>% dplyr::select(-'sigla_estado')
 
   # Atribuir o dataframe ao environment global
   assign("counties", counties, envir = .GlobalEnv)
