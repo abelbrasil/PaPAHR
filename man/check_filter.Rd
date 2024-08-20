@@ -9,7 +9,7 @@ check_filter(df, var_value, var_name)
 \arguments{
 \item{df}{um DataFrame que sera filtrado.}
 
-\item{var_value}{string or a vector of strings. Os valores a serem filtrados. Se o valor for nulo, a função retorna o mesmo dataframe recebido.}
+\item{var_value}{string ou vetor de strings. Os valores a serem filtrados. Se o valor for nulo, a função retorna o mesmo dataframe recebido.}
 
 \item{var_name}{string. Nome da coluna do DataFrame que será utilizada para a filtragem.}
 }

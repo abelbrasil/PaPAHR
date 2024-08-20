@@ -23,11 +23,11 @@ create_output_PA(
 
 \item{month_end}{numeric. Mês final para o download dos dados, no formato mm.}
 
-\item{state_abbr}{string or a vector of strings. Sigla da Unidade Federativa}
+\item{state_abbr}{string ou vetor de strings. Sigla da Unidade Federativa}
 
-\item{county_id}{string or a vector of strings. Código do Município de Atendimento. O padrão é NULL. É obrigatório se health_establishment_id for NULL.}
+\item{county_id}{string ou vetor de strings. Código do município de atendimento. O padrão é NULL.  Se informado, todos os estabelecimentos de saúde desse município serão filtrados. Este parâmetro é obrigatório se health_establishment_id for NULL.}
 
-\item{health_establishment_id}{string or a vector of strings. Código do estabelecimento de saúde. O padrao é NULL. É obrigatório se county_id for NULL}
+\item{health_establishment_id}{string ou vetor de strings. Código do estabelecimento de saúde. O padrão é NULL. Este parâmetro é obrigatório se county_id for NULL. Será desconsiderado se county_id contiver um código válido de município.}
 }
 \value{
 Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.

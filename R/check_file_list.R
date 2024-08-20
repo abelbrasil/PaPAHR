@@ -5,7 +5,7 @@
 #'
 #' @param dir_files Um DataFrame contendo os nomes dos arquivos e a data correspondente a cada arquivo
 #' @param data_type string. Valores aceitos "PA", "RD", "RJ", "SP"
-#' @param state_abbr string or a vector of strings. Sigla da Unidade Federativa
+#' @param state_abbr string ou vetor de strings. Sigla da Unidade Federativa
 #' @param publication_date_start string. Mês de inicio para o download dos dados. No formato "AAAA-MM-01",
 #' @param publication_date_end string. Mês de termino para o download dos dados. No formato "AAAA-MM-01".
 #'

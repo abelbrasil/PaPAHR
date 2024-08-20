@@ -24,7 +24,7 @@ download_sigtap_files(
 
 \item{newer}{logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no SIGTAP.}
 
-\item{specific_dates}{string or a vector of strings. Contem as datas específicas que se deseja baixar.}
+\item{specific_dates}{string ou vetor de strings. Contem as datas específicas que se deseja baixar.}
 }
 \description{
 A função \code{download_sigtap_files} baixa e descompacta arquivos SIGTAP do site DataSUS. Esses arquivos são salvos temporariamente na máquina local. Para cada mês, será baixado um arquivo compactado. Primeiro, a função verifica se o arquivo do mês especificado já existe na pasta temporária. Se o arquivo estiver presente, ela não baixa o arquivo novamente para esse mês.

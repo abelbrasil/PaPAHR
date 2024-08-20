@@ -4,7 +4,7 @@
 #' @description Função auxiliar que filtra uma base de dados com base em um valor específico.
 #'
 #' @param df um DataFrame que sera filtrado.
-#' @param var_value string or a vector of strings. Os valores a serem filtrados. Se o valor for nulo, a função retorna o mesmo dataframe recebido.
+#' @param var_value string ou vetor de strings. Os valores a serem filtrados. Se o valor for nulo, a função retorna o mesmo dataframe recebido.
 #' @param var_name string. Nome da coluna do DataFrame que será utilizada para a filtragem.
 #'
 #' @return Retorna uma tabela filtrada pelo valor de `var_value` na coluna `var_name`.

@@ -9,7 +9,7 @@ get_counties(state_abbr, county_id, download = FALSE)
 \arguments{
 \item{state_abbr}{Sigla da Unidade Federativa}
 
-\item{county_id}{string or a vector of strings. Código do Município de Atendimento.}
+\item{county_id}{string ou vetor de strings. Código do Município de Atendimento.}
 
 \item{download}{logico. O padrao é FALSE. Se for TRUE, os dados de 'counties' são baixados do site do IBGE. Se for FALSE, os dados são obtidos a partir de uma base de dados incluída no pacote.}
 }

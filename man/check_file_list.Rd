@@ -17,7 +17,7 @@ check_file_list(
 
 \item{data_type}{string. Valores aceitos "PA", "RD", "RJ", "SP"}
 
-\item{state_abbr}{string or a vector of strings. Sigla da Unidade Federativa}
+\item{state_abbr}{string ou vetor de strings. Sigla da Unidade Federativa}
 
 \item{publication_date_start}{string. Mês de inicio para o download dos dados. No formato "AAAA-MM-01",}
 

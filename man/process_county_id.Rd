@@ -7,7 +7,7 @@
 process_county_id(county_id)
 }
 \arguments{
-\item{county_id}{string or a vector of strings. Código do Município de Atendimento.}
+\item{county_id}{string ou vetor de strings. Código do Município de Atendimento.}
 }
 \value{
 Retorna o \code{county_id} com um caractere a menos se ele tiver 7 caracteres.

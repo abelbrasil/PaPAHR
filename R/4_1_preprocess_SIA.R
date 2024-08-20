@@ -6,9 +6,9 @@
 #' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
 #' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
 #' @param raw_SIA Dados do DataSUS de Producao Ambulatorial (SIA)
-#' @param county_id string or a vector of strings. Código do Município de Atendimento.
+#' @param county_id string ou vetor de strings. Código do Município de Atendimento.
 #' @param procedure_details São os dados retornados pelo função `get_procedure_details`
-#' @param health_establishment_id string or a vector of strings. Código do estabelecimento de saúde.
+#' @param health_establishment_id string ou vetor de strings. Código do estabelecimento de saúde.
 #'
 #' @return Retorna a tabela da Produção Ambulatorial já filtrada e tratada.
 #'

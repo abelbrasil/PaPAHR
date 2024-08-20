@@ -8,7 +8,7 @@
 #' @param year_end numeric. Ano final para o download dos dados, no formato yyyy.
 #' @param month_end numeric. Mês final para o download dos dados, no formato mm.
 #' @param newer logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no SIGTAP.
-#' @param specific_dates string or a vector of strings. Contem as datas específicas que se deseja baixar.
+#' @param specific_dates string ou vetor de strings. Contem as datas específicas que se deseja baixar.
 #'
 #' @export
 #'

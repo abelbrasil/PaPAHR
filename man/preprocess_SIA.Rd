@@ -20,11 +20,11 @@ preprocess_SIA(
 
 \item{raw_SIA}{Dados do DataSUS de Producao Ambulatorial (SIA)}
 
-\item{county_id}{string or a vector of strings. Código do Município de Atendimento.}
+\item{county_id}{string ou vetor de strings. Código do Município de Atendimento.}
 
 \item{procedure_details}{São os dados retornados pelo função \code{get_procedure_details}}
 
-\item{health_establishment_id}{string or a vector of strings. Código do estabelecimento de saúde.}
+\item{health_establishment_id}{string ou vetor de strings. Código do estabelecimento de saúde.}
 }
 \value{
 Retorna a tabela da Produção Ambulatorial já filtrada e tratada.
