@@ -115,6 +115,14 @@ create_output_SIH_RJ_from_local <-
                                       county_id = NULL,
                                       procedure_details,
                                       health_establishment_id)
+        } else if (is.null(county_id) & is.null(health_establishment_id)) {
+          #Filtra todos os estabelecimentos do(s) estado(s) state_abbr
+          output <- preprocess_SIH_RJ(cbo,
+                                      cid,
+                                      raw_SIH_RJ,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
         } else {
           output = NULL
         }

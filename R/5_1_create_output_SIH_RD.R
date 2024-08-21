@@ -144,6 +144,14 @@ create_output_SIH_RD <-
                                       county_id = NULL,
                                       procedure_details,
                                       health_establishment_id)
+        } else if (is.null(county_id) & is.null(health_establishment_id)) {
+          #Filtra todos os estabelecimentos do(s) estado(s) state_abbr
+          output <- preprocess_SIH_RD(cbo,
+                                      cid,
+                                      raw_SIH_RD,
+                                      county_id,
+                                      procedure_details,
+                                      health_establishment_id)
         } else {
           output = NULL
         }
