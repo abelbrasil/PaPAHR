@@ -33,7 +33,7 @@ get_counties <- function(state_abbr, county_id, download = FALSE){
 
   } else{
     # Lendo o arquivo counties.rds
-    caminho_pasta <- system.file("extdata", package = "DATASUS.SIA.SIH")
+    caminho_pasta <- system.file("extdata", package = "FaturaSUS.AmbHosp")
     caminho_completo <- file.path(caminho_pasta, "counties.rds")
 
     # Verifique se o arquivo existe
