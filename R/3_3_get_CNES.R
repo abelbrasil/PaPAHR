@@ -7,36 +7,38 @@
 get_CNES <- function(){
   `%>%` <- dplyr::`%>%`
 
-  files_path = here::here("data-raw/CNES/ST")
+  tmp_dir <- tempdir()
+  files_path = stringr::str_glue("{tmp_dir}\\CNES\\ST")
   if (dir.exists(files_path)) {
     dbc_files <- list.files(files_path, pattern = "\\.dbc$", full.names = TRUE)
     if (length(dbc_files) == 27){
-      #cat("Os arquivos ST(Servicos Temporarios) do CNES nao serao baixados, pois ja estao no diretorio ./data-raw/CNES/ST.\n")
+      #cat("Os arquivos ST(Servicos Temporarios) do CNES nao serao baixados, pois ja estao no diretorio tempdir()/CNES/ST.\n")
     } else {
-      stop("A pasta ./data-raw/CNES/ST nao contem todos os 27 arquivos DBC do ST(Servicos Temporarios) do CNES.\n Exclua a pasta ./data-raw e execute o código novamente. ")
+      stop("A pasta " + files_path +" nao contem todos os 27 arquivos DBC do ST(Servicos Temporarios) do CNES.\n Exclua a pasta ST e execute o código novamente. ")
     }
   } else {
     #Realizando a primeira chamada da função download_cnes_files
     download_cnes_files(newer = TRUE)
   }
 
+  #Carregar os Arquivos CNES/ST
   health_establishment <-
-    here::here("data-raw", "CNES", "ST") %>%
+    files_path %>%
     list.files(full.names = TRUE) %>%
     purrr::map_dfr(read.dbc::read.dbc, as.is=TRUE)
 
-  files_path = here::here("data-raw/CNES/CADGER")
+  files_path = stringr::str_glue("{tmp_dir}\\CNES\\CADGER")
   if (dir.exists(files_path)) {
     unlink(files_path, recursive = TRUE)
   }
 
-  output_dir <- here::here("data-raw", "CNES", "CADGER")
+  output_dir <- stringr::str_glue("{tmp_dir}\\CNES\\CADGER")
   dir.create(output_dir)
 
-  # Movendo o arquivo do CADGER para a pasta "data-raw/CNES/CADGER"
+  # Movendo o arquivo do CADGER para a pasta "tempdir()/CNES/CADGER"
   caminho_pasta <- system.file("extdata", package = "FaturaSUS.AmbHosp")
   caminho_completo <- file.path(caminho_pasta, "CADGER-BR.rds")
-  dir_destino <- "./data-raw/CNES/CADGER"
+  dir_destino <- output_dir
 
   # Verifique se o arquivo existe
   if (file.exists(caminho_completo)) {
@@ -47,7 +49,7 @@ get_CNES <- function(){
   }
 
   health_establishment_details <-
-    here::here("data-raw", "CNES", "CADGER") %>%
+    dir_destino %>%
     list.files(full.names = TRUE) %>%
     purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
     purrr::map_dfr(readRDS)

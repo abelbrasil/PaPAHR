@@ -31,11 +31,13 @@ download_cnes_files <-
     if (!dir.exists(output_dir)){
       dir.create(output_dir)
     }
-    output_dir <- here::here("data-raw", "CNES")
+
+    tmp_dir <- tempdir()
+    output_dir <- stringr::str_glue("{tmp_dir}\\CNES")
     if (!dir.exists(output_dir)){
       dir.create(output_dir)
     }
-    output_dir <- here::here("data-raw", "CNES", "ST")
+    output_dir <- stringr::str_glue("{output_dir}\\ST")
     dir.create(output_dir)
 
     #Os dados do CADGER nao estao acessiveis atraves da URL abaixo. Para solucionar esse problema, o pacote ja incorpora esses valores, e quando é chamado, ele os copia para a pasta \data-raw\CNES\CADGER.
