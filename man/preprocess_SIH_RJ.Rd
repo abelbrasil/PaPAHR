@@ -5,7 +5,6 @@
 \title{Returns SIH-AIH Rejected(RJ) data in a structured and filtered form.}
 \usage{
 preprocess_SIH_RJ(
-  cbo,
   cid,
   raw_SIH_RJ,
   county_id,
@@ -14,8 +13,6 @@ preprocess_SIH_RJ(
 )
 }
 \arguments{
-\item{cbo}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CBO'}}
-
 \item{cid}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CID'}}
 
 \item{raw_SIH_RJ}{Dados de Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) do Sistema de Informação Hospitalar (SIH)}

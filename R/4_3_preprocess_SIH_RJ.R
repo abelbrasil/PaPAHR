@@ -3,7 +3,6 @@
 #'
 #' @description Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) e combina as informações do CNES, SIGTAP e da base de dados `counties`.
 #'
-#' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
 #' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
 #' @param raw_SIH_RJ Dados de Autorização de Internação Hospitalar (AIH) Rejeitadas (RJ) do Sistema de Informação Hospitalar (SIH)
 #' @param county_id string ou vetor de strings. Código do Município de Atendimento.
@@ -14,8 +13,7 @@
 #'
 #' @export
 preprocess_SIH_RJ <-
-  function(cbo,
-           cid,
+  function(cid,
            raw_SIH_RJ,
            county_id,
            procedure_details,

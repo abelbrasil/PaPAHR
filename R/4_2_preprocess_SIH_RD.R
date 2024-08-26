@@ -3,7 +3,6 @@
 #'
 #' @description Estrutura e filtra os dados da Autorização de Internação Hospitalar (AIH) Reduzida (RD) e combina as informações do CNES, SIGTAP e da base de dados `counties`.
 #'
-#' @param cbo É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CBO'`
 #' @param cid É a tabela retornada pela função `get_details` quando o parâmetro `detail_name='CID'`
 #' @param raw_SIH_RD Dados de Autorização de Internação Hospitalar (AIH) Reduzida (RD) do Sistema de Informação Hospitalar (SIH)
 #' @param county_id string ou vetor de strings. Código do Município de Atendimento.
@@ -14,8 +13,7 @@
 #'
 #' @export
 preprocess_SIH_RD <-
-  function(cbo,
-           cid,
+  function(cid,
            raw_SIH_RD,
            county_id,
            procedure_details,

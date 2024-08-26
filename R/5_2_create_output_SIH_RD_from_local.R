@@ -45,19 +45,6 @@ create_output_SIH_RD_from_local <-
       #Baixa os dados do CNES/ST e descompacta os dados do CNES/CADGER
       get_CNES()
 
-      download_sigtap_files() #obtem os dodos do SIGTAP do mes mais recente disponivel.
-
-      #Ler os dados do SIGTAP (Procedimentos, CBO e CID)
-      procedure_details <- get_procedure_details()
-      cbo <- get_detail("CBO")
-      cid <- get_detail("CID") %>%
-        dplyr::mutate(
-          #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
-          dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
-          NO_CID = stringr::str_c(CO_CID, NO_CID, sep = "-")
-        )
-
-
       tmp_dir <- tempdir()
       information_system_dir <- stringr::str_glue("{tmp_dir}\\{information_system}")
 
@@ -76,6 +63,24 @@ create_output_SIH_RD_from_local <-
       files_name <- unlist(lapply(state_abbr, function(y) {
         dbf_files[grep(paste0("RD", y), dbf_files)]
       }))
+
+      #Um vetor com as datas correspondentes aos arquivos dbc
+      data_completa = lubridate::ym(
+        stringr::str_c(substr(files_name, 5, 6), substr(files_name, 7, 8), sep="-")
+      )
+      specific_dates = paste0(substr(data_completa, 1, 4), substr(data_completa, 6, 7))
+
+      #Obtém os dados do SIGTAP correspondentes aos arquivos DBC
+      download_sigtap_files(newer = FALSE, specific_dates = specific_dates)
+
+      #Ler os dados do SIGTAP (Procedimentos e CID)
+      procedure_details <- get_procedure_details()
+      cid <- get_detail("CID") %>%
+        dplyr::mutate(
+          #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
+          dplyr::across(dplyr::ends_with("CID"), stringr::str_trim),
+          NO_CID = stringr::str_c(CO_CID, NO_CID, sep = "-")
+        )
 
       #Separa os arquivos RD em grupos, caso haja vários arquivos para serem baixados.
       files_chunks = chunk(files_name)
@@ -100,8 +105,7 @@ create_output_SIH_RD_from_local <-
         #Filtra, Estrutura, une e cria novas colunas nos dados SP.
         if(county_TRUE){
           #Filtra todos os estabelecimentos do municipio county_id
-          output <- preprocess_SIH_RD(cbo,
-                                      cid,
+          output <- preprocess_SIH_RD(cid,
                                       raw_SIH_RD,
                                       county_id,
                                       procedure_details,
@@ -109,16 +113,14 @@ create_output_SIH_RD_from_local <-
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
-          output <- preprocess_SIH_RD(cbo,
-                                      cid,
+          output <- preprocess_SIH_RD(cid,
                                       raw_SIH_RD,
                                       county_id = NULL,
                                       procedure_details,
                                       health_establishment_id)
         } else if (is.null(county_id) & is.null(health_establishment_id)) {
           #Filtra todos os estabelecimentos do(s) estado(s) state_abbr
-          output <- preprocess_SIH_RD(cbo,
-                                      cid,
+          output <- preprocess_SIH_RD(cid,
                                       raw_SIH_RD,
                                       county_id,
                                       procedure_details,

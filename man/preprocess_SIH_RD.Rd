@@ -5,7 +5,6 @@
 \title{Returns Reduced Data (RD) by SIH-AIH in a structured and filtered way.}
 \usage{
 preprocess_SIH_RD(
-  cbo,
   cid,
   raw_SIH_RD,
   county_id,
@@ -14,8 +13,6 @@ preprocess_SIH_RD(
 )
 }
 \arguments{
-\item{cbo}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CBO'}}
-
 \item{cid}{É a tabela retornada pela função \code{get_details} quando o parâmetro \code{detail_name='CID'}}
 
 \item{raw_SIH_RD}{Dados de Autorização de Internação Hospitalar (AIH) Reduzida (RD) do Sistema de Informação Hospitalar (SIH)}

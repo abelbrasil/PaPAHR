@@ -61,9 +61,8 @@ create_output_SIH_RJ <-
       publication_date_start <- lubridate::ym(stringr::str_glue("{year_start}-{month_start}"))
       publication_date_end <- lubridate::ym(stringr::str_glue("{year_end}-{month_end}"))
 
-      #Ler os dados do SIGTAP (Procedimentos, CBO e CID)
+      #Ler os dados do SIGTAP (Procedimentos e CID)
       procedure_details <- get_procedure_details()
-      cbo <- get_detail("CBO")
       cid <- get_detail("CID") %>%
         dplyr::mutate(
           #NO_CID = iconv(NO_CID, "latin1", "UTF-8"),
@@ -127,8 +126,7 @@ create_output_SIH_RJ <-
         #Filtra, Estrutura, une e cria novas colunas nos dados SP.
         if(county_TRUE){
           #Filtra todos os estabelecimentos do municipio county_id
-          output <- preprocess_SIH_RJ(cbo,
-                                      cid,
+          output <- preprocess_SIH_RJ(cid,
                                       raw_SIH_RJ,
                                       county_id,
                                       procedure_details,
@@ -136,16 +134,14 @@ create_output_SIH_RJ <-
 
         }  else if (establishment_TRUE){
           #Filtra só os estabelecimentos health_establishment_id
-          output <- preprocess_SIH_RJ(cbo,
-                                      cid,
+          output <- preprocess_SIH_RJ(cid,
                                       raw_SIH_RJ,
                                       county_id = NULL,
                                       procedure_details,
                                       health_establishment_id)
         } else if (is.null(county_id) & is.null(health_establishment_id)) {
           #Filtra todos os estabelecimentos do(s) estado(s) state_abbr
-          output <- preprocess_SIH_RJ(cbo,
-                                      cid,
+          output <- preprocess_SIH_RJ(cid,
                                       raw_SIH_RJ,
                                       county_id,
                                       procedure_details,
