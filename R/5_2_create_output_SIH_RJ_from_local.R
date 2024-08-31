@@ -7,6 +7,7 @@
 #' @param dbc_dir_path string. Caminho para o diretório  local que contêm os arquivos DBC
 #' @param county_id string ou vetor de strings. Código do município de atendimento. O padrão é NULL.  Se informado, todos os estabelecimentos de saúde desse município serão filtrados. Este parâmetro é obrigatório se health_establishment_id for NULL.
 #' @param health_establishment_id string ou vetor de strings. Código do estabelecimento de saúde. O padrão é NULL. Este parâmetro é obrigatório se county_id for NULL. Será desconsiderado se county_id contiver um código válido de município.
+#' @param save_csv Lógico. O valor padrão é TRUE. Quando definido como TRUE, a base de dados resultante da função é salva como um arquivo CSV no diretório './data-raw'.
 #'
 #' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RJ, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
 #'
@@ -16,7 +17,8 @@
 #'       state_abbr = "CE",
 #'       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
 #'       county_id = "230440",
-#'       health_establishment_id = c("2561492", "2481286")
+#'       health_establishment_id = c("2561492", "2481286"),
+#'       save_csv = TRUE
 #'     )
 #'   }
 #'
@@ -25,7 +27,8 @@ create_output_SIH_RJ_from_local <-
   function(state_abbr,
            dbc_dir_path,
            county_id = NULL,
-           health_establishment_id = NULL) {
+           health_establishment_id = NULL,
+           save_csv = TRUE) {
 
     tempo_inicio <- system.time({
       # AIH = Autorização de Internação Hospitalar
@@ -156,10 +159,12 @@ create_output_SIH_RJ_from_local <-
       if (nrow(outputSIH_RJ) == 0 | ncol(outputSIH_RJ) == 0){
         cat("As bases de dados SIH/RJ não contêm valores para o município ou estabelecimentos informados.\n")
       } else {
-        write.csv2(outputSIH_RJ,
-                   "./data-raw/outputSIH_RJ.csv",
-                   na = "",
-                   row.names = FALSE)
+        if (save_csv){
+          write.csv2(outputSIH_RJ,
+                     "./data-raw/outputSIH_RJ.csv",
+                     na = "",
+                     row.names = FALSE)
+        }
       }
     })
     cat("Tempo de execução:", tempo_inicio[3] / 60, "minutos\n")

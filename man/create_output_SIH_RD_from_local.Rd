@@ -8,7 +8,8 @@ create_output_SIH_RD_from_local(
   state_abbr,
   dbc_dir_path,
   county_id = NULL,
-  health_establishment_id = NULL
+  health_establishment_id = NULL,
+  save_csv = TRUE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ create_output_SIH_RD_from_local(
 \item{county_id}{string ou vetor de strings. Código do município de atendimento. O padrão é NULL.  Se informado, todos os estabelecimentos de saúde desse município serão filtrados. Este parâmetro é obrigatório se health_establishment_id for NULL.}
 
 \item{health_establishment_id}{string ou vetor de strings. Código do estabelecimento de saúde. O padrão é NULL. Este parâmetro é obrigatório se county_id for NULL. Será desconsiderado se county_id contiver um código válido de município.}
+
+\item{save_csv}{Lógico. O valor padrão é TRUE. Quando definido como TRUE, a base de dados resultante da função é salva como um arquivo CSV no diretório './data-raw'.}
 }
 \value{
 Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
@@ -32,7 +35,8 @@ Processar arquivos de Autorização de Internação Hospitalar (AIH) Reduzida (R
       state_abbr = "CE",
       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
       county_id = "230440",
-      health_establishment_id = c("2561492", "2481286")
+      health_establishment_id = c("2561492", "2481286"),
+      save_csv = TRUE
     )
   }
 
