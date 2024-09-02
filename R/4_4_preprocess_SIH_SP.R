@@ -85,6 +85,7 @@ preprocess_SIH_SP <-
                   `Tipo de Valor` = IN_TP_VAL,
                   `Ocupacao` = NO_OCUPACAO,
                   `Nome da Mobirdade (CID)` = NO_CID,
+                  `Municipio Residencia` = nome_municipio,
                   `Microrregião IBGE de Residência` = nome_microrregiao,
                   `Mesorregião IBGE de Residência` = nome_mesorregiao,
                   `Estado Residencia` = nome_estado,

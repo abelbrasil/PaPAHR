@@ -16,7 +16,7 @@
 #'     dados = create_output_SIH_RD_from_local(
 #'       state_abbr = "CE",
 #'       dbc_dir_path = "X:/USID/BOLSA_EXTENSAO_2024/dbc/dbc-2301-2306",
-#'       county_id = "230440",
+#'       county_id = NULL,
 #'       health_establishment_id = c("2561492", "2481286"),
 #'       save_csv = TRUE
 #'     )

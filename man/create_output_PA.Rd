@@ -11,7 +11,8 @@ create_output_PA(
   month_end,
   state_abbr,
   county_id = NULL,
-  health_establishment_id = NULL
+  health_establishment_id = NULL,
+  save_csv = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ create_output_PA(
 \item{county_id}{string ou vetor de strings. Código do município de atendimento. O padrão é NULL.  Se informado, todos os estabelecimentos de saúde desse município serão filtrados. Este parâmetro é obrigatório se health_establishment_id for NULL.}
 
 \item{health_establishment_id}{string ou vetor de strings. Código do estabelecimento de saúde. O padrão é NULL. Este parâmetro é obrigatório se county_id for NULL. Será desconsiderado se county_id contiver um código válido de município.}
+
+\item{save_csv}{Lógico. O valor padrão é TRUE. Quando definido como TRUE, a base de dados resultante da função é salva como um arquivo CSV no diretório './data-raw'.}
 }
 \value{
 Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrados por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP. A função retorna um objeto como os dados e salva a base de dados na pasta './data-raw' em formato CSV, com o nome 'outputSIA.csv'.
@@ -43,8 +46,9 @@ Processar arquivos do Sistema de Informação Ambulatorial (SIA) da  Produção 
       year_end = 2023,
       month_end = 3,
       state_abbr = "CE",
-      county_id = "230440",
-      health_establishment_id = c("2561492", "2481286")
+      county_id = NULL,
+      health_establishment_id = c("2561492", "2481286"),
+      save_csv = TRUE
     )
   }
 
