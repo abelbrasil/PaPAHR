@@ -9,7 +9,7 @@
 #' @param health_establishment_id string ou vetor de strings. Código do estabelecimento de saúde. O padrão é NULL. Este parâmetro é obrigatório se county_id for NULL. Será desconsiderado se county_id contiver um código válido de município.
 #' @param save_csv Lógico. O valor padrão é TRUE. Quando definido como TRUE, a base de dados resultante da função é salva como um arquivo CSV no diretório './data-raw'.
 #'
-#' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
+#' @return Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrados por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP. A função retorna um objeto como os dados e salva a base de dados na pasta './data-raw' em formato CSV, com o nome 'outputSIH_RD.csv'.
 #'
 #' @examples
 #'   \dontrun{

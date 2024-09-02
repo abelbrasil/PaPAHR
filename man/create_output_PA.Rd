@@ -30,7 +30,7 @@ create_output_PA(
 \item{health_establishment_id}{string ou vetor de strings. Código do estabelecimento de saúde. O padrão é NULL. Este parâmetro é obrigatório se county_id for NULL. Será desconsiderado se county_id contiver um código válido de município.}
 }
 \value{
-Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
+Um DataFrame estruturado contendo dados do SUS-SIA-PA, filtrados por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP. A função retorna um objeto como os dados e salva a base de dados na pasta './data-raw' em formato CSV, com o nome 'outputSIA.csv'.
 }
 \description{
 Processar arquivos do Sistema de Informação Ambulatorial (SIA) da  Produção Ambulatorial (PA) do DATASUS e integrá-los com dados do CNES e SIGTAP.

@@ -24,7 +24,7 @@ create_output_SIH_RD_from_local(
 \item{save_csv}{Lógico. O valor padrão é TRUE. Quando definido como TRUE, a base de dados resultante da função é salva como um arquivo CSV no diretório './data-raw'.}
 }
 \value{
-Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrado por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP.
+Um DataFrame estruturado contendo dados do SUS-SIH-AIH-RD, filtrados por estado ou estabelecimentos de saúde dentro de um intervalo de datas específico, e combinado com informações do CNES e SIGTAP. A função retorna um objeto como os dados e salva a base de dados na pasta './data-raw' em formato CSV, com o nome 'outputSIH_RD.csv'.
 }
 \description{
 Processar arquivos de Autorização de Internação Hospitalar (AIH) Reduzida (RD) do Sistema de Informação Hospitalar (SIH) do DATASUS que já estão baixados localmente e integrá-los com dados do CNES e SIGTAP.
