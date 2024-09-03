@@ -101,8 +101,10 @@ create_output_PA <-
                       publication_date_end)
 
       #Separa os arquivos PA em grupos, caso haja vários arquivos para serem baixados.
-      files_chunks = chunk(dir_files$file_name)
+      files_chunks = chunk(dir_files$file_name, 'PA')
       n_chunks = length(files_chunks)
+
+      rm(dir_files)
 
       base_url <- stringr::str_glue(
         "ftp://ftp.datasus.gov.br/dissemin/publicos/{information_system}SUS/200801_/Dados/")
@@ -177,7 +179,7 @@ create_output_PA <-
         } else {
           output = NULL
         }
-
+        rm(raw_SIA)
 
         #O output de cada chunk é salvo em um arquivo .rds em uma pasta temporária do sistema.
         if (!is.null(output)) {
@@ -187,7 +189,11 @@ create_output_PA <-
 
           saveRDS(output, file = output_path)
         }
+        rm(output)
       }
+      rm(cbo,cid,procedure_details)
+      rm("counties", envir = .GlobalEnv)
+      rm("health_establishment", envir = .GlobalEnv)
 
       #Une os arquivos output.rds de cada chunk em um único arquivo.
       outputSIA <-
@@ -197,10 +203,6 @@ create_output_PA <-
                    recursive = TRUE) %>%
         purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
         purrr::map_dfr(readRDS)
-
-
-      rm("counties", envir = .GlobalEnv)
-      rm("health_establishment", envir = .GlobalEnv)
 
 
       # Salva o data frame em um arquivo CSV no diretorio atual

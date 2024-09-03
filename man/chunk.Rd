@@ -9,7 +9,7 @@ chunk(files_name, data_type = NULL)
 \arguments{
 \item{files_name}{Um vetor contendo os nomes dos arquivos.}
 
-\item{data_type}{String. O padrão é NULL. Valor aceito "PA".}
+\item{data_type}{String. O padrão é NULL. Valor aceito "PA" ou "SP".}
 }
 \value{
 files_chunks, uma lista de vetores de strings.

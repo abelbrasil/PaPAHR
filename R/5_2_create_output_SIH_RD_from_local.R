@@ -88,6 +88,7 @@ create_output_SIH_RD_from_local <-
       #Separa os arquivos RD em grupos, caso haja vários arquivos para serem baixados.
       files_chunks = chunk(files_name)
       n_chunks = length(files_chunks)
+      rm(dbf_files,files_name,data_completa,specific_dates)
 
       for (n in 1:n_chunks) {
         output_files_path <- stringr::str_glue("{dbc_dir_path}\\{files_chunks[[n]]}")
@@ -131,7 +132,7 @@ create_output_SIH_RD_from_local <-
         } else {
           output = NULL
         }
-
+        rm(raw_SIH_RD)
         #O output de cada chunk é salvo em um arquivo .rds em uma pasta temporária do sistema.
         if (!is.null(output)) {
           output_path <-
@@ -140,7 +141,11 @@ create_output_SIH_RD_from_local <-
 
           saveRDS(output, file = output_path)
         }
+        rm(output)
       }
+      rm(cid,procedure_details)
+      rm("counties", envir = .GlobalEnv)
+      rm("health_establishment", envir = .GlobalEnv)
 
       #Une os arquivos output.rds de cada chunk em um único arquivo.
       outputSIH_RD <-
@@ -151,9 +156,6 @@ create_output_SIH_RD_from_local <-
         purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
         purrr::map_dfr(readRDS)
 
-
-      rm("counties", envir = .GlobalEnv)
-      rm("health_establishment", envir = .GlobalEnv)
 
       # Salva o data frame em arquivo CSV no diretorio atual
       if (nrow(outputSIH_RD) == 0 | ncol(outputSIH_RD) == 0){

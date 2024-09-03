@@ -4,7 +4,7 @@
 #' @description Obtém os nomes dos arquivos DBC em `files_name` e os divide em grupos (chunks). O número de grupos e a quantidade de arquivos em cada grupo dependem do número de meses especificado.
 #'
 #' @param files_name Um vetor contendo os nomes dos arquivos.
-#' @param data_type String. O padrão é NULL. Valor aceito "PA".
+#' @param data_type String. O padrão é NULL. Valor aceito "PA" ou "SP".
 #'
 #' @return files_chunks, uma lista de vetores de strings.
 #'
@@ -19,7 +19,7 @@ chunk <- function(files_name,data_type=NULL){
 
   if (is.null(data_type)){
     peso = 0.2
-  } else if(data_type == 'PA'){
+  } else if(data_type == 'PA' | data_type == 'SP'){
     peso = 0.09
   }
 

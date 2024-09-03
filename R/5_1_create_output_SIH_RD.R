@@ -107,6 +107,7 @@ create_output_SIH_RD <-
       data_source = stringr::str_sub(information_system, 1, 3)
       base_url <- stringr::str_glue(
         "ftp://ftp.datasus.gov.br/dissemin/publicos/{data_source}SUS/200801_/Dados/")
+      rm(dir_files)
 
       for (n in 1:n_chunks) {
         dir.create(stringr::str_glue("{tmp_dir}\\{information_system}\\chunk_{n}"))
@@ -154,7 +155,7 @@ create_output_SIH_RD <-
         } else {
           output = NULL
         }
-
+        rm(raw_SIH_RD)
         #O output de cada chunk é salvo em um arquivo .rds em uma pasta temporária do sistema.
         if (!is.null(output)) {
           output_path <-
@@ -163,7 +164,11 @@ create_output_SIH_RD <-
 
           saveRDS(output, file = output_path)
         }
+        rm(output)
       }
+      rm(cid,procedure_details)
+      rm("counties", envir = .GlobalEnv)
+      rm("health_establishment", envir = .GlobalEnv)
 
       #Une os arquivos output.rds de cada chunk em um único arquivo.
       outputSIH_RD <-
@@ -173,10 +178,6 @@ create_output_SIH_RD <-
                    recursive = TRUE) %>%
         purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
         purrr::map_dfr(readRDS)
-
-
-      rm("counties", envir = .GlobalEnv)
-      rm("health_establishment", envir = .GlobalEnv)
 
       # Salva o data frame em arquivo CSV no diretorio atual
       if (nrow(outputSIH_RD) == 0 | ncol(outputSIH_RD) == 0){
