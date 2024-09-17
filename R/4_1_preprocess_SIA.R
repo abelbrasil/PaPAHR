@@ -85,12 +85,15 @@ preprocess_SIA <-
                   `Valor Aprovado` = PA_VALAPR,
                   `Valor Apresentado` = PA_VALPRO,
                   `Municipio Residencia` = nome_municipio, #counties
+                  `Regiao Residencia` = nome_regiao, #counties
                   `Micro IBGE Residencia` = nome_microrregiao, #counties
                   `Meso IBGE Residencia` = nome_mesorregiao, #counties
                   `Estado Residencia` = nome_estado, #counties
                   `Estabelecimento CNES` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = PA_UFMUN,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento)
+                  `Municipio do Estabelecimento` = municipio_estabelecimento)%>%
+
+    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) #Remove espaços em branco no final dos valores
 
   return(outputSIA)
 }

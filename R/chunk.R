@@ -18,7 +18,7 @@ chunk <- function(files_name,data_type=NULL){
   #files_name <- dplyr::pull(dir_files, file_name)
 
   if (is.null(data_type)){
-    peso = 0.2
+    peso = 0.15
   } else if(data_type == 'PA' | data_type == 'SP'){
     peso = 0.09
   }

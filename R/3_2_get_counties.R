@@ -27,7 +27,8 @@ get_counties <- function(state_abbr, county_id, download = FALSE){
             nome_mesorregiao = c("microrregiao", "mesorregiao", "nome"),
             id_estado = c("microrregiao", "mesorregiao", "UF", "id"),
             nome_estado = c("microrregiao", "mesorregiao", "UF", "nome"),
-            sigla_estado = c("microrregiao", "mesorregiao", "UF", "sigla")) %>%
+            sigla_estado = c("microrregiao", "mesorregiao", "UF", "sigla"),
+            nome_regiao = c("microrregiao", "mesorregiao", "UF", "regiao","nome")) %>%
       dplyr::mutate(id_municipio = stringr::str_sub(id_municipio, 1, 6)) %>%
       dplyr::select(-municipios)
 

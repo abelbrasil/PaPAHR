@@ -68,12 +68,15 @@ preprocess_SIH_RD <-
                   `Frequencia` = QTD_AIH,
                   `Sequencial` = N_AIH,
                   `Municipio de Residencia` = nome_municipio,
+                  `Regiao Residencia` = nome_regiao,
                   `Estado de Residencia` = nome_estado,
                   `Mesorregiao IBGE de Resid.` = nome_mesorregiao,
                   `Microrregiao IBGE de Resid.` = nome_microrregiao,
                   `Hospital (CNES)` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = MUNIC_MOV,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento)
+                  `Municipio do Estabelecimento` = municipio_estabelecimento)%>%
+
+    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) #Remove espaços em branco no final dos valores
 
   return(outputSIH_RD)
 }

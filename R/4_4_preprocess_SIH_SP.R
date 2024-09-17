@@ -40,7 +40,8 @@ preprocess_SIH_SP <-
                   ANO_INT = stringr::str_sub(SP_DTINTER, 1, 4),
                   MES_INT = stringr::str_sub(SP_DTINTER, 5, 6),
                   ANOMES_INT = stringr::str_c(ANO_INT, MES_INT),
-                  MESANO_INT = stringr::str_c(MES_INT, ANO_INT, sep="-")) %>%
+                  MESANO_INT = stringr::str_c(MES_INT, ANO_INT, sep="-"),
+                  SP_U_AIH = as.integer(SP_U_AIH)) %>%
     dplyr::left_join(counties, by=c("SP_M_PAC" = "id_municipio")) %>%
     dplyr::left_join(municipios, by = c("SP_M_HOSP" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,
@@ -86,12 +87,15 @@ preprocess_SIH_SP <-
                   `Ocupacao` = NO_OCUPACAO,
                   `Nome da Mobirdade (CID)` = NO_CID,
                   `Municipio Residencia` = nome_municipio,
+                  `Regiao Residencia` = nome_regiao,
                   `Microrregião IBGE de Residência` = nome_microrregiao,
                   `Mesorregião IBGE de Residência` = nome_mesorregiao,
                   `Estado Residencia` = nome_estado,
                   `Estabelecimento CNES` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = SP_M_HOSP,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento)
+                  `Municipio do Estabelecimento` = municipio_estabelecimento) %>%
+
+    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) #Remove espaços em branco no final dos valores
 
   return(outputSIH_SP)
 }
