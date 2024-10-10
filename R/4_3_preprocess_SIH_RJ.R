@@ -21,8 +21,9 @@ preprocess_SIH_RJ <-
   `%>%` <- dplyr::`%>%`
 
   municipios = counties %>%
-    dplyr::select(id_municipio, nome_municipio) %>%
-    dplyr::rename(municipio_estabelecimento = nome_municipio)
+    dplyr::select(id_municipio, nome_municipio, nome_regiao) %>%
+    dplyr::rename(municipio_estabelecimento = nome_municipio,
+                  nome_regiao_estabelecimento = nome_regiao)
 
   cols_to_convert = c(
     "Frequencia",
@@ -75,7 +76,8 @@ preprocess_SIH_RJ <-
                   `Microrregiao IBGE de Resid.` = nome_microrregiao,
                   `Hospital (CNES)` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = MUNIC_MOV,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento)%>%
+                  `Municipio do Estabelecimento` = municipio_estabelecimento,
+                  `Regiao do Estabelecimento` = nome_regiao_estabelecimento)%>%
 
     dplyr::mutate_all(~ stringr::str_trim(., side = "right")) %>%  #Remove espaços em branco no final dos valores
 

@@ -23,8 +23,9 @@ preprocess_SIH_SP <-
   `%>%` <- dplyr::`%>%`
 
   municipios = counties %>%
-    dplyr::select(id_municipio, nome_municipio) %>%
-    dplyr::rename(municipio_estabelecimento = nome_municipio)
+    dplyr::select(id_municipio, nome_municipio, nome_regiao) %>%
+    dplyr::rename(municipio_estabelecimento = nome_municipio,
+                  nome_regiao_estabelecimento = nome_regiao)
 
   cols_to_convert = c(
     "Quantidade Aprovada",
@@ -92,7 +93,8 @@ preprocess_SIH_SP <-
                   `Estado Residencia` = nome_estado,
                   `Estabelecimento CNES` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = SP_M_HOSP,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento) %>%
+                  `Municipio do Estabelecimento` = municipio_estabelecimento,
+                  `Regiao do Estabelecimento` = nome_regiao_estabelecimento) %>%
 
     dplyr::mutate_all(~ stringr::str_trim(., side = "right")) %>% #Remove espaços em branco no final dos valores
     dplyr::mutate(dplyr::across(dplyr::all_of(cols_to_convert), ~ as.numeric(.)))#Converte algumas colunas para numerico

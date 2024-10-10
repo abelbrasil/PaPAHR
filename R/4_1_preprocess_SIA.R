@@ -23,8 +23,9 @@ preprocess_SIA <-
   `%>%` <- dplyr::`%>%`
 
   municipios = counties %>%
-    dplyr::select(id_municipio, nome_municipio) %>%
-    dplyr::rename(municipio_estabelecimento = nome_municipio)
+    dplyr::select(id_municipio, nome_municipio, nome_regiao) %>%
+    dplyr::rename(municipio_estabelecimento = nome_municipio,
+                  nome_regiao_estabelecimento = nome_regiao)
 
   cols_to_convert = c(
     "Frequencia",
@@ -57,7 +58,7 @@ preprocess_SIA <-
                   NM_MES_MVM = stringr::str_glue("{sprintf('%02d', MES_MVM)} - {NM_MES_MVM}"),
                   TIPO_REGISTRO = dplyr::case_when(PA_DOCORIG == "C" ~ "BPA - Consolidado",
                                                    PA_DOCORIG == "I" ~ "BPA - Individualizado",
-                                                   PA_DOCORIG == "P" ~ "APAC - Procedimento Principal"
+                                                   PA_DOCORIG == "P" ~ "APAC - Procedimento Principal",
                                                    PA_DOCORIG == "S" ~ "APAC - Procedimento Secundario"),
                   NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID),
                   dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio,nome_regiao),
@@ -95,7 +96,8 @@ preprocess_SIA <-
                   `Estado Residencia` = nome_estado, #counties
                   `Estabelecimento CNES` = NO_ESTABELECIMENTO,
                   `Cod do Municipio do Estabelecimento` = PA_UFMUN,
-                  `Municipio do Estabelecimento` = municipio_estabelecimento)%>%
+                  `Municipio do Estabelecimento` = municipio_estabelecimento,
+                  `Regiao do Estabelecimento` = nome_regiao_estabelecimento)%>%
 
     dplyr::mutate_all(~ stringr::str_trim(., side = "right")) %>%  #Remove espaços em branco no final dos valores
     dplyr::mutate(dplyr::across(dplyr::all_of(cols_to_convert), ~ as.numeric(.)))#Converte algumas colunas para numerico
