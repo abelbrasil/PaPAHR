@@ -26,6 +26,13 @@ preprocess_SIA <-
     dplyr::select(id_municipio, nome_municipio) %>%
     dplyr::rename(municipio_estabelecimento = nome_municipio)
 
+  cols_to_convert = c(
+    "Frequencia",
+    "Quantidade Apresentada",
+    "Valor Aprovado",
+    "Valor Apresentado"
+  )
+
   outputSIA <- raw_SIA %>%
     tibble::as_tibble() %>%
     dplyr::rename(CNES = PA_CODUNI) %>%
@@ -50,15 +57,12 @@ preprocess_SIA <-
                   NM_MES_MVM = stringr::str_glue("{sprintf('%02d', MES_MVM)} - {NM_MES_MVM}"),
                   TIPO_REGISTRO = dplyr::case_when(PA_DOCORIG == "C" ~ "BPA - Consolidado",
                                                    PA_DOCORIG == "I" ~ "BPA - Individualizado",
-                                                   PA_DOCORIG == "P" ~ "APAC - Procedimento Principal",
+                                                   PA_DOCORIG == "P" ~ "APAC - Procedimento Principal"
                                                    PA_DOCORIG == "S" ~ "APAC - Procedimento Secundario"),
-                  PA_UFUNI = stringr::str_sub(PA_UFMUN, 1, 2),
-                  PA_UFPCN = stringr::str_sub(PA_MUNPCN, 1, 2),
                   NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID),
-                  dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio),
-                                ~ dplyr::case_when(PA_UFUNI == PA_UFPCN ~ .x,
-                                                   PA_UFUNI != PA_UFPCN ~ NA,
-                                                   PA_UFUNI == 99 | PA_UFPCN == 99 ~ "Nao informado"))) %>%
+                  dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio,nome_regiao),
+                                ~ dplyr::case_when(PA_MUNPCN != 999999 ~ .x,
+                                                   PA_MUNPCN == 999999 ~ "Nao informado"))) %>%
 
     dplyr::select(`Mes/Ano de Atendimento` = DT_CMP,
                   `Ano de Atendimento` = ANO_CMP,
@@ -93,7 +97,8 @@ preprocess_SIA <-
                   `Cod do Municipio do Estabelecimento` = PA_UFMUN,
                   `Municipio do Estabelecimento` = municipio_estabelecimento)%>%
 
-    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) #Remove espaços em branco no final dos valores
+    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) %>%  #Remove espaços em branco no final dos valores
+    dplyr::mutate(dplyr::across(dplyr::all_of(cols_to_convert), ~ as.numeric(.)))#Converte algumas colunas para numerico
 
   return(outputSIA)
 }

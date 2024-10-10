@@ -24,6 +24,11 @@ preprocess_SIH_RD <-
     dplyr::select(id_municipio, nome_municipio) %>%
     dplyr::rename(municipio_estabelecimento = nome_municipio)
 
+  cols_to_convert = c(
+    "Frequencia",
+    "Valor Total"
+  )
+
   outputSIH_RD <- raw_SIH_RD %>%
     tibble::as_tibble() %>%
     check_filter(var_value = county_id, var_name = "MUNIC_MOV") %>%
@@ -33,10 +38,7 @@ preprocess_SIH_RD <-
                   NM_MES_CMPT = stringr::str_to_title(lubridate::month(DT_CMPT, label=TRUE, abbr=FALSE)),
                   NM_MES_CMPT = stringr::str_glue("{sprintf('%02d', lubridate::month(DT_CMPT))} - {NM_MES_CMPT}"),
                   QTD_AIH = 1,
-                  ANOMES_CMPT = format(DT_CMPT, "%Y%m"),
-                  UF_RES = stringr::str_sub(MUNIC_RES, 1, 2),
-                  UF_GESTOR = stringr::str_sub(UF_ZI, 1, 2)
-    ) %>%
+                  ANOMES_CMPT = format(DT_CMPT, "%Y%m")) %>%
     dplyr::left_join(counties, by=c("MUNIC_RES" = "id_municipio")) %>%
     dplyr::left_join(municipios, by = c("MUNIC_MOV" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,
@@ -45,9 +47,8 @@ preprocess_SIH_RD <-
     dplyr::left_join(health_establishment, by="CNES") %>%
     dplyr::mutate(NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID),
                   dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio),
-                                ~ dplyr::case_when(UF_GESTOR == UF_RES ~ .x,
-                                                   UF_GESTOR != UF_RES ~ NA,
-                                                   UF_GESTOR == 99 | UF_RES == 99 ~ "Nao informado"
+                                ~ dplyr::case_when(MUNIC_RES != 999999 ~ .x,
+                                                   MUNIC_RES == 999999 ~ "Nao informado"
                                 ))) %>%
 
     dplyr::select(`Situacao da AIH` = TIPO,
@@ -76,7 +77,8 @@ preprocess_SIH_RD <-
                   `Cod do Municipio do Estabelecimento` = MUNIC_MOV,
                   `Municipio do Estabelecimento` = municipio_estabelecimento)%>%
 
-    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) #Remove espaços em branco no final dos valores
+    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) %>% #Remove espaços em branco no final dos valores
+    dplyr::mutate(dplyr::across(dplyr::all_of(cols_to_convert), ~ as.numeric(.)))#Converte algumas colunas para numerico
 
   return(outputSIH_RD)
 }

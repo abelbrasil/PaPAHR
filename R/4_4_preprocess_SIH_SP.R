@@ -26,6 +26,13 @@ preprocess_SIH_SP <-
     dplyr::select(id_municipio, nome_municipio) %>%
     dplyr::rename(municipio_estabelecimento = nome_municipio)
 
+  cols_to_convert = c(
+    "Quantidade Aprovada",
+    "Valor Aprovado",
+    "Quantidade de Ato",
+    "Frequencia"
+  )
+
   outputSIH_SP <- raw_SIH_SP %>%
     tibble::as_tibble() %>%
     dplyr::rename(CNES = SP_CNES) %>%
@@ -40,8 +47,7 @@ preprocess_SIH_SP <-
                   ANO_INT = stringr::str_sub(SP_DTINTER, 1, 4),
                   MES_INT = stringr::str_sub(SP_DTINTER, 5, 6),
                   ANOMES_INT = stringr::str_c(ANO_INT, MES_INT),
-                  MESANO_INT = stringr::str_c(MES_INT, ANO_INT, sep="-"),
-                  SP_U_AIH = as.integer(SP_U_AIH)) %>%
+                  MESANO_INT = stringr::str_c(MES_INT, ANO_INT, sep="-")) %>%
     dplyr::left_join(counties, by=c("SP_M_PAC" = "id_municipio")) %>%
     dplyr::left_join(municipios, by = c("SP_M_HOSP" = "id_municipio")) %>%
     dplyr::left_join(procedure_details,
@@ -49,18 +55,11 @@ preprocess_SIH_SP <-
     dplyr::left_join(cbo, by=c("SP_PF_CBO" = "CO_OCUPACAO", "ANOMES_MVM" = "file_version_id")) %>%
     dplyr::left_join(health_establishment, by="CNES") %>%
     dplyr::left_join(cid, by=c("SP_CIDPRI" = "CO_CID", "ANOMES_MVM" = "file_version_id")) %>%
-    dplyr::mutate(SP_UF_HOSP = stringr::str_sub(SP_M_HOSP, 1, 2),
-                  SP_UF_PAC = stringr::str_sub(SP_M_PAC, 1, 2),
-                  IN_TP_VAL = dplyr::case_when(IN_TP_VAL == 1 ~ "Servico Hospitalar",
+    dplyr::mutate(IN_TP_VAL = dplyr::case_when(IN_TP_VAL == 1 ~ "Servico Hospitalar",
                                                IN_TP_VAL == 2 ~ "Servico Profissional"),
                   NO_OCUPACAO = stringr::str_c(SP_PF_CBO, NO_OCUPACAO, sep="-"),
-                  NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID),
-                  dplyr::across(c(nome_estado, nome_microrregiao, nome_mesorregiao, nome_municipio),
-                                ~ dplyr::case_when(SP_UF_HOSP == SP_UF_PAC ~ .x,
-                                                   SP_UF_HOSP != SP_UF_PAC ~ NA,
-                                                   SP_UF_HOSP == 99 | SP_UF_PAC == 99 ~ "Nao informado"
-                                ))
-    ) %>%
+                  NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID))%>%
+
     dplyr::select(`Data Internacao` = DT_INTER,
                   `Mes/Ano Internacao` = MESANO_INT,
                   `Ano/Mes Internacao` = ANOMES_INT,
@@ -95,7 +94,8 @@ preprocess_SIH_SP <-
                   `Cod do Municipio do Estabelecimento` = SP_M_HOSP,
                   `Municipio do Estabelecimento` = municipio_estabelecimento) %>%
 
-    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) #Remove espaços em branco no final dos valores
+    dplyr::mutate_all(~ stringr::str_trim(., side = "right")) %>% #Remove espaços em branco no final dos valores
+    dplyr::mutate(dplyr::across(dplyr::all_of(cols_to_convert), ~ as.numeric(.)))#Converte algumas colunas para numerico
 
   return(outputSIH_SP)
 }
