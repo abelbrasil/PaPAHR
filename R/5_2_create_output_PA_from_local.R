@@ -175,6 +175,13 @@ create_output_PA_from_local <-
         purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
         purrr::map_dfr(readRDS)
 
+      if(any(is.na(outputSIA$`Procedimentos realizados`))){
+        procedure_revoked = unique(
+          outputSIA$`CO Procedimentos realizados`[is.na(outputSIA$`Procedimentos realizados`)]
+        )
+
+        warning(paste('A coluna "Procedimentos realizados" e suas colunas relacionadas apresentam valores nulos, provavelmente porque o(s) procedimento(s)', paste(procedure_revoked,collapse = ", "), 'foi/foram revogado(s). Para obter esses valores, utilize a função procedure_revoked(), passando como parâmetro a saida da função create_output_PA_from_local()\n'))
+      }
 
       # Salva o data frame em um arquivo CSV no diretorio atual
       if (nrow(outputSIA) == 0 | ncol(outputSIA) == 0){

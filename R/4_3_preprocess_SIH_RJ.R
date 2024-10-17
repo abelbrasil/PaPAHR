@@ -58,6 +58,7 @@ preprocess_SIH_RJ <-
                   `Mes processamento` = NM_MES_CMPT,
                   `Mes/Ano processamento` = DT_CMPT,
                   `Ano/Mes processamento` = ANOMES_CMPT,
+                  `CO Procedimentos realizados` = PROC_REA,
                   `Procedimentos realizados` = NO_PROCEDIMENTO,
                   `Grupo de Procedimentos` = NO_GRUPO,
                   `SubGrupo de Procedimentos` = NO_SUB_GRUPO,

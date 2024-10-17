@@ -51,8 +51,6 @@ preprocess_SIH_SP <-
                   MESANO_INT = stringr::str_c(MES_INT, ANO_INT, sep="-")) %>%
     dplyr::left_join(counties, by=c("SP_M_PAC" = "id_municipio")) %>%
     dplyr::left_join(municipios, by = c("SP_M_HOSP" = "id_municipio")) %>%
-    dplyr::left_join(procedure_details,
-                     c("SP_PROCREA" = "CO_PROCEDIMENTO", "ANOMES_MVM" = "file_version_id")) %>%
     dplyr::left_join(cbo, by=c("SP_PF_CBO" = "CO_OCUPACAO", "ANOMES_MVM" = "file_version_id")) %>%
     dplyr::left_join(health_establishment, by="CNES") %>%
     dplyr::left_join(cid, by=c("SP_CIDPRI" = "CO_CID", "ANOMES_MVM" = "file_version_id")) %>%
@@ -60,6 +58,21 @@ preprocess_SIH_SP <-
                                                IN_TP_VAL == 2 ~ "Servico Profissional"),
                   NO_OCUPACAO = stringr::str_c(SP_PF_CBO, NO_OCUPACAO, sep="-"),
                   NO_CID = dplyr::if_else(is.na(NO_CID), "0000-Nao informado", NO_CID))%>%
+
+    #Join do Procedimento Principal
+    dplyr::left_join(procedure_details,
+                     c("SP_PROCREA" = "CO_PROCEDIMENTO", "ANOMES_MVM" = "file_version_id")) %>%
+    dplyr::rename(`Procedimentos realizados` = NO_PROCEDIMENTO,
+                  `Grupo de Procedimentos` = NO_GRUPO,
+                  `SubGrupo de Procedimentos` = NO_SUB_GRUPO,
+                  `Forma de organizacao` = NO_FORMA_ORGANIZACAO,
+                  `Complexidade do Procedimento` = COMPLEXIDADE,
+                  `Financiamento` = NO_FINANCIAMENTO,
+                  `SubTp FAEC` = NO_SUB_FINANCIAMENTO) %>%
+    #Join do Procedimento Secundario
+    dplyr::left_join(procedure_details,
+                     c("SP_ATOPROF" = "CO_PROCEDIMENTO", "ANOMES_MVM" = "file_version_id")) %>%
+
 
     dplyr::select(`Data Internacao` = DT_INTER,
                   `Mes/Ano Internacao` = MESANO_INT,
@@ -76,6 +89,19 @@ preprocess_SIH_SP <-
                   `Quantidade de Ato` = SP_QTD_ATO,
                   `Frequencia` = SP_U_AIH,
                   `No da AIH` = SP_NAIH,
+
+                  #Procedimento Principal
+                  `CO Procedimentos realizados` = SP_PROCREA,
+                  `Procedimentos realizados`,
+                  `Grupo de Procedimentos`,
+                  `SubGrupo de Procedimentos`,
+                  `Forma de organizacao`,
+                  `Complexidade do Procedimento`,
+                  `Financiamento`,
+                  `SubTp FAEC`,
+
+                  #Procedimento Secundario
+                  `CO Procedimentos Secundarios` = SP_ATOPROF,
                   `Procedimentos Secundarios` = NO_PROCEDIMENTO,
                   `Grupo Proc. Secundario` = NO_GRUPO,
                   `Sub-grupo Proc. Secundario` = NO_SUB_GRUPO,
@@ -83,6 +109,7 @@ preprocess_SIH_SP <-
                   `Tipo de financiamento do ato profissional` = NO_FINANCIAMENTO,
                   `Subtipo FAEC do ato profissional` = NO_SUB_FINANCIAMENTO,
                   `Complexidade do ato profissional` = COMPLEXIDADE,
+
                   `Tipo de Valor` = IN_TP_VAL,
                   `Ocupacao` = NO_OCUPACAO,
                   `Nome da Mobirdade (CID)` = NO_CID,

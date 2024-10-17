@@ -181,6 +181,13 @@ create_output_SP <-
         purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
         purrr::map_dfr(readRDS)
 
+      if(any(is.na(outputSIH_SP$`Procedimentos realizados`))){
+        procedure_revoked = unique(
+          outputSIH_SP$`CO Procedimentos realizados`[is.na(outputSIH_SP$`Procedimentos realizados`)]
+        )
+
+        warning(paste('A coluna "Procedimentos realizados" e suas colunas relacionadas apresentam valores nulos, provavelmente porque o(s) procedimento(s)', paste(procedure_revoked,collapse = ", "), 'foi/foram revogado(s). Para obter esses valores, utilize a função procedure_revoked(), passando como parâmetro a saida da função create_output_SP()\n'))
+      }
 
       # Salva o data frame em um arquivo CSV no diretorio atual
       if (nrow(outputSIH_SP) == 0 | ncol(outputSIH_SP) == 0){

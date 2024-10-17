@@ -67,6 +67,7 @@ create_output_PA <-
 
       #Ler os dados do SIGTAP (Procedimentos, CBO e CID)
       procedure_details <- get_procedure_details()
+
       cbo <- get_detail("CBO")
       cid <- get_detail("CID") %>%
         dplyr::mutate(
@@ -204,6 +205,13 @@ create_output_PA <-
         purrr::keep(~ stringr::str_detect(.x, "\\.rds$")) %>%
         purrr::map_dfr(readRDS)
 
+      if(any(is.na(outputSIA$`Procedimentos realizados`))){
+        procedure_revoked = unique(
+          outputSIA$`CO Procedimentos realizados`[is.na(outputSIA$`Procedimentos realizados`)]
+        )
+
+        warning(paste('A coluna "Procedimentos realizados" e suas colunas relacionadas apresentam valores nulos, provavelmente porque o(s) procedimento(s)', paste(procedure_revoked,collapse = ", "), 'foi/foram revogado(s). Para obter esses valores, utilize a função procedure_revoked(), passando como parâmetro a saida da função create_output_PA()\n'))
+      }
 
       # Salva o data frame em um arquivo CSV no diretorio atual
       if (nrow(outputSIA) == 0 | ncol(outputSIA) == 0){

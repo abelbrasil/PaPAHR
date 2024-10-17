@@ -76,6 +76,7 @@ preprocess_SIA <-
                   `Mes de Processamento (Numero)` = MES_MVM,
                   `Mes de Processamento` = NM_MES_MVM,
                   `Nome da Morbidade (CID)` = NO_CID, #cid
+                  `CO Procedimentos realizados` = PA_PROC_ID,
                   `Procedimentos realizados` = NO_PROCEDIMENTO, #procedure_details
                   `Grupo de Procedimentos` = NO_GRUPO,#procedure_details
                   `SubGrupo de Procedimentos` = NO_SUB_GRUPO,#procedure_details
