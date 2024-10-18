@@ -4,7 +4,14 @@
 \alias{procedure_revoked}
 \title{Retorna informações sobre procedimentos que foram revogados}
 \usage{
-procedure_revoked(year_start, month_start, year_end, month_end, dados)
+procedure_revoked(
+  year_start,
+  month_start,
+  year_end,
+  month_end,
+  dados,
+  proc_sec = FALSE
+)
 }
 \arguments{
 \item{year_start}{numeric. Ano inicial para o download dos dados, no formato yyyy.}
@@ -16,12 +23,14 @@ procedure_revoked(year_start, month_start, year_end, month_end, dados)
 \item{month_end}{numeric. Mês final para o download dos dados, no formato mm.}
 
 \item{dados}{É o conjunto de dados retornado por uma das funções principais.}
+
+\item{proc_sec}{Lógico. O valor padrão é FALSE. Esse parâmetro só deve ser igual a TRUE quando os procedimentos revogados forem os procedimentos secundários. Esse tipo de procedimento só aparece quando são utilizadas as funções do Serviço Profissional (SP).}
 }
 \value{
 A função retorna um subconjunto da base de dados de entrada, contendo exclusivamente as linhas nas quais a coluna 'Procedimentos realizados' possuía valores nulos. Os valores nulos nestas linhas são imputados com os valores correspondentes.
 }
 \description{
-Alguns procedimentos são revogados, e a partir do mês de revogação, as bases do SIGTAP deixam de fornecer informações sobre eles. Para acessar dados referentes a esses procedimentos, é necessário consultar as informações disponíveis nos meses anteriores à sua revogação.
+Alguns procedimentos são revogados e, a partir do mês da revogação, as bases do SIGTAP deixam de fornecer informações sobre eles. Para acessar os dados desses procedimentos, é necessário consultar os meses anteriores à revogação. Esta função busca os valores faltantes, e, para que ela funcione corretamente, o usuário deve informar um intervalo de tempo que inclua o(s) procedimento(s) antes da revogação.
 }
 \examples{
   \dontrun{
@@ -30,7 +39,8 @@ Alguns procedimentos são revogados, e a partir do mês de revogação, as bases
       month_start = 1,
       year_end = 2023,
       month_end = 3,
-      dados = outputSIH_RD
+      dados = outputSIH_RD,
+      proc_sec = FALSE
     )
   }
 
