@@ -8,7 +8,8 @@
 #' @param year_end numeric. Ano final para o download dos dados, no formato yyyy.
 #' @param month_end numeric. Mês final para o download dos dados, no formato mm.
 #' @param newer logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no CNES.
-#' @param state_abbr string. O padrao e "all". Sigla da Unidade Federativa
+#' @param state_abbr string. O padrao e "all". Sigla da Unidade Federativa.
+#' @param type_data string. O padrao e "ST". Valores aceitos ("ST", "LT"). O tipo da base de dados do CNES que sera baixado.
 #'
 #'@examples
 #' \dontrun{download_cnes_files(newer = TRUE)}
@@ -20,12 +21,22 @@ download_cnes_files <-
            year_end,
            month_end,
            newer,
-           state_abbr = "all"){
+           state_abbr = "all",
+           type_data = "ST"){
 
     `%>%` <- dplyr::`%>%`
 
-    base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/ST/"
-
+    type_data = toupper(trimws(type_data))
+    if ( !(type_data %in% c("ST","LT")) ){
+      stop("O valor passado no parametro type_data não é aceito.\n")
+    }
+    if (type_data=="ST"){
+      base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/ST/"
+      type = "ST"
+    }else if(type_data=="LT"){
+      base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/LT/"
+      type = "LT"
+    }
 
     output_dir <- here::here("data-raw")
     if (!dir.exists(output_dir)){
@@ -37,7 +48,7 @@ download_cnes_files <-
     if (!dir.exists(output_dir)){
       dir.create(output_dir)
     }
-    output_dir <- stringr::str_glue("{output_dir}\\ST")
+    output_dir <- stringr::str_glue("{output_dir}\\{type}")
     dir.create(output_dir)
 
     #Os dados do CADGER nao estao acessiveis atraves da URL abaixo. Para solucionar esse problema, o pacote ja incorpora esses valores, e quando é chamado, ele os copia para a pasta \data-raw\CNES\CADGER.

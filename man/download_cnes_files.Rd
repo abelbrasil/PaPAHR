@@ -10,7 +10,8 @@ download_cnes_files(
   year_end,
   month_end,
   newer,
-  state_abbr = "all"
+  state_abbr = "all",
+  type_data = "ST"
 )
 }
 \arguments{
@@ -24,7 +25,9 @@ download_cnes_files(
 
 \item{newer}{logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no CNES.}
 
-\item{state_abbr}{string. O padrao e "all". Sigla da Unidade Federativa}
+\item{state_abbr}{string. O padrao e "all". Sigla da Unidade Federativa.}
+
+\item{type_data}{string. O padrao e "ST". Valores aceitos ("ST", "LT"). O tipo da base de dados do CNES que sera baixado.}
 }
 \description{
 A função \code{download_cnes_files} baixa arquivos do CNES (Cadastro Nacional de Estabelecimentos de Saúde) e os armazena temporariamente na máquina local.
