@@ -106,9 +106,9 @@ preprocess_SIH_SP <-
                   `Grupo Proc. Secundario` = NO_GRUPO,
                   `Sub-grupo Proc. Secundario` = NO_SUB_GRUPO,
                   `Forma de organizacao Secundaria` = NO_FORMA_ORGANIZACAO,
+                  `Complexidade do ato profissional` = COMPLEXIDADE,
                   `Tipo de financiamento do ato profissional` = NO_FINANCIAMENTO,
                   `Subtipo FAEC do ato profissional` = NO_SUB_FINANCIAMENTO,
-                  `Complexidade do ato profissional` = COMPLEXIDADE,
 
                   `Tipo de Valor` = IN_TP_VAL,
                   `Ocupacao` = NO_OCUPACAO,
