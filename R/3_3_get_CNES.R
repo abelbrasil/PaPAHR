@@ -36,7 +36,7 @@ get_CNES <- function(){
   dir.create(output_dir)
 
   # Movendo o arquivo do CADGER para a pasta "tempdir()/CNES/CADGER"
-  caminho_pasta <- system.file("extdata", package = "FaturaSUS.AmbHosp")
+  caminho_pasta <- system.file("extdata", package = "PaPAHR")
   caminho_completo <- file.path(caminho_pasta, "CADGER-BR.rds")
   dir_destino <- output_dir
 
