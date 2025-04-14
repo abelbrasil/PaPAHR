@@ -9,7 +9,7 @@
 #' @param month_end numeric. Mês final para o download dos dados, no formato mm.
 #' @param newer logical. O padrão é TRUE. Se for TRUE e os outros parâmetros forem nulos, obtém o arquivo do mês mais recente disponível no CNES.
 #' @param state_abbr string. O padrao e "all". Sigla da Unidade Federativa.
-#' @param type_data string. O padrao e "ST". Valores aceitos ("ST", "LT"). O tipo da base de dados do CNES que sera baixado.
+#' @param type_data string. O padrao e "ST". Valores aceitos ("ST", "LT", "HB", "EQ"). O tipo da base de dados do CNES que sera baixado.
 #'
 #'@examples
 #' \dontrun{download_cnes_files(newer = TRUE)}
@@ -27,7 +27,7 @@ download_cnes_files <-
     `%>%` <- dplyr::`%>%`
 
     type_data = toupper(trimws(type_data))
-    if ( !(type_data %in% c("ST","LT")) ){
+    if ( !(type_data %in% c("ST","LT","HB","EQ")) ){
       stop("O valor passado no parametro type_data não é aceito.\n")
     }
     if (type_data=="ST"){
@@ -36,6 +36,12 @@ download_cnes_files <-
     }else if(type_data=="LT"){
       base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/LT/"
       type = "LT"
+    }else if(type_data=="HB"){
+      base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/HB/"
+      type = "HB"
+    }else if(type_data=="EQ"){
+      base_url <- "ftp://ftp.datasus.gov.br/dissemin/publicos/CNES/200508_/Dados/EQ/"
+      type = "EQ"
     }
 
     output_dir <- here::here("data-raw")
@@ -88,9 +94,9 @@ download_cnes_files <-
         dplyr::filter(publication_date >= publication_date_start & publication_date <= publication_date_end)
     }
 
-    if (state_abbr != "all") {
+    if (!("all" %in% state_abbr)) {
       dir_files <- dir_files %>%
-        dplyr::filter(state == state_abbr)
+        dplyr::filter(state %in% state_abbr)
     }
 
     files_name <- dplyr::pull(dir_files, file_name)

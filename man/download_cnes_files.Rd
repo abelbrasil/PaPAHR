@@ -27,7 +27,7 @@ download_cnes_files(
 
 \item{state_abbr}{string. O padrao e "all". Sigla da Unidade Federativa.}
 
-\item{type_data}{string. O padrao e "ST". Valores aceitos ("ST", "LT"). O tipo da base de dados do CNES que sera baixado.}
+\item{type_data}{string. O padrao e "ST". Valores aceitos ("ST", "LT", "HB", "EQ"). O tipo da base de dados do CNES que sera baixado.}
 }
 \description{
 A função \code{download_cnes_files} baixa arquivos do CNES (Cadastro Nacional de Estabelecimentos de Saúde) e os armazena temporariamente na máquina local.
